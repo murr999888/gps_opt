@@ -1,0 +1,280 @@
+table.clusterPopupTable {
+    font-size: 12px;
+}
+
+table.clusterPopupTable {
+    border-collapse: collapse;
+}
+
+table.clusterPopupTable td {
+    border-bottom: 1px solid;
+}
+
+.red {
+    color: red;
+}
+
+.indicator_red,
+.indicator_yellow,
+.indicator_green {
+	float: left;
+    	background: url(../images/indicator_ryg.gif) no-repeat;
+}
+
+.indicator_red {
+    background-position: -0px -0px;
+    width: 15px;
+    height: 15px;
+}
+
+.indicator_yellow {
+    background-position: -0px -15px;
+    width: 15px;
+    height: 15px;
+
+}
+
+.indicator_green {
+    width: 15px;
+    height: 15px;
+
+    background-position: -0px -30px;
+}
+
+.button-unchecked:after {
+    	content: "\f096";
+    	font: 16px/1 FontAwesome;
+}
+
+.button-checked:after {
+	content: "\f046";
+    	font: 16px/1 FontAwesome;
+}
+
+.fa-red {
+	color: red;
+}
+
+.fa-red-indicator {
+	color: #ff5050 !important;
+}
+
+.fa-green {
+	color:green;
+}
+
+.fa-green-indicator {
+	color:Lime !important;
+}
+
+.fa-blue {
+	color: blue;
+}
+
+.fa-yellow {
+	color: yellow;
+}
+
+.fa-yellow-indicator {
+	color: yellow !important;
+}
+
+.fa-brown {
+	color: brown;
+}
+
+.fa-magenta {
+	color: magenta;
+}
+
+.fa-shadow {
+	text-shadow: 0px 0px 2px #000 ;
+}
+
+.circle-red {
+    	background: #f00;
+    	width: 12px;
+    	height: 12px;
+    	border-radius: 50%;
+    	border: 1px solid #aaa;
+	display: inline-flex;
+}
+
+#spinner {
+	z-index:500;
+    	position: absolute;
+    	top: 50%;
+    	left: 50%;
+    	height: 60px;
+    	width: 60px;
+    	margin-top: -30px;
+    	margin-left: -30px;
+    	-webkit-animation: rotation .8s infinite linear;
+    	-moz-animation: rotation .8s infinite linear;
+    	-o-animation: rotation .8s infinite linear;
+    	animation: rotation .8s infinite linear;
+    	border-left: 6px solid rgba(56, 146, 212, .15);
+    	border-right: 6px solid rgba(56, 146, 212, .15);
+    	border-bottom: 6px solid rgba(56, 146, 212, .15);
+    	border-top: 6px solid rgba(56, 146, 212, .8);
+    	border-radius: 100%;
+}
+
+
+@-webkit-keyframes rotation {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(359deg); }
+}
+@-moz-keyframes rotation {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(359deg); }
+}
+@-o-keyframes rotation {
+    from { -o-transform: rotate(0deg); }
+    to { -o-transform: rotate(359deg); }
+}
+@keyframes rotation {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(359deg); }
+}
+
+.row-bk-red {
+	color: red;
+}
+
+.row-bk-brown {
+	color: brown;
+}
+
+.row-bk-yellow {
+	color: yellow;
+	background-color: #aaa;
+}
+
+.row-bk-green  {
+	color: green;
+}
+
+.row-bk-blue  {
+	color: blue;
+}
+
+
+.row-bk-grey  {
+	color: grey;
+}
+
+.row-bk-white  {
+	color: white;
+}
+
+.row-bk-black  {
+	color: black;
+}
+
+.row-italic  {
+	font-style: italic;
+}
+
+.arrow {
+    	width: 12px;
+	margin-top: -1px;
+}
+
+
+.bkYellow {
+	background-color: yellow;	
+}
+
+.bkGreen {
+	background-color: lime;	
+}
+
+.bkGrey {
+	background-color: #ccc;	
+}
+
+.bkRed {
+	background-color: red;	
+}
+.bkLigthBlue {
+	background-color: NavajoWhite;	
+}
+
+#loadImg{
+	position:absolute; z-index:500; display:none;
+}
+
+.fontbold {
+	font-weight: bold;
+}
+
+.fontitalic {
+	font-style: italic;
+}
+
+.calendar-field {
+	background: url(date-trigger.gif) no-repeat;
+}
+
+.ui-datepicker-week-end a {
+    color: red !important;
+}
+
+.right {
+    text-align: right;
+}
+
+.cls-cursor-pointer {
+    cursor: pointer;
+}
+
+.menuClass {
+	background:#fff; 
+	padding:10px;
+}
+
+.x-grid-item-selected{
+	color:#000;
+	background-color:#abc7ff
+}
+
+.help {
+	max-width: 1000px;	
+}
+
+.help img {
+	margin: 0 0 0 10px;
+	/*float: left;*/
+}
+
+.help li {
+	padding: 3px 0;
+}
+
+.help p {
+	line-height: 18px;
+}	
+
+.help ul {
+	list-style-type: square; /* Маркеры в виде квадрата */
+    	list-style-position: outside; /* Маркеры размещаются за пределами текстового блока */
+	line-height: 20px;
+}
+
+.help ol {
+	line-height: 20px;
+}
+
+.x-menu-item-icon-default {
+    color: #555;
+}
+
+.alertdiv{
+	padding: 5px 10px; 
+	border: 2px solid #000; 
+	background-color: bisque; 
+	font-size: 14px;
+	border-radius: 10px;
+
+}
