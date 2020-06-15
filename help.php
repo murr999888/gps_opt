@@ -23,6 +23,31 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
     		echo $text;
 		return;
 	}
+
+	if ($_GET['param'] == 'getAllHelp') {
+		$template = file_get_contents("help/AllHelpTemplate.html");
+
+		$cont = file_get_contents("help/helpTableContent.json");
+		if (!$cont) return;
+		$decoded = json_decode($cont, TRUE);
+
+		$data  = $decoded['data'];
+
+		$fulltext = '';
+
+		foreach ($data as $part) {
+	                $full_name = 'help/' . $part['file'];
+
+			if (file_exists($full_name)){
+				$fulltext .= file_get_contents($full_name);
+			} else {
+				$fulltext .= '';
+			}
+		}
+
+		$template = str_replace("#CONTENT#", $fulltext, $template);
+		echo $template;
+	}
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['param'])){

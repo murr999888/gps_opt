@@ -86,4 +86,11 @@ Ext.define('Opt.view.tabs.tab99.MainTab99Controller', {
 		html = html.replace(re, window.location.href + '/help');
 		win.document.body.innerHTML = html;
 	},
+
+	printAllHelp: function(){
+		var height = screen.height;
+		var width = screen.width;
+	        //window.open("help.php?param=getAllHelp", "Вся справка", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=" + width + ",height=" + height);
+		window.open("help.php?param=getAllHelp", "Вся справка");
+	},
 });

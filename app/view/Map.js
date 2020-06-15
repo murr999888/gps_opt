@@ -20,6 +20,7 @@ Ext.define('Opt.view.Map', {
 			fullscreenControlOptions: {
 				position: 'topleft'
 			},
+			//maxZoom: maxZoomLevel,
 
 		},
 
@@ -29,7 +30,8 @@ Ext.define('Opt.view.Map', {
 			//tileLayerUrl: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			tileLayerUrl: 'http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}',
 			//tileLayerUrl: 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
-			attribution: 'Map data <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+			attribution: 'Map data <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+			maxZoom:18,
 		},
 
 		/**
@@ -296,26 +298,24 @@ Ext.define('Opt.view.Map', {
 
 		osm = this.tileLayers[0];
 
-		mapbox = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=mapbox');
+		mapbox = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=mapbox',{maxZoom:18}, [
+		        { 'header': 'Authorization', 'value': 'mlApp'},
+    		]);
 		cadastr = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr');
-		visicom = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=visi', { tms: true, });
-		luxena = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=luxena');
-		m2gis = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=m2gis');
-		sputnik = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=sputnik');
-		opnvkarte = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=opnvkarte');
-		topo = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=topo', { maxZoom: 17 });
-		wiki = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=wiki');
+		visicom = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=visi', {tms : true,});
+		luxena  = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=luxena',{maxZoom:18});
+		m2gis   = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=m2gis',{maxZoom:18});
+		sputnik = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=sputnik',{maxZoom:18});
+		opnvkarte  = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=opnvkarte',{maxZoom:17});
+		topo = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=topo',{maxZoom:17});
+		here = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=here',{maxZoom:18});
+		wiki = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=wiki',{maxZoom:18});
 
-		//sputnik = L.tileLayer('http://tiles.maps.sputnik.ru/{z}/{x}/{y}.png');
-		//		2gis     = L.tileLayer('http://tile2.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_sd');
 
 		googleRoad = L.gridLayer.googleMutant({
 			maxZoom: maxZoomLevel,
 			type: 'roadmap'
 		});
-
-
-
 
 		googleSat = L.gridLayer.googleMutant({
 			maxZoom: maxZoomLevel,
@@ -333,6 +333,7 @@ Ext.define('Opt.view.Map', {
 			"Sputnik": sputnik,
 			"Opnvkarte": opnvkarte,
 			"Topograph": topo,
+			"HERE": here,
 			"Wikimapia": wiki
 		}, {
 			"Кадастр": cadastr

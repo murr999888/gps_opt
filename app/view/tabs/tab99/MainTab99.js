@@ -47,7 +47,12 @@ Ext.define('Opt.view.tabs.tab99.MainTab99', {
 				{
 					type: 'print',
 					handler: 'printTable',
-					tooltip: 'Печать'
+					tooltip: 'Печать оглавления'
+				},
+				{
+					type: 'print',
+					handler: 'printAllHelp',
+					tooltip: 'Печать всей справки'
 				}
 			],
 
