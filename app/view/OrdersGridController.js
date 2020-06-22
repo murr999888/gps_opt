@@ -122,32 +122,30 @@ Ext.define('Opt.view.OrdersGridController', {
 	},
 
 	openEditDialog: function (record, editable) {
-		this.orderEdit = null;
-		Ext.suspendLayouts();
+		//this.orderEdit = null;
 
-		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'routeOrderEdit' });
+		//this.orderEdit = Ext.create('widget.orderedit', { stateId: 'routeOrderEdit' });
+		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'routeOrderEdit' });
 		this.orderEdit.readOnly = true;
 
 		this.orderEdit.down('form').loadRecord(record);
 
-		this.orderEdit.down('ordergoodsgrid').store.suspendEvents();
+		//this.orderEdit.down('ordergoodsgrid').store.suspendEvents();
 		this.orderEdit.down('ordergoodsgrid').store.loadData(record.get("goods"));
-		this.orderEdit.down('ordergoodsgrid').store.resumeEvents();
+		//this.orderEdit.down('ordergoodsgrid').store.resumeEvents();
 
 		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
-		this.orderEdit.down('allowedautosgrid').store.suspendEvents();
+		//this.orderEdit.down('allowedautosgrid').store.suspendEvents();
 		this.orderEdit.down('allowedautosgrid').store.loadData(record.get("allowed_autos"));
-		this.orderEdit.down('allowedautosgrid').store.resumeEvents();
+		//this.orderEdit.down('allowedautosgrid').store.resumeEvents();
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
-
-		Ext.resumeLayouts();
 
 		this.orderEdit.show().focus();
 	},

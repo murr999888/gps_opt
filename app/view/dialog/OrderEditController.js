@@ -91,6 +91,7 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 	closeView: function (dialog) {
 		var allowedAutosStore = this.getView().down('allowedautosgrid').store;
 		allowedAutosStore.rejectChanges();
-		this.getView().destroy();
+		//this.getView().destroy();
+this.getView().close();
 	},
 });

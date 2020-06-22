@@ -76,20 +76,22 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-		this.routelistEdit = null;
-		Ext.suspendLayouts();
+		var self = this;
+		//this.routelistEdit = null;
+		//Ext.suspendLayouts();
 
 		//this.routelistEdit = Ext.create('widget.routelistedit',{stateId: 'tab2routeListEdit'});
-		this.routelistEdit = Ext.create('widget.routelistedit');
+		//this.routelistEdit = Ext.create('widget.routelistedit');
+		if (!this.routelistEdit) this.routelistEdit = Ext.create('widget.routelistedit');
 
 		this.routelistEdit.down('form').loadRecord(record);
 
 		this.routelistEdit.down('ordergoodsgrid').setStore(this.goodsEditStore);
 		
-		this.goodsEditStore.suspendEvents();
+		//this.goodsEditStore.suspendEvents();
 		this.goodsEditStore.loadData(record.get('goods'));
 		this.goodsEditStore.sync();
-		this.goodsEditStore.resumeEvents();
+		//this.goodsEditStore.resumeEvents();
 
 		this.goodsEditStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
@@ -97,10 +99,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		this.routelistEdit.down('ordersgridpanel').setStore(this.ordersEditStore);
 
-		this.ordersEditStore.suspendEvents();
+		//this.ordersEditStore.suspendEvents();
 		this.ordersEditStore.loadData(record.get('orders'));
 		this.ordersEditStore.sync();
-		this.ordersEditStore.resumeEvents();
+		//this.ordersEditStore.resumeEvents();
+
+
+
 
 		var form = this.routelistEdit.lookupReference('form').getForm();
 		form.setValues({
@@ -141,8 +146,9 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		var droppedOrderStore = Ext.getCmp('tab2droppedgrid').store;
 
-		this.viewer = null;
-		this.viewer = Ext.create('widget.resultviewermain', { closable: true });
+		//this.viewer = null;
+		//this.viewer = Ext.create('widget.resultviewermain', { closable: true });
+		if (!this.viewer) this.viewer = Ext.create('widget.resultviewermain', { closable: true });
 
 		Ext.getCmp('resultviewerroutesgrid').setStore(routeListStore);
 		Ext.getCmp('resultviewerdroppedgrid').setStore(droppedOrderStore);

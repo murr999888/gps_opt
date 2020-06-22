@@ -9,6 +9,8 @@ Ext.define('Opt.view.OrdersGrid', {
 	store: null,
 	controller: 'ordersgridpanel',
 
+	bufferedRenderer: false,
+
 	tools: [
 		{
 			type: 'print',
@@ -22,7 +24,7 @@ Ext.define('Opt.view.OrdersGrid', {
 	},
 
 	viewConfig: {
-		//preserveScrollOnRefresh: true,
+		preserveScrollOnRefresh: false,
 		getRowClass: function (record, rowIndex, rowParams, store) {
 			//console.log(record);
 			var cl = '';

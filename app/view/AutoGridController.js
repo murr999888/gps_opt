@@ -22,8 +22,9 @@ Ext.define('Opt.view.AutoGridController', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-		this.autoEdit = null;
-		this.autoEdit = Ext.create('widget.autoedit');
+		//this.autoEdit = null;
+		//this.autoEdit = Ext.create('widget.autoedit');
+		if (!this.autoEdit)  this.autoEdit = Ext.create('widget.autoedit');
 		this.autoEdit.down('form').loadRecord(record);
 		var form = this.autoEdit.lookupReference('form').getForm();
 
@@ -35,13 +36,15 @@ Ext.define('Opt.view.AutoGridController', {
 		});
 
 		var store = this.autoEdit.down('allowedclientgroups').store;
+
+		store.removeAll();
+
 		var allowedGroups = record.get("allowed_clientgroups");
-console.log(allowedGroups);
 		if (allowedGroups) {
-			store.suspendEvents();
+			//store.suspendEvents();
 			store.loadData(allowedGroups);
 			store.sync();
-			store.resumeEvents();
+			//store.resumeEvents();
 		}
 
 		this.autoEdit.show().focus();

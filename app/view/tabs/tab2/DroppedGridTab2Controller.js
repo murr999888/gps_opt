@@ -47,27 +47,28 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 	openEditDialog: function (record) {
 
 		var self = this;
-		Ext.suspendLayouts();
+		//Ext.suspendLayouts();
 
-		this.orderEdit = null;
-		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
+		//this.orderEdit = null;
+		//this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
+		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
 		this.orderEdit.down('form').loadRecord(record);
 
 		var orderGoodStore = this.orderEdit.down('ordergoodsgrid').store;
-		orderGoodStore.suspendEvents();
+		//orderGoodStore.suspendEvents();
 		orderGoodStore.loadData(record.get("goods"));
 		orderGoodStore.sync();
-		orderGoodStore.resumeEvents();
+		//orderGoodStore.resumeEvents();
 
 		orderGoodStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
 		var allowedAutoStore = this.orderEdit.down('allowedautosgrid').store;
-		allowedAutoStore.suspendEvents();
+		//allowedAutoStore.suspendEvents();
 		allowedAutoStore.loadData(record.get("allowed_autos"));
 		allowedAutoStore.sync();
-		allowedAutoStore.resumeEvents();
+		//allowedAutoStore.resumeEvents();
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({
@@ -78,7 +79,7 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 			self.onCloseEditOrderDialog(panel);
 		});
 
-		Ext.resumeLayouts();
+		//Ext.resumeLayouts();
 		this.orderEdit.show().focus();
 	},
 

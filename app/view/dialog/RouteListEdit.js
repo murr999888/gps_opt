@@ -14,7 +14,8 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 	//stateful: true,
 	//stateId: 'routelistedit',
 	closable: true,
-	closeAction: 'destroy',
+	//closeAction: 'destroy',
+	closeAction: 'hide',
 	title: 'Маршрутный лист',
 	items: [
 		{

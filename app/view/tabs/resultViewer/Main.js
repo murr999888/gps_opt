@@ -14,6 +14,7 @@ Ext.define('Opt.view.tabs.resultViewer.Main', {
 	],
 	layout: 'border',
 	closable: true,
+	closeAction: 'hide',
 	defaults: {
 		header: false,
 	},
