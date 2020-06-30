@@ -1,10 +1,12 @@
 <?php
+/*
 session_start();
 
 if (!isset($_SESSION['user'])) {
 	header("HTTP/1.1 401 Unauthorized");
     	exit;
 }
+*/
 
 if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 	if ($_GET['param'] == 'getHelp') {

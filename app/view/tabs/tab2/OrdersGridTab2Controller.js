@@ -114,28 +114,21 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 
 	openEditDialog: function (record) {
 		var self = this;
-		Ext.suspendLayouts();
 
-		this.orderEdit = null;
-
-		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
+		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
 		var orderGoodsStore = this.orderEdit.down('ordergoodsgrid').store;
-		orderGoodsStore.suspendEvents();
 		orderGoodsStore.loadData(record.get("goods"));
 		orderGoodsStore.sync();
-		orderGoodsStore.resumeEvents();
 
 		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
 		var allowedAutosStore = this.orderEdit.down('allowedautosgrid').store;
-		allowedAutosStore.suspendEvents();
 		allowedAutosStore.loadData(record.get("allowed_autos"));
 		allowedAutosStore.sync();
-		allowedAutosStore.resumeEvents();
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({

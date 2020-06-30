@@ -50,4 +50,8 @@ Ext.define('Opt.view.dialog.RouteListEditController', {
 		button.up('window').close();
 	},
 
+	closeView: function (dialog) {
+		this.getView().close();
+	},
+
 });

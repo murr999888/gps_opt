@@ -11,7 +11,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesDistTab2Controller', {
 	init: function () {
 
 		this.routesDistrStore = Ext.create('Ext.data.Store', {
-			//model: 'Opt.model.RouteListDist',
 			model: 'Opt.model.RouteList',
 			proxy: {
 				type: 'memory',
