@@ -451,6 +451,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 						self.routePostProcess();
 					} else {
 						self.setOptFullDuration();
+						//self.setFullDurationToolTip();
+						self.setDurationToolTip();
 					}
 
 					Ext.getCmp('maptab1').markersFitBounds();
@@ -547,6 +549,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		});
 
 		this.removeDistanceToolTip();
+		this.removeDurationToolTip();
+		this.removeFullDurationToolTip();
 	},
 
 	setDefaultValues: function () {
@@ -579,6 +583,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 
 	resetData: function () {
 		this.removeDistanceToolTip();
+		this.removeDurationToolTip();
+		this.removeFullDurationToolTip();
 
 		this.currTaskId = null;
 		this.isOpt = false;
@@ -840,18 +846,68 @@ console.log(task);
 		return;
 	},
 
+	setFullDurationToolTip: function () {
+		this.removeFullDurationToolTip();
+		var form = this.lookupReference('formtab1');
+		var formVal = form.getForm().getFieldValues();
+		if (hmsToSecondsOnly(formVal.optfullduration) > 0 && hmsToSecondsOnly(formVal.firstfullduration) > 0 && hmsToSecondsOnly(formVal.optfullduration) != hmsToSecondsOnly(formVal.firstfullduration)) {
+			var diff = (hmsToSecondsOnly(formVal.optfullduration) - hmsToSecondsOnly(formVal.firstfullduration)) / hmsToSecondsOnly(formVal.firstfullduration) * 100;
+			this.diffFullDurationToolTip = Ext.create('Ext.tip.ToolTip', {
+				target: 'tab1optfullduration',
+				html: (diff > 0 ? '+' : '') + diff.toFixed(1) + '%'
+			});
+			this.diffFullDurationToolTip.show();
+		} else {
+			this.removeFullDurationToolTip();
+		}
+	},
+
+	setDurationToolTip: function () {
+		this.removeDurationToolTip();
+		var form = this.lookupReference('formtab1');
+		var formVal = form.getForm().getFieldValues();
+		if (hmsToSecondsOnly(formVal.optduration) > 0 && hmsToSecondsOnly(formVal.firstduration) > 0 && hmsToSecondsOnly(formVal.optduration) != hmsToSecondsOnly(formVal.firstduration)) {
+			var diff = (hmsToSecondsOnly(formVal.optduration) - hmsToSecondsOnly(formVal.firstduration)) / hmsToSecondsOnly(formVal.firstduration) * 100;
+			this.diffDurationToolTip = Ext.create('Ext.tip.ToolTip', {
+				target: 'tab1optduration',
+				html: (diff > 0 ? '+' : '') + diff.toFixed(1) + '%'
+			});
+			this.diffDurationToolTip.show();
+		} else {
+			this.removeDurationToolTip();
+		}
+	},
+
 	setDistanceToolTip: function () {
 		this.removeDistanceToolTip();
 		var form = this.lookupReference('formtab1');
 		var formVal = form.getForm().getFieldValues();
 		if (formVal.optdistance > 0 && formVal.firstdistance > 0 && formVal.optdistance != formVal.firstdistance) {
+			var diff = (formVal.optdistance - formVal.firstdistance) / formVal.firstdistance * 100;
 			this.diffDistanceToolTip = Ext.create('Ext.tip.ToolTip', {
 				target: 'tab1optdistance',
-				html: ((formVal.optdistance - formVal.firstdistance) / formVal.firstdistance * 100).toFixed(1) + '%'
+				html: (diff > 0 ? '+' : '') + diff.toFixed(1) + '%'
 			});
 			this.diffDistanceToolTip.show();
 		} else {
 			this.removeDistanceToolTip();
+		}
+	},
+
+
+	removeFullDurationToolTip: function () {
+		if (this.diffFullDurationToolTip) {
+			this.diffFullDurationToolTip.remove('tab1optfullduration', { destroy: true });
+			this.diffFullDurationToolTip.destroy();
+			this.diffFullDurationToolTip = null;
+		}
+	},
+
+	removeDurationToolTip: function () {
+		if (this.diffDurationToolTip) {
+			this.diffDurationToolTip.remove('tab1optduration', { destroy: true });
+			this.diffDurationToolTip.destroy();
+			this.diffDurationToolTip = null;
 		}
 	},
 

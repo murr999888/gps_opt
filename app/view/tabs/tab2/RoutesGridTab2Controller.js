@@ -83,9 +83,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		this.routelistEdit.down('form').loadRecord(record);
 
 		this.routelistEdit.down('ordergoodsgrid').setStore(this.goodsEditStore);
-		
+
 		this.goodsEditStore.loadData(record.get('goods'));
-		this.goodsEditStore.sync();
 
 		this.goodsEditStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
@@ -94,7 +93,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		this.routelistEdit.down('ordersgridpanel').setStore(this.ordersEditStore);
 
 		this.ordersEditStore.loadData(record.get('orders'));
-		this.ordersEditStore.sync();
 
 		var form = this.routelistEdit.lookupReference('form').getForm();
 		form.setValues({
@@ -105,9 +103,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			date_1: getDDMMYYYY(record.get("date")),
 		});
 
-		Ext.resumeLayouts();
-
 		this.routelistEdit.show().focus();
+
 	},
 
 	getDriverName: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
@@ -136,6 +133,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		var droppedOrderStore = Ext.getCmp('tab2droppedgrid').store;
 
 		if (!this.viewer) this.viewer = Ext.create('widget.resultviewermain', { closable: true });
+		//this.viewer = null;
+		//this.viewer = Ext.create('widget.resultviewermain', { closable: true });
 
 		Ext.getCmp('resultviewerroutesgrid').setStore(routeListStore);
 		Ext.getCmp('resultviewerdroppedgrid').setStore(droppedOrderStore);
@@ -146,6 +145,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		this.viewer.show();
 		this.viewer.focus();
 		Ext.getCmp('resultviewerroutesgrid').focus();
+
+		if (this.viewer.mapRendered) this.fireEvent("resultviewermapRender");
 	},
 
 	onPressClearRoutes: function(){

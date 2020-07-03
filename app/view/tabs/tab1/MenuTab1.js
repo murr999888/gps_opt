@@ -217,7 +217,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 									value: 30,
 									maxValue: 180,
 									minValue: 0,
-									step: 10,
+									step: 5,
 									stateful: true,
 									stateId: 'tab1slacktimevalue',
 									stateEvents: [

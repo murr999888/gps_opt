@@ -12,7 +12,7 @@ Ext.define('Opt.view.dialog.WaitingCalc', {
 	resizable: false,
 	draggable: false,
 	constrain: true,
-	title: 'Ожидание...',
+	title: 'Идет расчет...',
 		//width: 230,
 		//height: 150,
 	items: {

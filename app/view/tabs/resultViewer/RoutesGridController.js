@@ -67,7 +67,6 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 	},
 
 	afterRender: function () {
-
 	},
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
