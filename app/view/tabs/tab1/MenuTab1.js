@@ -124,7 +124,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 									layout: 'hbox',
 									items: [
 										{
-											//margin: '-5 0 0 0',
+											fieldStyle: 'text-align: center;',
 											padding: 0,
 											width: 120,
 											labelWidth: 55,
@@ -246,6 +246,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 											name: 'firstfullduration',
 											id: 'tab1firstfullduration',
 											value: '',
+											autoEl: {
+        											tag: 'div',
+        											'data-qtip': 'Полное время маршрута',
+    											},
 										},
 										{
 											xtype: 'textfield',
@@ -256,6 +260,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 											name: 'firstduration',
 											id: 'tab1firstduration',
 											value: '',
+											autoEl: {
+        											tag: 'div',
+        											'data-qtip': 'Общее время движения по маршруту',
+    											},
 										},
 										{
 											xtype: 'numberfield',
@@ -269,6 +277,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 											name: 'firstdistance',
 											id: 'tab1firstdistance',
 											value: 0,
+											autoEl: {
+        											tag: 'div',
+        											'data-qtip': 'Общая длина маршрута',
+    											},
 										},
 
 									]
