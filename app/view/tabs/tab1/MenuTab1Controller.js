@@ -343,6 +343,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 	},
 
 	getWayPoints: function () {
+		var self = this;
 		Ext.getCmp('maptab1').allRouteLayer = L.featureGroup();
 		Ext.getCmp('maptab1').allRouteLayer.addTo(Ext.getCmp('maptab1').map);
 
@@ -354,6 +355,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 			this.processingMask.show();
 		}
 
+		console.log("Время начала запроса " + Date.now());
+
 		for (var i = 1; i < this.routeLegsStore.count(); i++) {
 			var recFrom = this.routeLegsStore.getAt(i - 1).data;
 			var fromPoint = new L.Routing.waypoint();
@@ -362,8 +365,16 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 			var recTo = this.routeLegsStore.getAt(i).data;
 			var toPoint = new L.Routing.waypoint();
 			toPoint.latLng = L.latLng(recTo.lat, recTo.lon);
+			self.getRoute(fromPoint, toPoint, i, self.routeLegsStore.count());
+/*
+			var routeLegsStoreCount = self.routeLegsStore.count();
 
-			this.getRoute(fromPoint, toPoint, i, this.routeLegsStore.count());
+			setTimeout(function(fromPoint, toPoint, i, routeLegsStoreCount){
+				return function() {
+     					 self.getRoute(fromPoint, toPoint, i, routeLegsStoreCount);
+				}		
+			}(fromPoint, toPoint, i, routeLegsStoreCount),0);
+*/
 		};
 	},
 
@@ -379,11 +390,6 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 			weight: 2,
 		}];
 
-		var router = new L.Routing.OSRMv1({
-			serviceUrl: routeServerUrl,
-			profile: 'driving'
-		});
-
 		var self = this;
 
 		router.route([fromPoint, toPoint], function (error, routes) {
@@ -397,8 +403,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 
 				Ext.getCmp('maptab1').allRouteLayer.addLayer(routeLine);
 
-				var rec = self.routeLegsStore.getAt(index);
 
+				var rec = self.routeLegsStore.getAt(index);
 				var form = self.lookupReference('formtab1');
 				var formVal = form.getForm().getFieldValues();
 				var increaseTimeCoeff = formVal.coeffincreasetransittime;
@@ -414,6 +420,8 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 				self.arrP.push({ distance: corrDistance, duration: corrDuration });
 
 				if (self.arrP.length == allcount - 1) {
+
+console.log("Время окончания запроса " + Date.now());
 
 					var totalDistance = 0;
 					var totalDuration = 0;

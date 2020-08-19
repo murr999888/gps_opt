@@ -8,6 +8,12 @@ var isFirefox = navigator.userAgent.match('Firefox');
 //}
 //var routeServerUrl = './api/db/routeproxy/route/v1';
 
+		var router = new L.Routing.OSRMv1({
+			serviceUrl: routeServerUrl,
+			profile: 'driving'
+		});
+
+
 function getRandomColor() {
   var letters = '0123456789ABCDEF';
   var color = '#';

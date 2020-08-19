@@ -1,5 +1,7 @@
 #RewriteEngine Off
 
+Options -Indexes
+
 <IfModule mod_mime.c>
  	AddType application/x-javascript .js
  	AddType text/css .css

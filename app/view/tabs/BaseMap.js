@@ -151,7 +151,8 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					spiderfyOnMaxZoom: false,
 					showCoverageOnHover: false,
 					zoomToBoundsOnClick: false,
-					maxClusterRadius: 50
+					maxClusterRadius: 50,
+					animate: false
 				});
 
 				this.clusterOrders.on('clusterclick', function (a) {

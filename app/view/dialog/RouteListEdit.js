@@ -121,6 +121,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 									fieldLabel: 'Длина',
 									labelWidth: 60,
 									width: 122,
+									fieldStyle: 'text-align: right;',
 								},
 								{
 									padding: '0 0 0 12',
