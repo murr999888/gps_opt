@@ -66,8 +66,7 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 	closeView: function (dialog) {
 		var allowedClientGroupsStore = this.getView().down('allowedclientgroups').store;
 		allowedClientGroupsStore.rejectChanges();
-		//this.getView().destroy();
-this.getView().close();
+		this.getView().close();
 	},
 	
 	saveRecord: function (dialog) {

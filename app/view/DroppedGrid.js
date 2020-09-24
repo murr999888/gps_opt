@@ -35,7 +35,6 @@ Ext.define('Opt.view.DroppedGrid', {
 			renderer: 'getSod',
 		},
 		{
-			hideable: true,
 			text: 'Город',
 			cellWrap: true,
 			flex: 5,

@@ -6,20 +6,35 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 	requires: [
 		'Opt.view.tabs.tab2.MenuTab2Controller',
 		'Opt.view.tabs.tab2.AutoGridTab2',
+		'Opt.view.tabs.tab2.DepotGridTab2',
 		'Opt.ux.TimePickerUI',
 		'Opt.ux.TimePickerUIWS',
 	],
 
 	layout: {
+	        type: 'accordion',
+        	titleCollapse: true,
+	        animate: false,
+		multi: true,
+		collapseFirst: false,
+		fill: false,
+	},
+
+/*
+	layout: {
 		type: 'vbox',
 		align: 'stretch'
 	},
+*/
 
 	header: {
 		titlePosition: 0,
 	},
+
 	items: [
+
 		{
+
 			tools: [
 				{
 					type: 'refresh',
@@ -28,20 +43,24 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 				}
 			],
 
+
 			stateful: true,
 			stateId: 'formparamtab2',
+/*
 			collapsible: true,
 			titleCollapse: true,
 			animCollapse: false,
+*/
 			title: 'Настройки поиска решения',
 			xtype: 'form',
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
-			height: 115,
+                        height: 119,
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
 			},
+
 			items: [
 				{
 					xtype: 'fieldcontainer',
@@ -106,6 +125,13 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'tab2autogridpanel',
 			id: 'tab2autogrid',
 			flex: 5,
+		},
+
+		{
+			xtype: 'tab2depotgridpanel',
+			id: 'tab2depotgrid',
+			flex: 3,
+			collapsed: true,
 		},
 	],
 });

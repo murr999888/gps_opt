@@ -38,6 +38,17 @@ Ext.define('Opt.model.Auto', {
 		},
 
 		{
+			name: 'max_capacity',
+			type: 'number',
+			defaultValue: 1,
+		},
+		{
+			name: 'max_weight',
+			type: 'number',
+			defaultValue: 3000,
+		},
+
+		{
 			name: 'is_watercarrier',
 			type: 'boolean'
 		},
@@ -87,6 +98,11 @@ Ext.define('Opt.model.Auto', {
 		},
 
 		{
+			name: 'maximize_capacity',
+			type: 'boolean'
+		},
+
+		{
 			name: 'driver_id',
 			type: 'string'
 		},
@@ -98,6 +114,42 @@ Ext.define('Opt.model.Auto', {
 
 		{
 			name: 'allowed_clientgroups',
+		},
+		{
+			name: 'fuel_tank_capacity',
+			type: 'number',
+                        defaultValue: 100,
+		},
+		{
+			name: 'fuel_balance_begin',
+			type: 'number',
+			defaultValue: 30,
+		},
+		{
+			name: 'fuel_balance_min',
+			type: 'number',
+			defaultValue: 30,
+		},
+		{
+			name: 'fuel_rate_by_100',
+			type: 'number',
+			defaultValue: 15.5,
+		},
+		{
+			name: 'fuel_need_refuel',
+			type: 'boolean',
+			defaultValue: 0,
+		},
+		{
+			name: 'fuel_use_rate',
+			type: 'boolean',
+			defaultValue: false,
+		},
+
+		{
+			name: 'fuel_first_station',
+			type: 'number',
+			defaultValue: 0,
 		},
 
 		]

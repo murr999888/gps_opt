@@ -20,6 +20,10 @@ Ext.define('Opt.Application', {
 		'Drivers',
 		'HelpTableContent',
 		'CalcLog',
+		'FuelStation',
+		'Depot',
+		'Traffic',
+		'TrafficPoints',
 	],
 	stores: [
 		'Auto',
@@ -35,6 +39,9 @@ Ext.define('Opt.Application', {
 		'OrdersGoodsStore',
 		'RoutesGoodsStore',
 		'CalcLog',
+		'FuelStations',
+		'Depots',
+		'Traffic',
 	],
 
 	controllers: [

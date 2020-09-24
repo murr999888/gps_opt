@@ -16,9 +16,52 @@ Ext.define('Opt.view.tabs.BaseMap', {
 	markerStrumok: null,
 	lineLeg: null,
 
-	listeners: {
-		maprender: 'onMapRender',
-		zoomend: 'onMapZoomLevelsChange',
+	trafficLine: null,
+	startTrafficMarker: null,
+	finishTrafficMarker: null,
+	trafficLineGroup: null,
+
+	trafficLineOptions: {
+		color: 'red',
+		opacity: 1,
+		weight: 6,
+	},	
+
+	setAllTraficLinesOnMap: function(){
+		var self = this;
+
+		if (this.trafficLineGroup != null) {
+			this.map.removeLayer(this.trafficLineGroup);
+			this.trafficLineGroup = null;			
+		}
+
+		if (this.map.getZoom() < 12) return; 
+
+		this.trafficLineGroup = L.featureGroup();
+		var store = Ext.getStore('Traffic');
+
+		store.each(function(record){
+			var geometryString = record.get('geometry');
+			var geometry = JSON.parse(geometryString);
+			if (geometry) {
+				var trafficLine = L.polyline(geometry, self.trafficLineOptions);
+				trafficLine['trafficId'] = record.get('id');
+				var content = '<b>Пробка</b><br />' 
+				+ 'до ' + record.get("speed") + ' км/ч <br />'
+				+ record.get("name");
+
+				trafficLine.bindPopup(content,{maxWidth: 120});
+				self.trafficLineGroup.addLayer(trafficLine);
+			}
+		});
+
+		if (this.trafficLineGroup.getLayers().length > 0) {
+			this.trafficLineGroup.addTo(this.map);
+		}
+	},
+
+	resetMapView: function(){
+		this.map.setView(strumokpoint, 12);
 	},
 
 	deleteLineLeg: function () {
@@ -49,6 +92,11 @@ Ext.define('Opt.view.tabs.BaseMap', {
 	resetLayers: function () {
 		if (this.map != null) {
 			this.map.closePopup();
+		}
+
+		if (this.trafficLineGroup != null) {
+			this.map.removeLayer(this.trafficLineGroup);
+			this.trafficLineGroup = null;			
 		}
 
 		if (this.trackPoints != null) {
@@ -94,6 +142,21 @@ Ext.define('Opt.view.tabs.BaseMap', {
 		if (this.lineLeg != null) {
 			this.map.removeLayer(this.lineLeg);
 			this.lineLeg = null;
+		}
+
+		if (this.startTrafficMarker != null) {
+			this.map.removeLayer(this.startTrafficMarker);
+			this.startTrafficMarker = null;
+		}
+
+		if (this.finishTrafficMarker != null) {
+			this.map.removeLayer(this.finishTrafficMarker);
+			this.finishTrafficMarker = null;
+		}
+
+		if (this.trafficLine != null) {
+			this.map.removeLayer(this.trafficLine);
+			this.trafficLine = null;
 		}
 
 		if (this.allRouteLayer != null) {

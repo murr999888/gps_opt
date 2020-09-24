@@ -83,6 +83,13 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 					xtype: 'tbspacer',
 					flex: 1,
 				},
+				{
+					xtype: 'button',
+					text: 'Заправки',
+					id: 'tab2fuelstationbutton',
+					iconCls: 'fuel_station_icon',
+					handler: 'fuelStations',
+				},
 			]
 		},
 	],

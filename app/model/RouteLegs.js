@@ -31,26 +31,31 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'city',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'isOtherCity',
         		type: 'boolean',
+			defaultValue: false,
     		},
 
 		{
         		name: 'adres',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'district',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'dop',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
@@ -60,6 +65,7 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'goods_filter',
 			type: 'string',
+			defaultValue: '',
     		},
 
 		{
@@ -69,26 +75,31 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'full_name',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'klient_id',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'klient_name',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'klient_group_id',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'klient_group_name',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
@@ -124,7 +135,18 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'sod',
         		type: 'string',
+			defaultValue: '',
     		},
+
+		{
+			name: 'weight',
+			type: 'number'
+		},
+
+		{
+			name: 'capacity',
+			type: 'number'
+		},
 
 		{
         		name: 'timewindow_begin',
@@ -139,16 +161,19 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'timewindow_string',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'tochka_id',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{
         		name: 'tochka_name',
         		type: 'string',
+			defaultValue: '',
     		},
 
 		{

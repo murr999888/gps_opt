@@ -20,6 +20,7 @@ Ext.define('Opt.view.Map', {
 			fullscreenControlOptions: {
 				position: 'topleft'
 			},
+			doubleClickZoom: false,
 			//maxZoom: maxZoomLevel,
 
 		},
@@ -168,9 +169,37 @@ Ext.define('Opt.view.Map', {
 			map.on('zoomend', me.onZoomEnd, me);
 			map.on('movestart', me.onMoveStart, me);
 			map.on('moveend', me.onMoveEnd, me);
+			map.on('click', me.onClick, me);
+			map.on('dblclick', me.onDblClick, me);
 			me.fireEvent('maprender', me, map, layers);
 		}
 	},
+
+
+	onClick: function(e) {
+		this.fireEvent('mapClick', e);
+	},
+
+	onDblClick: function(e) {
+		this.fireEvent('mapDblClick', e);
+	},
+
+/*	
+	onClick: function () {
+		var map = this.getMap(),
+			tileLayers = this.getTileLayers();
+
+		this.fireEvent('mapClick', this, map, tileLayers);
+	},
+
+	
+	onDblClick: function () {
+		var map = this.getMap(),
+			tileLayers = this.getTileLayers();
+
+		this.fireEvent('mapDblClick', this, map, tileLayers);
+	},
+*/
 
 	// @private
 	onGeoUpdate: function (position) {
@@ -301,7 +330,8 @@ Ext.define('Opt.view.Map', {
 		mapbox = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=mapbox',{maxZoom:18}, [
 		        { 'header': 'Authorization', 'value': 'mlApp'},
     		]);
-		cadastr = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr');
+		cadastr = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr',{maxZoom:20});
+		//cadastr_h = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr_h',{maxZoom:20});
 		visicom = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=visi', {tms : true,});
 		luxena  = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=luxena',{maxZoom:18});
 		m2gis   = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=m2gis',{maxZoom:18});
@@ -310,6 +340,7 @@ Ext.define('Opt.view.Map', {
 		topo = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=topo',{maxZoom:17});
 		here = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=here',{maxZoom:18});
 		wiki = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=wiki',{maxZoom:18});
+		ortomar = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=ortomar',{maxZoom:20});
 
 
 		googleRoad = L.gridLayer.googleMutant({
@@ -327,6 +358,7 @@ Ext.define('Opt.view.Map', {
 			"Mapbox": mapbox,
 			"Google": googleRoad,
 			"Google(Hybrid)": googleSat,
+			"Мариуполь ортофото": ortomar,
 			"Visicom": visicom,
 			"Luxena": luxena,
 			//"2gis": m2gis,
@@ -336,7 +368,7 @@ Ext.define('Opt.view.Map', {
 			"HERE": here,
 			"Wikimapia": wiki
 		}, {
-			"Кадастр": cadastr
+			"Кадастр": cadastr,
 		}));
 
 		L.control.mousePosition({ emptyString: '' }).addTo(this.map);

@@ -3,6 +3,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	alias: 'controller.tab2autogrid',
 	requires: [
 		'Opt.ux.GridPrinter',
+		'Opt.view.tabs.fuelStationsViewer.Main',
 	],
 
 	printTable: function () {
@@ -122,12 +123,12 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	refreshAutos: function () {
 		var self = this;
-		var clientGroupsStore = Ext.getStore('ClientGroup');
-		clientGroupsStore.on('load', function(){
+		//var clientGroupsStore = Ext.getStore('ClientGroup');
+		//clientGroupsStore.on('load', function(){
 			self.getAutos();
-		});
+		//});
 
-		clientGroupsStore.load();
+		//clientGroupsStore.load();
 	},
 
 	getAutos: function(){
@@ -639,4 +640,12 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			}
 		});
 	},
+
+	fuelStations: function () {
+		if (!this.viewer) this.viewer = Ext.create('widget.fuelstationsviewer', { closable: true });
+		this.viewer.show();
+		this.viewer.focus();
+		if (this.viewer.mapRendered) this.fireEvent("fuelstationsviewermapRender");
+	},
+
 });

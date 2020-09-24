@@ -19,6 +19,14 @@ Ext.define('Opt.model.OrderGood', {
 				name: 'kolvo',
 				type: 'number'
 			},
+			{
+				name: 'weight',
+				type: 'number'
+			},
+			{
+				name: 'capacity',
+				type: 'number'
+			},
 		]
 	}
 );

@@ -278,3 +278,7 @@ table.clusterPopupTable td {
 	border-radius: 10px;
 
 }
+
+.fuel_station_icon {
+ 	background: url(images/gas_station_16x16.png) no-repeat;
+}

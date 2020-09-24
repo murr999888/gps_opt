@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `calc_log` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `calc_type` (`calc_type`)
-) ENGINE=MyISAM AUTO_INCREMENT=661 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=883 DEFAULT CHARSET=utf8;
 
 -- Экспортируемые данные не выделены.
 -- Дамп структуры для таблица gps_opt.servers
@@ -91,6 +91,30 @@ CREATE TABLE IF NOT EXISTS `servers` (
   `readonly` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Экспортируемые данные не выделены.
+-- Дамп структуры для таблица gps_opt.traffic
+CREATE TABLE IF NOT EXISTS `traffic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `prim` varchar(500) CHARACTER SET latin1 NOT NULL,
+  `speed` tinyint(4) NOT NULL,
+  `begin_lat` float(8,6) NOT NULL,
+  `begin_lon` float(8,6) NOT NULL,
+  `end_lat` float(8,6) NOT NULL,
+  `end_lon` float(8,6) NOT NULL,
+  `geometry` longtext CHARACTER SET latin1,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+
+-- Экспортируемые данные не выделены.
+-- Дамп структуры для таблица gps_opt.traffic_points
+CREATE TABLE IF NOT EXISTS `traffic_points` (
+  `parent_id` int(11) NOT NULL,
+  `num` tinyint(4) NOT NULL,
+  `osm_id` varchar(30) NOT NULL,
+  KEY `parent_id` (`parent_id`,`num`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- Экспортируемые данные не выделены.
 -- Дамп структуры для таблица gps_opt.users

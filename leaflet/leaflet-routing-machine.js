@@ -18234,6 +18234,7 @@ module.exports = L.Routing = {
 				locs.join(';') + '?' +
 				(options.geometryOnly ? (options.simplifyGeometry ? '' : 'overview=full') : 'overview=false') +
 				'&alternatives=' + computeAlternative.toString() +
+				'&annotations=true'+
 				'&steps=' + computeInstructions.toString() +
 				(this.options.useHints ? '&hints=' + hints.join(';') : '') +
 				(options.allowUTurns ? '&continue_straight=' + !options.allowUTurns : '');

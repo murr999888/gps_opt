@@ -101,6 +101,7 @@ Ext.define('Opt.controller.Root', {
 	Ext.getStore('Drivers').load();
 	Ext.getStore('HelpTableContent').load();
         Ext.getStore('CalcLog').load();	
+	//Ext.getStore('FuelStations').load();	
 
 	this.getDepot();
         Ext.create('widget.main');

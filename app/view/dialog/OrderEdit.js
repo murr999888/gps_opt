@@ -11,13 +11,14 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 	modal: true,
 	closable: true,
 	closeAction: 'hide',
-	stateful: true,
-	stateId: 'orderedit',
+	//stateful: true,
+	//stateId: 'orderedit',
 	title: 'Заказ',
 	layout: {
 		type: 'vbox',
 		align: 'stretch'
 	},
+	height: 530,
 	changed: false,
 	items: [
 		{
@@ -132,6 +133,28 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 									name: 'lon',
 									fieldLabel: 'lon',
 									labelWidth: 30,
+									width: 180,
+									padding: '0 0 0 10px',
+								},
+							]
+						},
+						{
+							xtype: 'fieldcontainer',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'field',
+									name: 'weight',
+									fieldLabel: 'Вес, кг.',
+									labelWidth: 70,
+									width: 160,
+									border: 1
+								},
+								{
+									xtype: 'field',
+									name: 'capacity',
+									fieldLabel: 'Объем, м.куб.',
+									labelWidth: 90,
 									width: 180,
 									padding: '0 0 0 10px',
 								},

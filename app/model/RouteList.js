@@ -71,12 +71,24 @@ Ext.define('Opt.model.RouteList', {
 			type: 'number',
 			defaultValue: 0, 
 		},
+
 		{
 			name: 'goods'
 		},
+
 		{
 			name: 'orders'
 		},
+
+		{
+			name: 'weight',
+			type: 'number'
+		},
+		{
+			name: 'capacity',
+			type: 'number'
+		},
+
 		{
 			name: 'orders_backup'
 		},
