@@ -11,10 +11,6 @@ Ext.define('Opt.view.tabs.resultViewer.Map', {
 	clusterDroppedOrders: null,
 	markerDroppedOrders: null,
 
-	init: function () {
-
-	},
-
 	dockedItems: [
 		{
 			xtype: 'toolbar',

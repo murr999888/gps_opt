@@ -9,13 +9,6 @@ Ext.define('Opt.view.tabs.tab3.MapTab3', {
 	controller: 'tab3mapcontroller',
 	bodyStyle: 'border-top: 1px solid #99bce8',
 
-	listeners: {
-		maprender: 'onMapRender',
-		mapClick: 'onMapClick',
-		mapDblClick: 'onMapDblClick',
-		zoomend: 'onMapZoomLevelsChange',
-	},
-
 	trafficLineGroupFitBounds: function(){
 		if(this.trafficLineGroup != null) {
 			this.map.fitBounds(this.trafficLineGroup.getBounds());

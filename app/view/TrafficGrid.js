@@ -36,6 +36,20 @@ Ext.define('Opt.view.TrafficGrid', {
 				align: 'right',
 			},
 			{
+				hideable: true,
+				xtype: 'checkcolumn',
+				text: '<>',
+				dataIndex: 'both_direction',
+				menuDisabled: true,
+				width: 40,
+				listeners: {
+        				beforecheckchange: function() {
+            					return false; // HERE
+        				}
+    				},
+			},
+
+			{
 				xtype: 'actioncolumn',
 				iconCls: 'fa far fa-green fa-edit',
 				menuDisabled: true,

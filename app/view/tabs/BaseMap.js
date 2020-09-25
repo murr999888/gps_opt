@@ -27,6 +27,13 @@ Ext.define('Opt.view.tabs.BaseMap', {
 		weight: 6,
 	},	
 
+	listeners: {
+		maprender: 'onMapRender',
+		mapClick: 'onMapClick',
+		mapDblClick: 'onMapDblClick',
+		zoomend: 'onMapZoomLevelsChange',
+	},
+
 	setAllTraficLinesOnMap: function(){
 		var self = this;
 
@@ -93,11 +100,12 @@ Ext.define('Opt.view.tabs.BaseMap', {
 		if (this.map != null) {
 			this.map.closePopup();
 		}
-
+/*
 		if (this.trafficLineGroup != null) {
 			this.map.removeLayer(this.trafficLineGroup);
 			this.trafficLineGroup = null;			
 		}
+*/
 
 		if (this.trackPoints != null) {
 			this.map.removeLayer(this.trackPoints);

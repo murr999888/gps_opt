@@ -17,6 +17,11 @@ Ext.define('Opt.model.Traffic', {
 				defaultValue: 0,
 			},
 			{
+	        		name: 'both_direction',
+        			type: 'boolean',
+				defaultValue: true,
+			},
+			{
 	        		name: 'prim',
         			type: 'string',
 			},

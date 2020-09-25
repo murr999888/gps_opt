@@ -38,6 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 			"end_lat" => $traffic["end_lat"],
 			"end_lon" => $traffic["end_lon"],
 			"geometry" => $traffic["geometry"],
+			"both_direction" => $traffic["both_direction"],
 			"points" => $points
 		);
 	}

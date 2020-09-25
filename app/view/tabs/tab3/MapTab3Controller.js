@@ -19,10 +19,6 @@ Ext.define('Opt.view.tabs.tab3.MapTab3Controller', {
 		this.getView().doResize();
 	},
 
-	onMapClick: function(e) {
-		this.getView().setTrafficMarker(e.latlng);
-	},
-
 	onMapRender: function () {
 		var mapCmp = this.getView();
 		mapCmp.setAdditionalControls();

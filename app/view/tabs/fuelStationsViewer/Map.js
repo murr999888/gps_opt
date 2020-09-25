@@ -11,13 +11,6 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.Map', {
 	markerFuelStations: null,
 	clusterFuelStations: null,
 
-	listeners: {
-		maprender: 'onMapRender',
-		mapClick: 'onMapClick',
-		mapDblClick: 'onMapDblClick',
-		zoomend: 'onMapZoomLevelsChange',
-	},
-
 	bodyStyle: 'border-top: 1px solid #99bce8',
 
 	markersFitBounds: function () {

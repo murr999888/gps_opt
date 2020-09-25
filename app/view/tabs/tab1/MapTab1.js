@@ -8,13 +8,6 @@ Ext.define('Opt.view.tabs.tab1.MapTab1', {
 
 	controller: 'mapTab1Controller',
 
-	listeners: {
-		maprender: 'onMapRender',
-		mapClick: 'onMapClick',
-		mapDblClick: 'onMapDblClick',
-		zoomend: 'onMapZoomLevelsChange',
-	},
-
 	finishMarker: null,
 
 	init: function () {

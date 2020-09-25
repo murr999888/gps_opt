@@ -37,12 +37,22 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							editable: false,
 						},
 						{
+							xtype: 'checkbox',
+							name: 'both_direction',
+							checked: true,
+							inputValue: true,
+							uncheckedValue: false,
+							fieldLabel: 'В обе стороны',
+							//labelWidth: 60,
+						},
+						{
 							//xtype: 'field',
 							xtype: 'textareafield',
 							name: 'name',
 							fieldLabel: 'Наименование',
 							labelAlign: 'top',
 							value: 'Новый участок дороги',
+							height: 45,
 						},
 						{
 							labelWidth: 135,
@@ -64,6 +74,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							name: 'prim',
 							fieldLabel: 'Примечание',
 							labelAlign: 'top',
+							height: 45,
 						},
 						{
 							xtype: 'fieldcontainer',
@@ -134,6 +145,8 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							name: 'geometry',
 							fieldLabel: 'Геометрия',
 							labelAlign: 'top',
+							readOnly: true,
+							height: 45,
 						},
 					]
 				}, 
