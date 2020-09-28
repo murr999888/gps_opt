@@ -4,6 +4,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 	requires: [
 		'Opt.view.dialog.TrafficEdit.TrafficEditFormController',
 		'Opt.view.dialog.TrafficEdit.TrafficEditPoints',
+		'Opt.ux.HtmlCombo',
 	],
 
 	controller: 'trafficeditformcontroller',
@@ -30,20 +31,28 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 				
 					items: [
 						{
-							xtype: 'field',
-							name: 'id',
-							fieldLabel: 'id',
-							readOnly: true,
-							editable: false,
-						},
-						{
-							xtype: 'checkbox',
-							name: 'both_direction',
-							checked: true,
-							inputValue: true,
-							uncheckedValue: false,
-							fieldLabel: 'В обе стороны',
-							//labelWidth: 60,
+							xtype: 'fieldcontainer',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'checkbox',
+									name: 'both_direction',
+									checked: true,
+									inputValue: true,
+									uncheckedValue: false,
+									fieldLabel: 'В обе стороны',
+								},
+								{
+									xtype: 'field',
+									name: 'id',
+									fieldLabel: 'id',
+									readOnly: true,
+									editable: false,
+									padding: '0 0 0 10px',
+									labelWidth: 20,
+									width: 95,
+								},
+							]
 						},
 						{
 							//xtype: 'field',
@@ -68,6 +77,37 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							readOnly: false,
 							editable: false,
 							value: 0,
+						},
+						{
+							labelWidth: 135,
+							width: 220,
+							xtype: 'numberfield',
+							name: 'rate',
+							fieldLabel: 'Rate участка',
+							//anchor: '100%',
+							fieldStyle: 'text-align: right;',
+							step: 1,
+							minValue: 0,
+							maxValue: 100,
+							readOnly: false,
+							editable: false,
+							value: 0,
+						},
+						{
+	         					xtype: 'htmlcombo',
+							name: 'icon',
+							id: 'trafficediticoncombo',
+         						fieldLabel: 'Иконка на карте',
+         						displayField: 'displayField',
+         						valueField: 'icon',
+         						queryMode: 'local',
+							//emptyText : 'Select ...',
+							value: 'css/images/signs/znak-proezd-16-16.png',
+							labelWidth: 170,
+							width: 220,
+							listeners: {
+                                                        	expand: 'comboSetListSize'
+							}
 						},
 						{
 							xtype: 'textareafield',
@@ -140,6 +180,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 								},
 							]
 						},
+/*
 						{
 							xtype: 'textareafield',
 							name: 'geometry',
@@ -148,6 +189,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							readOnly: true,
 							height: 45,
 						},
+*/
 					]
 				}, 
 			]

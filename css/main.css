@@ -282,3 +282,13 @@ table.clusterPopupTable td {
 .fuel_station_icon {
  	background: url(images/gas_station_16x16.png) no-repeat;
 }
+
+.x-form-text-wrap {
+    position: relative;
+}
+
+.x-form-field-overlay {
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+}

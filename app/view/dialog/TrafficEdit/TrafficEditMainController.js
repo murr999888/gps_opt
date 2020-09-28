@@ -36,6 +36,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMainController', {
 	},
 
 	onSaveClick: function (button) {
+//console.log("onSaveClick: function (button) {");
 		var self = this;
 		var store, record;
 

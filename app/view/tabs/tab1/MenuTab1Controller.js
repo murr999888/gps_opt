@@ -258,7 +258,6 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 			use_progressive_penalty: false,
 		};
 
-
 		Ext.Ajax.request({
 			url: 'api/db/db_1cbase',
 			method: 'GET',
@@ -288,9 +287,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 	},
 
 	onLoadOrders: function () {
+this.getPoints();
 		var geoJSON = Ext.getCmp('maptab1').constructOrdersGeoJSON(this.ordersStore);
 		Ext.getCmp('maptab1').setOrdersOnMap(geoJSON);
-		this.getPoints();
+		//this.getPoints();
 	},
 
 	getPoints: function () {
@@ -392,6 +392,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 
 		var self = this;
 
+		var form = self.lookupReference('formtab1');
+		var formVal = form.getForm().getFieldValues();
+		var increaseTimeCoeff = formVal.coeffincreasetransittime;
+
 		router.route([fromPoint, toPoint], function (error, routes) {
 			if (routes) {
 				var distance = routes[0].summary.totalDistance;
@@ -405,9 +409,6 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 
 
 				var rec = self.routeLegsStore.getAt(index);
-				var form = self.lookupReference('formtab1');
-				var formVal = form.getForm().getFieldValues();
-				var increaseTimeCoeff = formVal.coeffincreasetransittime;
 
 				var corrDuration = Math.round(duration * increaseTimeCoeff);
 				var corrDistance = Math.round(distance);
@@ -469,7 +470,7 @@ console.log("Время окончания запроса " + Date.now());
 			}
 
 			if (error) {
-				//Opt.app.showError("Ошибка!",error.message);
+				Opt.app.showToast("Ошибка!",JSON.parse(error.target.response).message);
 				console.error(error);
 				self.processingMask.hide();
 			}

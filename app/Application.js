@@ -24,6 +24,7 @@ Ext.define('Opt.Application', {
 		'Depot',
 		'Traffic',
 		'TrafficPoints',
+		'RoadSign',
 	],
 	stores: [
 		'Auto',
@@ -42,6 +43,7 @@ Ext.define('Opt.Application', {
 		'FuelStations',
 		'Depots',
 		'Traffic',
+		'RoadSigns',
 	],
 
 	controllers: [

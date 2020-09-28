@@ -19,6 +19,15 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3', {
 		preserveScrollOnRefresh: true,
 	},
 
+	listeners: {
+		collapse: function () {
+			Ext.getCmp('tab3map').doResize();
+		},
+		expand: function () {
+			Ext.getCmp('tab3map').doResize();
+		}
+	},
+
 	bufferedRenderer: false,
 
 	tools: [

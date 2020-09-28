@@ -9,6 +9,12 @@ Ext.define('Opt.view.tabs.tab3.MainTab3', {
 		'Opt.view.tabs.tab3.TrafficGridTab3',
 	],
 
+	listeners: {
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',	
+	},
+
 	layout: 'border',
 	//closable: true,
 	//closeAction: 'hide',
@@ -30,7 +36,7 @@ Ext.define('Opt.view.tabs.tab3.MainTab3', {
 			xtype: 'tab3trafficgridpanel',
 			id: 'tab3left',
 			region: 'west',
-			width: 550,
+			width: 450,
 			stateful: true,
 			stateId: 'tab3left',
 

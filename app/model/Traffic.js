@@ -13,9 +13,18 @@ Ext.define('Opt.model.Traffic', {
 			},
 			{
 	        		name: 'speed',
-        			type: 'string',
+        			type: 'number',
 				defaultValue: 0,
 			},
+			{
+	        		name: 'rate',
+        			type: 'number',
+				defaultValue: 0,
+			},			
+			{
+	        		name: 'icon',
+        			type: 'string',
+			},			
 			{
 	        		name: 'both_direction',
         			type: 'boolean',

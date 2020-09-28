@@ -8,6 +8,12 @@ Ext.define('Opt.view.tabs.tab1.MainTab1', {
 
 	],
 
+	listeners: {
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',	
+	},
+
 	controller: 'mainTab1Controller',
 	layout: 'border',
 	defaults: {
@@ -16,14 +22,6 @@ Ext.define('Opt.view.tabs.tab1.MainTab1', {
 		floatable: false,
 		titleCollapse: true,
 
-		listeners: {
-			collapse: function () {
-				Ext.getCmp('maptab1').doResize();
-			},
-			expand: function () {
-				Ext.getCmp('maptab1').doResize();
-			}
-		},
 	},
 	items: [
 		{

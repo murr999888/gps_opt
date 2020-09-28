@@ -15,6 +15,10 @@ Ext.define('Opt.view.TrafficGrid', {
 
 	store: 'Traffic',
 
+	listeners: {
+		celldblclick: 'onCellDblClick',
+	},
+
 	columns: {
 		defaults: {
 			menuDisabled: false,
@@ -32,6 +36,13 @@ Ext.define('Opt.view.TrafficGrid', {
 				text: 'Скорость',
 				flex: 1,
 				dataIndex: 'speed',
+				hideable: true,
+				align: 'right',
+			},
+			{
+				text: 'Rate',
+				flex: 1,
+				dataIndex: 'rate',
 				hideable: true,
 				align: 'right',
 			},

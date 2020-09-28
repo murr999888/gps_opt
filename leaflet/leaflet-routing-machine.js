@@ -18233,8 +18233,8 @@ module.exports = L.Routing = {
 			return this.options.serviceUrl + '/' + this.options.profile + '/' +
 				locs.join(';') + '?' +
 				(options.geometryOnly ? (options.simplifyGeometry ? '' : 'overview=full') : 'overview=false') +
-				'&alternatives=' + computeAlternative.toString() +
-				'&annotations=true'+
+				//'&alternatives=' + computeAlternative.toString() +
+				'&alternatives=false' +
 				'&steps=' + computeInstructions.toString() +
 				(this.options.useHints ? '&hints=' + hints.join(';') : '') +
 				(options.allowUTurns ? '&continue_straight=' + !options.allowUTurns : '');

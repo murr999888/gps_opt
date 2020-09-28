@@ -11,13 +11,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 
 	bodyStyle: 'border-top: 1px solid #99bce8',
 
-	listeners: {
-		maprender: 'onMapRender',
-		mapClick: 'onMapClick',
-		mapDblClick: 'onMapDblClick',
-		zoomend: 'onMapZoomLevelsChange',
-	},
-	
 	createStartTrafficMarker: function(latlng) {
 		var self = this;
 		var icon = L.icon(
@@ -121,7 +114,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 
 	setTrafficLineFromRecord: function(geometry){
 		if (geometry) {
-			//this.getTrafficRoute(this.startTrafficMarker.getLatLng(), this.finishTrafficMarker.getLatLng());
 			var trafficLine = L.polyline(geometry, this.trafficLineOptions);
 			this.deleteTrafficLine();
 			this.trafficLine = trafficLine;
@@ -130,7 +122,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 			this.trafficLineFitBounds();
 		}
 	},
-
 
 	deleteTrafficLine: function(){
 		if (this.decorator != null) {
@@ -145,9 +136,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 
 	getTrafficRoute(fromLatLon, toLatLon){
 		var self = this;
-		var router = new L.Routing.OSRMv1({
-			serviceUrl: routeServerUrl,
-		});
 
 		fromPoint = new L.Routing.waypoint();
 		fromPoint.latLng = fromLatLon;
@@ -163,7 +151,8 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 			hints: ';',
 			geometries:'geojson',
 		};
-
+		
+                var routeServerUrl = 'http://router.project-osrm.org/route/v1/';
 		Ext.Ajax.request({
 			url: routeServerUrl + '/driving/' + fromLatLon.lng + ',' + fromLatLon.lat + ';' + toLatLon.lng + ',' + toLatLon.lat,
 			method: 'GET',
@@ -182,8 +171,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 				var pointsArray = [];
 				var wayPointsArray = [];
 				var pointsNum = 0;
-
-				
 
 				var route = respObj.routes[0];
 
@@ -223,7 +210,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 				self.controller.onTrafficGeometryRecieved(lineCoordArray);
 			},
 
-
 			failure: function (response) {
 				Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
 			}
@@ -231,8 +217,8 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 	},
 
 	trafficLineFitBounds: function () {
-		
 		this.map.closePopup();
+
 		var gr = new L.featureGroup();
                 
 		if (this.startTrafficMarker && this.finishTrafficMarker) {
@@ -258,7 +244,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 			this.map.removeLayer(this.decorator);
 			this.decorator = null;
 		}
-
 
 		var currZoom = this.map.getZoom();
 		if (currZoom < 15) return; 

@@ -10,7 +10,7 @@ var isFirefox = navigator.userAgent.match('Firefox');
 
 		var router = new L.Routing.OSRMv1({
 			serviceUrl: routeServerUrl,
-			profile: 'driving'
+			profile: 'driving',
 		});
 
 

@@ -21,8 +21,9 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMain', {
 
 	listeners: {
             	show: 'onShow', 
-//		collapse: 'onWindowResize',
-//		expand: 'onWindowResize',
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',
 	},
 
 	items: [

@@ -24,7 +24,7 @@ Ext.define('Opt.view.tabs.BaseMap', {
 	trafficLineOptions: {
 		color: 'red',
 		opacity: 1,
-		weight: 6,
+		weight: 5,
 	},	
 
 	listeners: {
@@ -32,6 +32,25 @@ Ext.define('Opt.view.tabs.BaseMap', {
 		mapClick: 'onMapClick',
 		mapDblClick: 'onMapDblClick',
 		zoomend: 'onMapZoomLevelsChange',
+	},
+
+	createStopSignMarker: function(latlng, icon){
+		var self = this;
+		if (!icon) icon = 'css/images/signs/znak-proezd-16-16.png';
+		var icon = L.icon(
+			{
+			      iconUrl: icon,
+			      //iconSize: [20, 56],
+			      iconAnchor: [8, 8]
+			}
+		);
+
+		return L.marker(latlng, {
+			icon: icon,
+			zIndexOffset: 500,
+			draggable: false,
+			//interactive: false,
+		});
 	},
 
 	setAllTraficLinesOnMap: function(){
@@ -42,7 +61,9 @@ Ext.define('Opt.view.tabs.BaseMap', {
 			this.trafficLineGroup = null;			
 		}
 
-		if (this.map.getZoom() < 12) return; 
+		var currZoom = this.map.getZoom();
+
+		if (currZoom < 12) return; 
 
 		this.trafficLineGroup = L.featureGroup();
 		var store = Ext.getStore('Traffic');
@@ -59,6 +80,20 @@ Ext.define('Opt.view.tabs.BaseMap', {
 
 				trafficLine.bindPopup(content,{maxWidth: 120});
 				self.trafficLineGroup.addLayer(trafficLine);
+				if (currZoom > 13) {
+					var stopMarker1 = self.createStopSignMarker(geometry[0], record.get("icon"));
+					var stopMarker2 = self.createStopSignMarker(geometry[geometry.length-1], record.get("icon"));
+					stopMarker1.bindPopup(content,{maxWidth: 120});
+					stopMarker2.bindPopup(content,{maxWidth: 120});
+					self.trafficLineGroup.addLayer(stopMarker1);
+					self.trafficLineGroup.addLayer(stopMarker2);
+				} else {
+					var centerLineFeature = turf.center(trafficLine.toGeoJSON());
+					var centerCoords = [centerLineFeature.geometry.coordinates[1],centerLineFeature.geometry.coordinates[0]];
+					var stopMarker = self.createStopSignMarker(centerCoords, record.get("icon"));
+					stopMarker.bindPopup(content,{maxWidth: 120});
+					self.trafficLineGroup.addLayer(stopMarker);
+				}
 			}
 		});
 

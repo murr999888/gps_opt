@@ -11,6 +11,52 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 		'Opt.view.dialog.TrafficEdit.TrafficEditMain',
 	],
 
+	sendTrafficToOSRM: function(){
+		var store = this.getView().getStore();
+
+		var data = [];
+
+		store.each(function(record){
+			var traffic = {
+				id: record.get("id"),
+				name: record.get("name"),
+				speed: record.get("speed"),
+				rate: record.get("rate"),
+				both_direction: record.get("both_direction"),
+				points: record.get("points"),
+			};
+			data.push(traffic);					
+		});
+
+		var params = {
+			param: 'setTraffic',
+			data: data
+		};
+
+		Ext.Ajax.request({
+			url: 'api/db/vrp',
+			method: 'POST',
+			jsonData: params,
+
+			success: function (response) {
+ 				try {
+					respObj = Ext.JSON.decode(response.responseText);
+			        } catch(error) {
+					Opt.app.showError("Ошибка!", error.message);
+					return;
+        			}
+
+				if (respObj.success) {
+					Ext.Msg.alert("Внимание!", respObj.message);
+				}
+			},
+
+			failure: function (response) {
+				Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
+			}
+		});
+	},
+
 	loadTraffic: function(){
 		var store = this.getView().getStore();
 		store.reload();
@@ -60,6 +106,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 		this.trafficEdit.down('trafficpointsgridpanel').getStore().removeAll();
 
         	this.trafficEdit.down('form').loadRecord(record);
+		this.trafficEdit.down('htmlcombo').setValue('css/images/signs/znak-proezd-16-16.png');
         	this.trafficEdit.show().focus();
 	},
 

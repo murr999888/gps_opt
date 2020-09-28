@@ -33,6 +33,8 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 			"id" => $traffic["id"],
 			"name" => $traffic["name"],
 			"speed" => $traffic["speed"],
+			"rate" => $traffic["rate"],
+			"icon" => $traffic["icon"],
 			"begin_lat" => $traffic["begin_lat"],
 			"begin_lon" => $traffic["begin_lon"],
 			"end_lat" => $traffic["end_lat"],
