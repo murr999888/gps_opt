@@ -5,7 +5,7 @@
 ![Оптимизация](/help/images/images/opt_main_window.jpg)
 
 Формирование маршрутов из списка заказов
-![Формирование](help/images/files/image.png)
+![Формирование](help/images/files/image.jpg)
 
 ### Модуль "Оптимизация и планирование маршрутов".
 Состоит из:
