@@ -50,11 +50,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 
 	$context  = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
-error_log(print_r($result,true));
-	$response = json_decode($result);
+	//$response = json_decode($result);
 
     	header('Content-Type: application/json; charset=utf-8');
-    	echo json_encode(json_decode($result));
+    	echo $result;
 
 	return;
 

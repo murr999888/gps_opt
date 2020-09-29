@@ -11,6 +11,23 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 		'Opt.view.dialog.TrafficEdit.TrafficEditMain',
 	],
 
+	sendTraffic: function(){
+		var self = this;
+		Ext.Msg.show({
+			title: 'Внимание',
+			message: 'Обновление данных на сервере может занять несколько минут. Продолжить?',
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.QUESTION,
+			fn: function (btn) {
+				if (btn === 'yes') {
+					self.sendTrafficToOSRM();
+				} else if (btn === 'no') {
+					return;
+				}
+			}
+		});
+	},
+
 	sendTrafficToOSRM: function(){
 		var store = this.getView().getStore();
 
@@ -33,6 +50,8 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 			data: data
 		};
 
+		Ext.getCmp('tab3left').mask("Ждите окончания запроса ...")
+
 		Ext.Ajax.request({
 			url: 'api/db/vrp',
 			method: 'POST',
@@ -42,16 +61,20 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
  				try {
 					respObj = Ext.JSON.decode(response.responseText);
 			        } catch(error) {
+					Ext.getCmp('tab3left').unmask();
 					Opt.app.showError("Ошибка!", error.message);
 					return;
         			}
 
+				Ext.getCmp('tab3left').unmask();
+
 				if (respObj.success) {
-					Ext.Msg.alert("Внимание!", respObj.message);
+					Ext.Msg.alert("Внимание!", respObj.message + '<br />' + respObj.data);
 				}
 			},
 
 			failure: function (response) {
+				Ext.getCmp('tab3left').unmask();
 				Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
 			}
 		});

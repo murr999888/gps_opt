@@ -18,16 +18,16 @@ Ext.define('Opt.view.RouteLegGrid', {
 			var waiting_time = record.get("waiting_time");
 			var timewindow_begin = record.get("timewindow_begin");
 			var timewindow_end = record.get("timewindow_end");
-			var isDepot = record.get('isDepot');
+			var node_type = record.get('node_type');
 			var isAdded = record.get('isAdded');
 
-			if (!isDepot & arriving_time > 0) {
+			if (node_type != 0 & arriving_time > 0) {
 				if (arriving_time < timewindow_begin || arriving_time > timewindow_end) {
 					cl = cl + ' row-bk-red';
 				}
 			}
 
-			if (!isDepot) {
+			if (node_type != 0) {
 				if (timewindow_begin > timewindow_end) {
 					cl = cl + ' bkRed row-bk-white';
 				}
@@ -37,7 +37,7 @@ Ext.define('Opt.view.RouteLegGrid', {
 				cl = cl + ' row-bk-green';
 			}
 
-			if (isDepot) {
+			if (node_type == 0) {
 				return cl = cl + ' bkGrey';
 			}
 
@@ -126,7 +126,7 @@ Ext.define('Opt.view.RouteLegGrid', {
 						handler: 'onEditRecord',
 
 						getClass: function (value, metaData, record) {
-							if (record.get("isDepot") == true) {
+							if (record.get("node_type") == 0) {
 								return '';
 							}
 							return 'fa far fa-green fa-edit';
@@ -134,7 +134,7 @@ Ext.define('Opt.view.RouteLegGrid', {
 
 						isDisabled: function (view, rowIndex, colIndex, item, record) {
 							// Returns true if 'editable' is false (, null, or undefined)
-							return record.get('isDepot') == true;
+							return record.get('node_type') == 0;
 						}
 					},
 				]

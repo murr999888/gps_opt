@@ -60,7 +60,7 @@ Ext.define('Opt.view.dialog.OrderListAlertController', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-		if (!record.get("isDepot")) this.openEditDialog(record, false);
+		if (record.get("node_type") != 0) this.openEditDialog(record, false);
 	},
 
 	getServiceTime: function (val, metadata, record) {

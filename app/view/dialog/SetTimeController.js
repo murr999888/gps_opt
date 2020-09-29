@@ -40,8 +40,8 @@ Ext.define('Opt.view.dialog.SetTimeController', {
 			var store = grid.store;
 			store.suspendEvents();
 			selection.forEach(function (record) {
-				var isDepot = record.get('isDepot');
-				if (!isDepot){
+				var node_type = record.get('node_type');
+				if (node_type != 0){
 					record.beginEdit();
 					record.set(setField, formValues.time);
 					record.commit();

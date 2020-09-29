@@ -23,8 +23,8 @@ Ext.define('Opt.view.RouteLegGridController', {
 
 	getNum: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
 		var isAdded = record.get('isAdded');
-		var isDepot = record.get('isDepot');
-		if (!isDepot && isAdded) {
+		var node_type = record.get('node_type');
+		if (node_type != 0 && isAdded) {
 			metadata.tdStyle = "font-weight: bold; text-decoration: underline;";
 		}
 		return val;

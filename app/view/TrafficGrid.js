@@ -26,6 +26,14 @@ Ext.define('Opt.view.TrafficGrid', {
 		},
 		items: [
 			{
+				menuDisabled: true,
+				hideable: false,
+				sortable: false,
+				text: '',       
+				width: 25,
+				renderer: 'getIcon',
+			},
+			{
 				text: 'Название',
 				cellWrap: true,
 				flex: 5,

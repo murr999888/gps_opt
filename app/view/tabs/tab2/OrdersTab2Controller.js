@@ -607,7 +607,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				var ordersInRoute = recordRoute.data.orders_backup;
 				for (var j = 0; j < ordersInRoute.length; j++) {
 					var order = ordersInRoute[j];
-					if (!order.isDepot){
+					if (order.node_type != 0){
 						// делаем копию заказа для изменения
 						var orderCopy = $.extend(true, {}, order); 
 						orderCopy.isAdded = false;

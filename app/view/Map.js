@@ -349,9 +349,26 @@ Ext.define('Opt.view.Map', {
 		});
 
 		googleSat = L.gridLayer.googleMutant({
-			maxZoom: maxZoomLevel,
+			//maxZoom: maxZoomLevel,
+			maxZoom: 20,
 			type: 'hybrid'
 		});
+
+/*
+Aerial - Aerial imagery
+- AerialWithLabels - Aerial imagery with a road overlay
+- AerialWithLabelsOnDemand - Aerial imagery with on-demand road overlay.
+- CanvasDark - A dark version of the road maps.
+- CanvasLight - A lighter version of the road maps which also has some of the details such as hill shading disabled.
+- CanvasGray - A grayscale version of the road maps.
+- Road - Roads without additional imagery. Uses the legacy static tile service.
+- RoadOnDemand - Roads without additional imagery. Uses the dynamic tile service.
+- OrdnanceSurvey - Ordnance Survey imagery. This imagery is visible only for the London area.
+Not supported: Birdseye and BirdseyeWithLabels
+*/
+
+		bingAerial = L.tileLayer.bing({bingMapsKey:'AuVzR8Kspj2fk3ht5-M__ppL4xmn7l2Nk06_up3HS8XpWOwlUP_ewFwnAwhaoz1j', imagerySet:'Aerial'});
+		//bingRoad = L.tileLayer.bing({bingMapsKey:'AuVzR8Kspj2fk3ht5-M__ppL4xmn7l2Nk06_up3HS8XpWOwlUP_ewFwnAwhaoz1j', imagerySet:'Road', culture:'uk-UA'});
 
 		this.map.addControl(new L.Control.Layers({
 			"OSM": osm,
@@ -359,6 +376,7 @@ Ext.define('Opt.view.Map', {
 			"Google": googleRoad,
 			"Google(Hybrid)": googleSat,
 			"Мариуполь ортофото": ortomar,
+			"Bing(Aerial)": bingAerial,
 			"Visicom": visicom,
 			"Luxena": luxena,
 			//"2gis": m2gis,

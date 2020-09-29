@@ -180,16 +180,17 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 								},
 							]
 						},
-/*
+
 						{
-							xtype: 'textareafield',
+							//xtype: 'textareafield',
+							xtype: 'hiddenfield',
 							name: 'geometry',
 							fieldLabel: 'Геометрия',
 							labelAlign: 'top',
 							readOnly: true,
 							height: 45,
 						},
-*/
+
 					]
 				}, 
 			]

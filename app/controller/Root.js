@@ -13,6 +13,7 @@ Ext.define('Opt.controller.Root', {
     init: function() {
         //Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 	Ext.state.Manager.setProvider(new Ext.state.LocalStorageProvider());
+	Ext.Ajax.setTimeout(60*60000);
     },
 
     // при пуске и после создания вьюпорта

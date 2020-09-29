@@ -21,8 +21,8 @@ Ext.define('Opt.view.dialog.SetPenaltyController', {
 			var store = grid.store;
 			store.suspendEvents();
 			selection.forEach(function (record) {
-				var isDepot = record.get('isDepot');
-				if (!isDepot){
+				var node_type = record.get('node_type');
+				if (node_type != 0){
 					record.beginEdit();
 					record.set('penalty', formValues.penalty);
 					record.commit();

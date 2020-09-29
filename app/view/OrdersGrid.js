@@ -34,7 +34,7 @@ Ext.define('Opt.view.OrdersGrid', {
 			var waiting_time = record.get("waiting_time");
 			var timewindow_begin = record.get("timewindow_begin");
 			var timewindow_end = record.get("timewindow_end");
-			var isDepot = record.get('isDepot');
+			var node_type = record.get('node_type');
 			var isAdded = record.get('isAdded');
 
 			var timewindow_end = record.get("timewindow_end");
@@ -49,13 +49,13 @@ Ext.define('Opt.view.OrdersGrid', {
 				cl = cl + ' row-bk-green';
 			}
 
-			if (!isDepot) {
+			if (node_type != 0) {
 				if (timewindow_begin > timewindow_end) {
 					cl = cl + ' bkRed row-bk-white';
 				}
 			}
 
-			if (isDepot) {
+			if (node_type == 0) {
 				return cl = cl + ' bkGrey';
 			}
 

@@ -71,7 +71,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3', {
 					xtype: 'button',
 					id: 'trafficSendToOSRMButton',
 					text: 'to OSRM',
-					handler: 'sendTrafficToOSRM',
+					handler: 'sendTraffic',
 					margin : '0 3px 0 3px',
 				},
 			]

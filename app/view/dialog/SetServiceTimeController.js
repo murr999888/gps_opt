@@ -47,8 +47,8 @@ Ext.define('Opt.view.dialog.SetServiceTimeController', {
 
 			store.suspendEvents();
 			selection.forEach(function (record) {
-				var isDepot = record.get('isDepot');
-				if (!isDepot){
+				var node_type = record.get('node_type');
+				if (node_type != 0){
 					record.beginEdit();
 					record.set('service_time', formValues.service_time);
 					record.commit();

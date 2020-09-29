@@ -1,6 +1,12 @@
 Ext.define('Opt.model.RouteLegs', {
     	extend: 'Ext.data.Model',
     	identifier: 'negative',
+// node_type
+// 0 - депо
+// 1 - обычный заказ
+// 2 - дополнительное место загрузки
+// 3 - заправка
+
 	fields: [
 		{
         		name: 'in_use',
@@ -11,11 +17,10 @@ Ext.define('Opt.model.RouteLegs', {
         		name: 'id',
     		},
 		{
-        		name: 'isDepot',
-        		type: 'boolean',
-			defaultValue: false,
+        		name: 'node_type',
+        		type: 'number',
+			defaultValue: 1,
     		},
-
 		{
         		name: 'isAdded',
         		type: 'boolean',

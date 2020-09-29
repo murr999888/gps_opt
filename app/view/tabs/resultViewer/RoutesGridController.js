@@ -128,9 +128,9 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 
 		for (var i = 0; i < this.legsStore.count(); i++) {
 			var record = this.legsStore.getAt(i);
-			var isDepot = record.get('isDepot');
+			var node_type = record.get('node_type');
 
-			if (!isDepot) {
+			if (node_type != 0) {
 				self.ordersStore.add(record);
 			}
 		};

@@ -64,7 +64,7 @@ Ext.define('Opt.Application', {
 
 	setDepot: function (depot) {
 		this.depot = depot;
-		this.depot.isDepot = true;
+		this.depot.node_type = 0;
 		this.depot.goods = [];
 		this.depot.strings = [];
 	},

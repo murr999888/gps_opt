@@ -78,7 +78,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 	},
 
 	trafficGeometryRecieved: function(geometry){
-//console.log("trafficGeometryRecieved: function(geometry){");
+console.log("trafficGeometryRecieved: function(geometry){");
 		var form = this.lookupReference('form').getForm();
 
 		form.setValues({
