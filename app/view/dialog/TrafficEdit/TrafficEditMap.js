@@ -173,6 +173,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 				var pointsNum = 0;
 
 				var route = respObj.routes[0];
+				var distance = route.distance;
 
 				for (var i=0; i < respObj.waypoints.length; i++) {
 					var waypoint = respObj.waypoints[i];
@@ -208,6 +209,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 				self.controller.onTrafficPointsRecieved(pointsArray);
 				self.controller.onTrafficWayPointsRecieved(wayPointsArray);
 				self.controller.onTrafficGeometryRecieved(lineCoordArray);
+				self.controller.onTrafficDistanceRecieved(distance);
 			},
 
 			failure: function (response) {

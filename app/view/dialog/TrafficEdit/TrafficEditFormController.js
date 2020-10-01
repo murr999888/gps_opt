@@ -18,12 +18,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
      			
  		});
 
-//console.log(this.icons);
 		Ext.getCmp('trafficediticoncombo').setStore(this.icons);
-	},
-
-	afterRender: function(){
-		
 	},
 
 	listen: {
@@ -40,6 +35,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 				trafficGeometryRecieved: 'trafficGeometryRecieved',
 				deleteStartTrafficMarker: 'deleteStartTrafficMarker',
 				deleteFinishTrafficMarker: 'deleteFinishTrafficMarker',
+				trafficDistanceRecieved: 'trafficDistanceRecieved',
 			}
 		},
 	},
@@ -49,7 +45,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 	},
 
 	deleteStartTrafficMarker: function(){
-//console.log("deleteStartTrafficMarker: function(){");
 		var form = this.lookupReference('form').getForm();
 		this.pointsStore.removeAll();
 
@@ -61,7 +56,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 	},
 
 	deleteFinishTrafficMarker: function(){
-//console.log("deleteFinishTrafficMarker: function(){");
 		var form = this.lookupReference('form').getForm();
 		this.pointsStore.removeAll();
 
@@ -73,12 +67,10 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 	},
 
 	trafficPointsRecieved: function(points){
-//console.log("trafficPointsRecieved: function(points){");
 		this.pointsStore.loadData(points);
 	},
 
 	trafficGeometryRecieved: function(geometry){
-console.log("trafficGeometryRecieved: function(geometry){");
 		var form = this.lookupReference('form').getForm();
 
 		form.setValues({
@@ -87,7 +79,6 @@ console.log("trafficGeometryRecieved: function(geometry){");
 	},
 
 	setMarkersAndLines: function(){
-//console.log("setMarkersAndLines: function(){");
 		var dialog = this.getView().down('form');
 		var record = dialog.getRecord();
 		if (!record) return;
@@ -126,7 +117,6 @@ console.log("trafficGeometryRecieved: function(geometry){");
 	},
 
 	onShow: function(){
-//console.log("onShow: function(){");
 		var mapEdit = Ext.getCmp('trafficeditmap');
 		if (!mapEdit.mapRendered) return;
 
@@ -135,14 +125,12 @@ console.log("trafficGeometryRecieved: function(geometry){");
 	},
 
 	onMapRender: function (comp, map, layers) {
-//console.log("onMapRender: function (comp, map, layers) {");
 		var mapEdit = Ext.getCmp('trafficeditmap');
 		mapEdit.mapRendered = true;
 		this.setMarkersAndLines();
 	},
 
 	startTrafficMarkerDragEnd: function(latlon){
-//console.log("startTrafficMarkerDragEnd: function(latlon){");
 		var form = this.lookupReference('form').getForm();
 
 		form.setValues({
@@ -152,13 +140,19 @@ console.log("trafficGeometryRecieved: function(geometry){");
 	},
 
 	finishTrafficMarkerDragEnd: function(latlon){
-//console.log(latlon);
-//console.log("finishTrafficMarkerDragEnd: function(latlon){");
 		var form = this.lookupReference('form').getForm();
 
 		form.setValues({
 			end_lat: latlon.lat.toFixed(6),
 			end_lon: latlon.lng.toFixed(6),
 		});
+	},
+
+	trafficDistanceRecieved: function(distance){
+		var form = this.lookupReference('form').getForm();
+
+		form.setValues({
+			distance: distance,
+		});		
 	},
 });

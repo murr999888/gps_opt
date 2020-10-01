@@ -14,8 +14,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if ($obj)  {
 		if (is_array($obj)) {
 			foreach ($obj as $result) {
-				$strq = "INSERT ?n (name, speed, rate, icon, begin_lat, begin_lon, end_lat, end_lon, geometry, both_direction) VALUES (?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s)";
-				$DB->query($strq, 'traffic', $result["name"], $result["speed"], $result["rate"], $result["icon"] ,$result["begin_lat"], $result["begin_lon"], $result["end_lat"], $result["end_lon"], $result["geometry"], $result["both_direction"]);
+				$strq = "INSERT ?n (name, speed, rate, icon, prim, begin_lat, begin_lon, end_lat, end_lon, geometry, distance, both_direction) VALUES (?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s. ?s)";
+				$DB->query($strq, 'traffic', 
+					$result["name"], 
+					$result["speed"], 
+					$result["rate"], 
+					$result["icon"], 
+					$result["prim"], 
+					$result["begin_lat"], 
+					$result["begin_lon"], 
+					$result["end_lat"], 
+					$result["end_lon"], 
+					$result["geometry"], 
+					$result["distance"], 
+					$result["both_direction"]
+				);
+
 				$id = $DB->insertId();
 				
 				foreach ($result["points"] as $point) {				

@@ -35,11 +35,13 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 			"speed" => $traffic["speed"],
 			"rate" => $traffic["rate"],
 			"icon" => $traffic["icon"],
+			"prim" => $traffic["prim"],
 			"begin_lat" => $traffic["begin_lat"],
 			"begin_lon" => $traffic["begin_lon"],
 			"end_lat" => $traffic["end_lat"],
 			"end_lon" => $traffic["end_lon"],
 			"geometry" => $traffic["geometry"],
+			"distance" => $traffic["distance"],
 			"both_direction" => $traffic["both_direction"],
 			"points" => $points
 		);

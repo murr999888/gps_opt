@@ -74,9 +74,20 @@ Ext.define('Opt.view.tabs.BaseMap', {
 			if (geometry) {
 				var trafficLine = L.polyline(geometry, self.trafficLineOptions);
 				trafficLine['trafficId'] = record.get('id');
-				var content = '<b>Пробка</b><br />' 
+
+				var content = 'Пробка';
+				if (record.get('distance') > 0){
+					content = content + ' на ' + strDistance(record.get('distance'));
+				}
+
+				content = '<b>' + content + '</b><br />';
+				var content = content 
 				+ 'до ' + record.get("speed") + ' км/ч <br />'
 				+ record.get("name");
+
+				if (record.get("prim")) {
+					content = content + '<br />' + record.get("prim");
+				}
 
 				trafficLine.bindPopup(content,{maxWidth: 120});
 				self.trafficLineGroup.addLayer(trafficLine);

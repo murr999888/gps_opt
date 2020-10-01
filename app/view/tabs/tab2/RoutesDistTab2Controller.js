@@ -9,7 +9,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesDistTab2Controller', {
 	],
 
 	init: function () {
-
 		this.routesDistrStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.RouteList',
 			proxy: {
@@ -28,5 +27,4 @@ Ext.define('Opt.view.tabs.tab2.RoutesDistTab2Controller', {
 
 		Ext.getCmp('tab2droppedgrid').setStore(this.droppedOrdersStore);
 	},
-
 });

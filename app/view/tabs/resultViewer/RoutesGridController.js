@@ -174,6 +174,7 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 			color: color,
 			opacity: 1,
 			weight: 2,
+			pane: 'routelines',
 		}];
 
 		var router = new L.Routing.OSRMv1({

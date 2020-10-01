@@ -367,7 +367,8 @@ Aerial - Aerial imagery
 Not supported: Birdseye and BirdseyeWithLabels
 */
 
-		bingAerial = L.tileLayer.bing({bingMapsKey:'your_api_key', imagerySet:'Aerial'});
+		bingAerial = L.tileLayer.bing({bingMapsKey:'AuVzR8Kspj2fk3ht5-M__ppL4xmn7l2Nk06_up3HS8XpWOwlUP_ewFwnAwhaoz1j', imagerySet:'Aerial'});
+		//bingRoad = L.tileLayer.bing({bingMapsKey:'AuVzR8Kspj2fk3ht5-M__ppL4xmn7l2Nk06_up3HS8XpWOwlUP_ewFwnAwhaoz1j', imagerySet:'Road', culture:'uk-UA'});
 
 		this.map.addControl(new L.Control.Layers({
 			"OSM": osm,

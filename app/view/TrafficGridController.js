@@ -24,24 +24,9 @@ Ext.define('Opt.view.TrafficGridController', {
 
 	getIcon: function(val, metadata, record){
                 var icon = record.get('icon');
-		return '<img src="' + icon + '">';
-/*
-		var moveStatus = record.get('moveStatus');
-
-                if (online) {
-			if (moveStatus) {
-				metadata.tdAttr = 'data-qtip="Едет"';
-				return '<div class="fa fa-green-indicator fa-shadow fa-circle"></div>';
-			} else {
-				metadata.tdAttr = 'data-qtip="Стоит"';
-				return '<div class="fa fa-yellow-indicator fa-shadow fa-circle"></div>';
-			}
-                } else {
-			metadata.tdAttr = 'data-qtip="Нет связи"';
-			return '<div class="fa fa-red-indicator fa-shadow fa-circle"></div>';
-                }
-*/
-
+		//return '<img style="height: 14px; width: 14px;" src="' + icon + '">';
+		metadata.tdCls = 'vert_middle';
+		return '<div style="height: 14px; width: 14px; background: url(' + icon + ') no-repeat center center; background-size: 14px; "></div>';
 	} ,
 
 	setGridTitle: function(){

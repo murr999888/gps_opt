@@ -17,6 +17,11 @@ Ext.define('Opt.model.Traffic', {
 				defaultValue: 0,
 			},
 			{
+	        		name: 'distance',
+        			type: 'number',
+				defaultValue: 0,
+			},
+			{
 	        		name: 'rate',
         			type: 'number',
 				defaultValue: 0,

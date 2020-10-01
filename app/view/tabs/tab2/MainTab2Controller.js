@@ -4,5 +4,4 @@ Ext.define('Opt.view.tabs.tab2.MainTab2Controller', {
 	requires: [
 		'Opt.view.tabs.BaseMapController',
 	],
-
 });

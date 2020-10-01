@@ -123,12 +123,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	refreshAutos: function () {
 		var self = this;
-		//var clientGroupsStore = Ext.getStore('ClientGroup');
-		//clientGroupsStore.on('load', function(){
-			self.getAutos();
-		//});
-
-		//clientGroupsStore.load();
+		self.getAutos();
 	},
 
 	getAutos: function(){
@@ -235,7 +230,6 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 				grid.unmask();
 			}
 		});
-
 	},
 
 	resetAutos: function () {
@@ -647,5 +641,4 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.viewer.focus();
 		if (this.viewer.mapRendered) this.fireEvent("fuelstationsviewermapRender");
 	},
-
 });

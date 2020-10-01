@@ -180,5 +180,4 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		this.editDialog.show();
 		this.editDialog.focus();
 	},
-
 });

@@ -107,7 +107,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		} else {
 			self.getOrders();
 		}
-
 	},
 
 	getOrders: function () {
@@ -316,7 +315,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			in_use: false,
 			not_in_use: false,
 		});
-
 	},
 
 	clearFilter: function () {
@@ -330,6 +328,68 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	clearField: function (field, button, e) {
 		field.setValue('');
 		this.setFilter();
+	},
+	
+	checkDestinations: function(){
+		// проверим достижимость точек
+		checkedArr = [];
+
+		var depot = Opt.app.getDepot();
+		checkedArr.push([depot.lon,depot.lat]);
+
+		for (var i = 0; i < this.ordersStore.count(); i++) {
+			var recordOrder = this.ordersStore.getAt(i);
+			if (recordOrder.get("in_use")) {
+				var rec = this.ordersStore.getAt(i);
+				var lat = rec.get("lat");
+				var lon = rec.get("lon");
+				checkedArr.push([lon,lat]);
+			}
+		}
+
+		if (checkedArr.length > 2) this.checkPointsAvail(checkedArr,300);
+	},
+
+	checkPointsAvail: function(arr, radius){
+		var self = this;
+
+		var json = {
+			param: 'convert',
+			data: arr,			
+			sources: 0,
+			radius: radius,
+		};
+
+		Ext.Ajax.request({
+			url: 'api/db/router',
+			method: 'POST',
+			jsonData: json,
+			success: function (response) {
+ 				try {
+					respObj = Ext.JSON.decode(response.responseText);
+			        } catch(error) {
+					Opt.app.showError("Ошибка!", error.message);
+					return;
+        			}
+
+				responseJSON = Ext.JSON.decode(response.responseText);
+				if (responseJSON.code && responseJSON.code != 'Ok') {
+					Ext.Msg.alert("Ошибка!", responseJSON.code + '<br>' + responseJSON.message);
+					return;
+				}
+
+				self.sendDataToServer();
+			},
+
+			failure: function (response) {
+				if (response.status == 400) {
+					responseJSON = Ext.JSON.decode(response.responseText);
+					Ext.Msg.alert("Ошибка!", responseJSON.code + '<br>' + responseJSON.message);
+				} else {
+					Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
+				}
+			}
+		});
 	},
 
 	checkDataBeforeSend: function () {
@@ -395,7 +455,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		this.sendDataToServer();
+		//this.sendDataToServer();
+		this.checkDestinations();
 	},
 
 	sendForDistributeOrders: function(){

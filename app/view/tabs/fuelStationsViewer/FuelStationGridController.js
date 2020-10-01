@@ -58,6 +58,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 				});
 				grid.unmask();
 				grid.view.refresh();
+				self.showFuelStationsOnMap();
 			},
 
 			failure: function (response) {

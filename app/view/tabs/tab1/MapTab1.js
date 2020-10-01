@@ -10,11 +10,6 @@ Ext.define('Opt.view.tabs.tab1.MapTab1', {
 
 	finishMarker: null,
 
-	init: function () {
-		Ext.getCmp('maptab1').allRouteLayer = L.featureGroup();
-		Ext.getCmp('maptab1').allRouteLayer.addTo(Ext.getCmp('maptab1').map);
-	},
-
 	setFinishMarkerR: function (latlng) {
 		if (this.finishMarker != null) {
 			this.map.removeLayer(this.finishMarker);

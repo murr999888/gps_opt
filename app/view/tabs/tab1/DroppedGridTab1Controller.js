@@ -81,5 +81,4 @@ Ext.define('Opt.view.tabs.tab1.DroppedGridTab1Controller', {
 		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid});
 		this.msgbox.show();
 	},
-
 });

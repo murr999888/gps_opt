@@ -147,8 +147,4 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		this.fireEvent("getTrafficLineOnMap", record.get('id'));
 	},
-
-	onMapRender: function (comp, map, layers) {
-		//this.showFuelStationsOnMap();
-	},
 });

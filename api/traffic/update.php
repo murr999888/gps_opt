@@ -17,8 +17,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 				$strq = "DELETE FROM ?n WHERE ?n = ?s";
 				$DB->query($strq, 'traffic_points', 'parent_id', $result["id"]);
 
-				$strq = "UPDATE ?n SET name=?s, speed=?s, rate=?s, icon=?s, begin_lat=?s, begin_lon=?s, end_lat=?s, end_lon=?s, geometry=?s, both_direction=?s WHERE id=?s";
-				$DB->query($strq, 'traffic', $result["name"], $result["speed"], $result["rate"], $result["icon"], $result["begin_lat"], $result["begin_lon"], $result["end_lat"], $result["end_lon"], $result["geometry"], $result["both_direction"], $result["id"]);
+				$strq = "UPDATE ?n SET name=?s, speed=?s, rate=?s, icon=?s, prim=?s, begin_lat=?s, begin_lon=?s, end_lat=?s, end_lon=?s, geometry=?s, distance=?s, both_direction=?s WHERE id=?s";
+				$DB->query($strq, 'traffic', $result["name"], $result["speed"], $result["rate"], $result["icon"], $result["prim"], $result["begin_lat"], $result["begin_lon"], $result["end_lat"], $result["end_lon"], $result["geometry"], $result["distance"], $result["both_direction"], $result["id"]);
 				
 				foreach ($result["points"] as $point) {				
 					$strq = "INSERT INTO ?n (parent_id, num, osm_id) VALUES (?s,?s,?s)";				

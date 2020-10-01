@@ -29,9 +29,4 @@ Ext.define('Opt.view.tabs.resultViewer.MainController', {
 	onWindowResize: function () {
 		Ext.getCmp('resultviewermap').doResize();
 	},
-
-	onMapRender: function (comp, map, layers) {
-		this.fireEvent("resultviewermapRender", comp, map, layers);
-		this.getView().mapRendered = true;
-	},
 });

@@ -190,6 +190,10 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							readOnly: true,
 							height: 45,
 						},
+						{
+							xtype: 'hiddenfield',
+							name: 'distance',
+						},
 
 					]
 				}, 

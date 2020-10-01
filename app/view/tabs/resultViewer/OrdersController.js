@@ -92,6 +92,7 @@ Ext.define('Opt.view.tabs.resultViewer.OrdersController', {
 			color: 'blue',
 			opacity: 1,
 			weight: 3,
+			pane: 'routelinesBlue',
 		}];
 
 		var router = new L.Routing.OSRMv1({

@@ -10,5 +10,4 @@ Ext.define('Opt.view.tabs.tab3.MainTab3Controller', {
 		this.fireEvent("tab3mapRender", comp, map, layers);
 		this.getView().mapRendered = true;
 	},
-
 });

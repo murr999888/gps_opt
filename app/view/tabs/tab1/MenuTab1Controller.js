@@ -287,10 +287,9 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 	},
 
 	onLoadOrders: function () {
-this.getPoints();
+		this.getPoints();
 		var geoJSON = Ext.getCmp('maptab1').constructOrdersGeoJSON(this.ordersStore);
 		Ext.getCmp('maptab1').setOrdersOnMap(geoJSON);
-		//this.getPoints();
 	},
 
 	getPoints: function () {
@@ -339,11 +338,72 @@ this.getPoints();
 			store.sync();
 		}
 
-		self.getWayPoints();
+		//self.getWayPoints();
+		this.checkDestinations();
+	},
+
+	checkDestinations: function(){
+		// проверим достижимость точек
+		checkedArr = [];
+		for (var i = 0; i < this.routeLegsStore.count(); i++) {
+			var rec = this.routeLegsStore.getAt(i);
+			var lat = rec.get("lat");
+			var lon = rec.get("lon");
+			checkedArr.push([lon,lat]);
+		}
+		this.checkPointsAvail(checkedArr,300);
+	},
+
+	checkPointsAvail: function(arr, radius){
+		var self = this;
+
+		var json = {
+			param: 'convert',
+			data: arr,			
+			sources: 0,
+			radius: radius,
+		};
+
+		Ext.Ajax.request({
+			url: 'api/db/router',
+			method: 'POST',
+			jsonData: json,
+
+			success: function (response) {
+ 				try {
+					respObj = Ext.JSON.decode(response.responseText);
+			        } catch(error) {
+					Opt.app.showError("Ошибка!", error.message);
+					self.processingMask.hide();
+					return;
+        			}
+
+				responseJSON = Ext.JSON.decode(response.responseText);
+				if (responseJSON.code && responseJSON.code != 'Ok') {
+					Ext.Msg.alert("Ошибка!", responseJSON.code + '<br>' + responseJSON.message);
+					self.processingMask.hide();
+					return;
+				}
+
+				self.getWayPoints();
+			},
+
+			failure: function (response) {
+				if (response.status == 400) {
+					responseJSON = Ext.JSON.decode(response.responseText);
+					Ext.Msg.alert("Ошибка!", responseJSON.code + '<br>' + responseJSON.message);
+				} else {
+					Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
+				}
+				self.processingMask.hide();
+				return;
+			}
+		});
 	},
 
 	getWayPoints: function () {
 		var self = this;
+
 		Ext.getCmp('maptab1').allRouteLayer = L.featureGroup();
 		Ext.getCmp('maptab1').allRouteLayer.addTo(Ext.getCmp('maptab1').map);
 
@@ -352,7 +412,7 @@ this.getPoints();
 		this.arrP = [];
 
 		if (this.routeLegsStore.count() > 2) {
-			this.processingMask.show();
+			//this.processingMask.show();
 		}
 
 		console.log("Время начала запроса " + Date.now());
@@ -388,6 +448,7 @@ this.getPoints();
 			color: color,
 			opacity: 1,
 			weight: 2,
+			pane:'routelines',
 		}];
 
 		var self = this;
@@ -406,7 +467,6 @@ this.getPoints();
 				});
 
 				Ext.getCmp('maptab1').allRouteLayer.addLayer(routeLine);
-
 
 				var rec = self.routeLegsStore.getAt(index);
 
@@ -611,7 +671,6 @@ console.log("Время окончания запроса " + Date.now());
 		Ext.getCmp('maptab1').resetLayers();
 		Ext.getCmp('menutab1optimizebutton').setDisabled(true);
 		Ext.getCmp('menutab1savetrack').setDisabled(true);
-
 	},
 
 	resetMap: function () {
@@ -902,7 +961,6 @@ console.log(task);
 			this.removeDistanceToolTip();
 		}
 	},
-
 
 	removeFullDurationToolTip: function () {
 		if (this.diffFullDurationToolTip) {

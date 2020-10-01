@@ -26,7 +26,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMapController', {
 		this.fireEvent('startTrafficMarkerSetPos', latlng);
 	},
 
-	onDeleteStartTrafficMarker(){
+	onDeleteStartTrafficMarker: function(){
 		this.fireEvent('deleteStartTrafficMarker');
 	},
 
@@ -42,17 +42,22 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMapController', {
 		this.fireEvent('finishTrafficMarkerSetPos', latlng);
 	},
 
-	onTrafficPointsRecieved(pointsArray){
+	onTrafficPointsRecieved: function(pointsArray){
 		this.fireEvent('trafficPointsRecieved', pointsArray);	
 	},
 
-	onTrafficWayPointsRecieved(wayPointsArray){
+	onTrafficWayPointsRecieved: function(wayPointsArray){
 		this.fireEvent('trafficWayPointsRecieved', wayPointsArray);	
 	},
 
-	onTrafficGeometryRecieved(lineCoordArray){
+	onTrafficGeometryRecieved: function(lineCoordArray){
 		this.fireEvent('trafficGeometryRecieved', lineCoordArray);	
 	},
+
+	onTrafficDistanceRecieved: function(distance){
+		this.fireEvent('trafficDistanceRecieved', distance);	
+	},
+
 });
 
 

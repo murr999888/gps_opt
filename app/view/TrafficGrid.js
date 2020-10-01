@@ -30,8 +30,9 @@ Ext.define('Opt.view.TrafficGrid', {
 				hideable: false,
 				sortable: false,
 				text: '',       
-				width: 25,
+				width: 30,
 				renderer: 'getIcon',
+				align: 'center',
 			},
 			{
 				text: 'Название',

@@ -34,6 +34,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 			dock: 'top',
 			items: [
 				{
+					disabled: true,
 					value: 0,
 					labelWidth: 50,
 					margin: '1px 2px 1px 5px',

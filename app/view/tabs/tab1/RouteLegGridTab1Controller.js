@@ -47,6 +47,7 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 			color: 'blue',
 			opacity: 1,
 			weight: 3,
+			pane: 'routelinesBlue',
 		}];
 
 		var router = new L.Routing.OSRMv1({
@@ -197,5 +198,4 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 	getNum: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
 		return val;
 	},
-
 });

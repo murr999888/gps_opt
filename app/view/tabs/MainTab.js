@@ -53,25 +53,14 @@ initComponent: function() {
 	border: 0,
 	header: {
 		items: [
+
 /*
 			{
-			 	xtype:'menubar',
-				items: [
-					{
-         					text: 'File',
-         					menu: [
-             						{ 
-								text: 'Open...' 
-							},
-             						'-',
-             						{ 
-								text: 'Close' 
-							}
-         					]
-     					},
-				]
+			 	xtype:'button',
+				handler: 'runF',
 			},
 */
+
 			{
 				xtype: 'button',
 				text: 'Выход',
