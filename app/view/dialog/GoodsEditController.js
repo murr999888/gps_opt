@@ -5,9 +5,6 @@ Ext.define('Opt.view.dialog.GoodsEditController', {
 		'Opt.ux.GridPrinter',
 	],
 
-	init: function () {
-	},
-
 	closeView: function () {
 		this.getView().destroy();
 	},

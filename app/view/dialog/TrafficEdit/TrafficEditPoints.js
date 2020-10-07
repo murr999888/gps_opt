@@ -14,8 +14,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditPoints', {
 		tooltip: 'Печать'
 	}],
 
-	//store: 'Traffic',
-
 	columns: {
 		defaults: {
 			menuDisabled: false,

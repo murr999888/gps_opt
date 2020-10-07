@@ -440,15 +440,5 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 			stateful: true,
 			stateId: 'tab2ordersgrid',
 		},
-/*
-		{
-			flex: 2,
-			xtype: 'ordergoodsgrid',
-			id: 'tab2orderstotals',
-			title: 'Отгрузка по заказам',
-			stateful: true,
-			stateId: 'tab2orderstotals',
-		}
-*/
 	],
 });

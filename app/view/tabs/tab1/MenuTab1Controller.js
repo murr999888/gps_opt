@@ -682,7 +682,6 @@ console.log("Время окончания запроса " + Date.now());
 		Ext.getCmp('maptab1').map.setView([47.07559, 37.50796], 12);
 	},
 
-
 	optimizeRoute: function () {
 		var self = this;
 		if (!Opt.app.socket || Opt.app.socket.OPEN != 1) {
@@ -775,7 +774,6 @@ console.log("Время окончания запроса " + Date.now());
 				time_increase_k: autoRecord.get("time_increase_k"),
 				worktime_begin: autoRecord.get("worktime_begin"),
 				worktime_end: autoRecord.get("worktime_end"),
-
 			},
 
 			orders: orders,

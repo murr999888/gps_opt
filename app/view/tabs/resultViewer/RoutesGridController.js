@@ -15,6 +15,16 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 	arrP: [],
 	routelistEdit: null,
 
+	listen: {
+		controller: {
+			'*': {
+				resultviewermapRender: 'onMapRender',
+				resultViewerShow: 'onDialogShow',
+				resultViewerClose: 'onDialogClose',
+			}
+		},
+	},
+
 	init: function () {
 		this.ordersStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.RouteLegs',
@@ -53,20 +63,9 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 
 	},
 
-	listen: {
-		controller: {
-			'*': {
-				resultviewermapRender: 'onMapRender',
-			}
-		},
-	},
-
 	printTable: function () {
 		var grid = this.getView();
 		Opt.ux.GridPrinter.print(grid);
-	},
-
-	afterRender: function () {
 	},
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
@@ -77,10 +76,6 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 		this.getView().suspendEvents();
 		this.getView().store.commitChanges();
 		this.getView().resumeEvents();
-	},
-
-	onCellClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-
 	},
 
 	setRouteToMap: function (record) {
@@ -95,10 +90,6 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		this.drowRoute(record);
-	},
-
-	onSelectRow: function (row, record, index) {
-
 	},
 
 	getTime: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
@@ -126,6 +117,8 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 
 		this.legsStore.loadData(route.get('orders'));
 
+		self.ordersStore.suspendEvents();
+
 		for (var i = 0; i < this.legsStore.count(); i++) {
 			var record = this.legsStore.getAt(i);
 			var node_type = record.get('node_type');
@@ -134,6 +127,8 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 				self.ordersStore.add(record);
 			}
 		};
+
+		self.ordersStore.resumeEvents();
 
 		var geoJSON = mapCmp.constructOrdersGeoJSON(this.ordersStore);
 		mapCmp.setOrdersOnMap(geoJSON);
@@ -218,7 +213,7 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 	openEditDialog: function (record) {
 		this.routelistEdit = null;
 
-		Ext.suspendLayouts();
+		//Ext.suspendLayouts();
 		this.routelistEdit = Ext.create('widget.routelistedit');
 		this.routelistEdit.down('form').loadRecord(record);
 
@@ -244,7 +239,7 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 			date_1: getDDMMYYYY(record.get("date")),
 		});
 
-		Ext.resumeLayouts();
+		//Ext.resumeLayouts();
 
 		this.routelistEdit.show().focus();
 	},
@@ -253,7 +248,19 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 		this.openEditDialog(record);
 	},
 
-	onMapRender: function (comp, map, layers) {
+	onDialogShow: function () {
+		var mapEdit = Ext.getCmp('resultviewermap');
+		if (!mapEdit.mapRendered) return;
+		this.drowRoute();
+	},
+
+	onDialogClose: function () {
+		var mapEdit = Ext.getCmp('resultviewermap');
+		if (!mapEdit.mapRendered) return;
+		mapEdit.resetLayers();
+	},
+
+	onMapRender: function () {
 		this.drowRoute();
 	},
 
@@ -263,8 +270,11 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 		}
 
 		var orders = record.get('orders');
-		var ordersStore = Ext.getCmp('resultviewerorders').store;
+		var ordersStore = Ext.getCmp('resultviewerorders').getStore();
+		var droppedOrdersStore = Ext.getCmp('resultviewerdroppedgrid').getStore();
 		ordersStore.loadData(orders);
+		Ext.getCmp('resultviewerorders').setTitle("Заказы (" + (ordersStore.count()-2) + ")");
+		Ext.getCmp('resultviewerdroppedgrid').setTitle("Отброшенные заказы (" + droppedOrdersStore.count() + ")");
 		this.setRouteToMap(record);
 	},
 });

@@ -23,6 +23,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMainController', {
 			store.sync({
 				failure: function (batch) {
 					store.rejectChanges();
+console.log(batch);
 					Opt.app.showError("Ошибка", batch.exceptions[0].getError().response);
 				},
 

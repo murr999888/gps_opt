@@ -11,6 +11,10 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 
 	bodyStyle: 'border-top: 1px solid #99bce8',
 
+	setCursor: function(){
+      		L.DomUtil.addClass(this.map._container,'crosshair-cursor-enabled');
+	},
+
 	createStartTrafficMarker: function(latlng) {
 		var self = this;
 		var icon = L.icon(

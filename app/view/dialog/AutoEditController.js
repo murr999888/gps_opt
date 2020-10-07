@@ -11,6 +11,26 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 		});
 
 		this.getView().down('allowedclientgroups').setStore(allowedGroupsStore);
+
+		var newFuelStationStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.FuelStation',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		var emptyRecord = Ext.create('Opt.model.FuelStation', {
+			id: 0,
+			klient_name: '<не установлено>',
+		});
+
+		newFuelStationStore.add(emptyRecord);
+
+		var fuelStationsStore = Ext.getStore('FuelStations');
+		newFuelStationStore.add(fuelStationsStore.getRange());
+		
+
+		Ext.getCmp('autoEditFirstStation').setStore(newFuelStationStore);
 	},
 
 	onWorktimeBeginChange: function (field, newValue, oldValue, eOpts) {

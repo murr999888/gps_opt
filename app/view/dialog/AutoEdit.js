@@ -433,65 +433,37 @@ Ext.define('Opt.view.dialog.AutoEdit', {
 									]
 								},	
 								{
-									xtype: 'fieldcontainer',
-									//padding: '5 0 5 0',
-									layout: 'hbox',
-									items: [
-										{
-											xtype: 'checkbox',
-											name: 'fuel_use_rate',
-											checked: false,
-											inputValue: true,
-											uncheckedValue: false,
-											fieldLabel: 'Исп. расход',
-											labelWidth: 105,
-											width: 170,
-											
+									readOnly: false,
+									editable: false,
+									xtype: 'combobox',
+									name: 'fuel_first_station',
+									id: 'autoEditFirstStation',
+									fieldLabel: 'Сначала заправить в',
+									labelWidth: 175,
+									width: 350,
+									//emptyText: '< не заполнено >',
+									queryMode: 'local',
+									displayField: 'displayField',
+									valueField: 'id',
+									//store: 'FuelStations',
+									value: 0,
+									//matchFieldWidth: false,
+									listeners: {
+										//select: 'onDriverSelect',
+									},
+									/*
+									triggers: {
+										refresh: {
+											cls: 'x-form-search-trigger',
+											handler: 'refreshDriver',
 										},
-										{
-											xtype: 'checkbox',
-											name: 'fuel_need_refuel',
-											checked: false,
-											inputValue: true,
-											uncheckedValue: false,
-											fieldLabel: 'Нужно заправить',
-											labelWidth: 105,
-											width: 170,
-											padding: '0 0 0 10px',
-										},
-									]
-								},
-										{
-											readOnly: false,
-											editable: false,
-											xtype: 'combobox',
-											name: 'fuel_first_station',
-											id: 'autoEditFirstStation',
-											fieldLabel: 'Перед началом рейса',
-											labelWidth: 175,
-											width: 350,
-											emptyText: '< не использовать >',
-											queryMode: 'local',
-											displayField: 'displayField',
-											valueField: 'id',
-											store: 'FuelStations',
-											//matchFieldWidth: false,
-											listeners: {
-												//select: 'onDriverSelect',
-											},
-											/*
-											triggers: {
-												refresh: {
-													cls: 'x-form-search-trigger',
-													handler: 'refreshDriver',
-												},
-											},
-											*/
-											listConfig: {
-												loadingText: 'Загружается..',
-												emptyText: 'Не выбран..',
-												//minWidth: 100,
-											},
+									},
+									*/
+									listConfig: {
+										loadingText: 'Загружается..',
+										emptyText: 'Не выбран..',
+										//minWidth: 100,
+									},
 								},					
 							],
 						},

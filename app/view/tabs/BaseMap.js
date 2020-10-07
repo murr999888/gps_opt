@@ -355,7 +355,8 @@ Ext.define('Opt.view.tabs.BaseMap', {
 									weight: 1
 								}
 							})
-						}]
+						}],
+						pane: 'routelinesBlue',
 					}).addTo(self.map);
 				}
 			});

@@ -101,7 +101,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
          						displayField: 'displayField',
          						valueField: 'icon',
          						queryMode: 'local',
-							//emptyText : 'Select ...',
+							store: 'RoadSigns',
 							value: 'css/images/signs/znak-proezd-16-16.png',
 							labelWidth: 170,
 							width: 220,

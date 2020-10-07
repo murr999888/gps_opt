@@ -15,6 +15,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMapController', {
 	},
 
 	onMapRender: function(){
+		this.getView().setCursor();
 		this.fireEvent("TrafficMapRendered");
 	},
 

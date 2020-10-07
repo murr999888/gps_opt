@@ -31,12 +31,12 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	},
 
 	afterRender: function () {
+		this.setAutosGroupMenu();
 		var store = Ext.getStore('Auto2');
 		if (store.count() == 0) {
 			this.refreshAutos();
 		}
 
-		this.setAutosGroupMenu();
 		this.setTitle();
 	},
 
@@ -141,7 +141,6 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		grid.mask('Обновление..');
 
 		var clientGroupsStore = Ext.getStore('ClientGroup');
-
 		var allowedGroupsArr = [];
 		for (var i=0; i < clientGroupsStore.count(); i++){
 			var record = clientGroupsStore.getAt(i);

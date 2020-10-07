@@ -46,16 +46,11 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 
 			stateful: true,
 			stateId: 'formparamtab2',
-/*
-			collapsible: true,
-			titleCollapse: true,
-			animCollapse: false,
-*/
 			title: 'Настройки поиска решения',
 			xtype: 'form',
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
-                        height: 119,
+                        height: 195,
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
@@ -99,6 +94,84 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					listeners: {
 						change: 'onSlackTimeChange',
 					},
+				},
+				{
+					labelWidth: 205,
+					editable: false,
+					width: 255,
+					xtype: 'numberfield',
+					fieldStyle: 'text-align: right;',
+					name: 'maxordersinroute',
+					fieldLabel: 'Макс. кол. заказов в маршруте',
+					value: 0,
+					maxValue: 60,
+					minValue: 0,
+					step: 1,
+					stateful: true,
+					stateId: 'tab2maxordersinroute',
+					stateEvents: ['change'],
+					listeners: {
+						change: 'onMaxOrdersInRouteChange',
+					},
+				},
+				{
+					readOnly: false,
+					editable: false,
+					xtype: 'combobox',
+					id: 'formparamtab2refuelmode',
+					name: 'refuelmode',
+					fieldLabel: 'Расчет заправок',
+					emptyText: '< нет данных >',
+					queryMode: 'local',
+					displayField: 'name',
+					valueField: 'id',
+					value: 0,
+					store: {
+                                        	data: [
+							{
+       								id: 0,
+								name: 'Не рассчитывать',
+    							}, 
+							{
+       								id: 1,
+								name: '"Сначала заправить.."',
+    							}, 
+							{
+       								id: 2,
+								name: 'По расходу топлива',
+    							}, 
+						]
+					},
+					matchFieldWidth: false,
+					listeners: {
+						select: 'onRefuelModeSelect',
+					},
+				},
+				{
+					xtype: 'checkbox',
+					name: 'useGLS',
+					id: 'formparamtab2useGLS',
+					checked: false,
+					inputValue: true,
+					uncheckedValue: false,
+					fieldLabel: 'Использовать guided local search',
+					labelWidth: 237,
+					stateful: true,
+					stateId: 'tab2useGLS',
+					stateEvents: ['change', 'check'],
+					listeners: {
+						change: 'onChangeUseGLS',
+					},
+					getState: function () {
+						return { "checked": this.getValue() };
+					},
+					applyState: function (state) {
+						this.setValue(state.checked);
+					},
+					autoEl: {
+        					tag: 'div',
+        					'data-qtip': 'Использовать Guided Local Search',
+    					},
 				},
 				{
 					labelWidth: 205,

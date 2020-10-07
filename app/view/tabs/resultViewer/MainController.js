@@ -26,6 +26,14 @@ Ext.define('Opt.view.tabs.resultViewer.MainController', {
 		Ext.getCmp('resultviewerdroppedgrid').setStore(this.droppedOrdersStore);
 	},
 
+	onShow: function(){
+		this.fireEvent("resultViewerShow");
+	},
+
+	onClose: function(){
+		this.fireEvent("resultViewerClose");
+	},
+
 	onWindowResize: function () {
 		Ext.getCmp('resultviewermap').doResize();
 	},

@@ -14,7 +14,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if ($obj)  {
 		if (is_array($obj)) {
 			foreach ($obj as $result) {
-				$strq = "INSERT ?n (name, speed, rate, icon, prim, begin_lat, begin_lon, end_lat, end_lon, geometry, distance, both_direction) VALUES (?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s. ?s)";
+				$strq = "INSERT ?n (name, speed, rate, icon, prim, begin_lat, begin_lon, end_lat, end_lon, geometry, distance, both_direction) VALUES (?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s, ?s)";
 				$DB->query($strq, 'traffic', 
 					$result["name"], 
 					$result["speed"], 

@@ -13,12 +13,6 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 		});
 
 		pointsGrid.setStore(this.pointsStore);
-
-		this.icons = Ext.create('Opt.store.RoadSigns', {
-     			
- 		});
-
-		Ext.getCmp('trafficediticoncombo').setStore(this.icons);
 	},
 
 	listen: {
@@ -117,11 +111,14 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 	},
 
 	onShow: function(){
+		var self = this;
 		var mapEdit = Ext.getCmp('trafficeditmap');
 		if (!mapEdit.mapRendered) return;
-
-		mapEdit.resetLayers();
-		this.setMarkersAndLines();
+				
+		setTimeout(function(){
+			mapEdit.resetLayers();
+			self.setMarkersAndLines();
+		},0)
 	},
 
 	onMapRender: function (comp, map, layers) {

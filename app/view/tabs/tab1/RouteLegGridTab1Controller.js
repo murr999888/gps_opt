@@ -29,6 +29,27 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 		Opt.ux.GridPrinter.print(grid);
 	},
 
+	// overrided
+	getSod: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		var str = val;
+
+		var str = 'data-qtip="';
+		var sod = Ext.util.Format.htmlEncode(record.get('sod'));
+		var dop = Ext.util.Format.htmlEncode(record.get('dop'));
+
+		if (sod != '' && dop != '') {
+			str = str + sod + '<br />' + dop;
+		} else {
+			str = str + sod + dop;
+		}
+
+		metadata.tdAttr = str + '"';
+
+		var city = record.get('city');
+		if (city != mainCityName) val = val + '<br />' + city;
+		return val;
+	},
+
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		if (rowIndex == 0) {
 			console.log("Первую пропускаем..");

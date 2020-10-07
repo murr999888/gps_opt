@@ -136,17 +136,6 @@ Ext.define('Opt.model.Auto', {
 			defaultValue: 15.5,
 		},
 		{
-			name: 'fuel_need_refuel',
-			type: 'boolean',
-			defaultValue: 0,
-		},
-		{
-			name: 'fuel_use_rate',
-			type: 'boolean',
-			defaultValue: false,
-		},
-
-		{
 			name: 'fuel_first_station',
 			type: 'number',
 			defaultValue: 0,

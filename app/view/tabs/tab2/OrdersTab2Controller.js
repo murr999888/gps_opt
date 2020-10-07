@@ -213,6 +213,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		if (selectedProd != 0 || selectedClientGroup != 0 || clientname.trim() != '' || tochkaname.trim() != '' || city.trim() != '' || addr.trim() != '' || inuse_box || notinuse_box) {
 			this.ordersStoreFilter = true;
+			this.ordersStore.suspendEvents();
 			this.ordersStore.filterBy(function (record) {
 				var klient_name = record.get("klient_name").toUpperCase();
 				var tochka_name = record.get("tochka_name").toUpperCase();
@@ -293,6 +294,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					return true;
 				}
 			});
+
+			this.ordersStore.resumeEvents();
+			Ext.getCmp('tab2ordersgrid').view.refresh();
 			this.setTitle(" (фильтр)");
 		}
 	},
@@ -318,11 +322,15 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	clearFilter: function () {
+		this.ordersStore.suspendEvents();
 		this.ordersStoreFilter = false;
 		this.ordersStore.clearFilter();
 		this.ordersStore.remoteFilter = false;
 		this.ordersStore.filter();
 		this.setTitle('');
+
+		this.ordersStore.resumeEvents();
+		Ext.getCmp('tab2ordersgrid').view.refresh();
 	},
 
 	clearField: function (field, button, e) {
@@ -400,18 +408,33 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		var rejectedOrders = [];
 		var storeAutos = Ext.getStore('Auto2');
+                var strEmptyClientGroups = '';
 
 		for (var i = 0; i < storeAutos.count(); i++) {
 			var recordAuto = storeAutos.getAt(i);
 			if (recordAuto.get("in_use")) {
 				autosIds.push(recordAuto.get('id'));
 			}
-		}
+			var allowedClientGroups = recordAuto.get("allowed_clientgroups");
+
+			if (allowedClientGroups.length == 0) {
+				strEmptyClientGroups = strEmptyClientGroups + recordAuto.get("name") + '<br />';
+			}
+        	}
 
 		if (autosIds.length == 0) {
 			Ext.Msg.alert({
 				title: 'Внимание',
 				message: 'Нет машин для распределения!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+		
+		if (strEmptyClientGroups.length != 0) {
+			Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'По этим машинам пустой список доступных групп клиентов! <br />' + strEmptyClientGroups,
 				buttons: Ext.Msg.OK,
 			});
 			return;
@@ -476,6 +499,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		var orders_date = formVal.solvedate;
 		var time_waiting = formVal.maxslacktime;
+		var max_orders_in_route = formVal.maxordersinroute;
+		var refuel_mode = formVal.refuelmode;
+		var use_guided_local_search = formVal.useGLS;
 
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
@@ -490,6 +516,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			maximum_time_per_vehicle: 24 * 60 * 60, // 12 часов
 			dateRoutes: orders_date,
 			time_waiting: time_waiting * 60,
+			max_orders_in_route: max_orders_in_route,
+			refuel_mode: refuel_mode,
+			use_guided_local_search: use_guided_local_search,
 		};
 
 		task.error = "";

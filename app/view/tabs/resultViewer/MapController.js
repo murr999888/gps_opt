@@ -31,7 +31,7 @@ Ext.define('Opt.view.tabs.resultViewer.MapController', {
 		this.getView().map.createPane('routelinesBlue');
 		this.getView().map.getPane('routelinesBlue').style.zIndex = 650;
 
-		this.fireEvent("resultviewermapRender", comp, map, layers);
+		this.fireEvent("resultviewermapRender");
 		this.getView().mapRendered = true;
 	},
 });

@@ -186,8 +186,6 @@ Ext.define('Opt.controller.Root', {
             if (data.error && data.solve == 'addingorders_toroutes' && data.error != 'OK') {
                 self.fireEvent('adding_orders_error', data);
             }
-
-
         };
     },
 
