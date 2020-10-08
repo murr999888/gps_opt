@@ -12,7 +12,15 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 
 		this.getView().down('allowedclientgroups').setStore(allowedGroupsStore);
 
-		var newFuelStationStore = Ext.create('Ext.data.Store', {
+		this.refreshFuelStationStore();
+	},
+	
+	afterRender: function () {
+		this.rendered = true;
+	},
+
+	refreshFuelStationStore: function(){
+		this.newFuelStationStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.FuelStation',
 			proxy: {
 				type: 'memory',
@@ -20,17 +28,56 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 		});
 
 		var emptyRecord = Ext.create('Opt.model.FuelStation', {
-			id: 0,
+			klient_id: '0',
+			in_use: true,
 			klient_name: '<не установлено>',
 		});
 
-		newFuelStationStore.add(emptyRecord);
-
+		this.newFuelStationStore.add(emptyRecord);
+	
 		var fuelStationsStore = Ext.getStore('FuelStations');
-		newFuelStationStore.add(fuelStationsStore.getRange());
-		
+		this.newFuelStationStore.add(fuelStationsStore.getRange());
 
-		Ext.getCmp('autoEditFirstStation').setStore(newFuelStationStore);
+		this.setFuelStationsFilters();
+
+		Ext.getCmp('autoEditFirstStation').setStore(this.newFuelStationStore);
+	},
+
+	onChangeFuelGas: function (checkbox, newValue, oldValue, eOpts) {
+		this.setFuelStationsFilters();
+	},
+
+	setFuelStationsFilters: function(){
+		this.clearFuelStationsFilters();
+
+		var setGas = Ext.getCmp('autoEditFuelGas').getValue();
+		this.newFuelStationStore.filterBy(function (record) {
+			var kolFilters = 0;
+			var trueFilters = 0;
+
+			kolFilters++;
+			if (record.get("in_use")) trueFilters++; 
+
+			if (record.get("klient_id") != '0' && setGas != null) {
+				kolFilters++;
+				if (record.get("gas") == setGas) trueFilters++; 
+			}
+
+			return kolFilters == trueFilters;
+		});
+	},
+
+	clearFuelStationsFilters: function () {
+		this.newFuelStationStore.suspendEvents();
+		this.newFuelStationStore.clearFilter();
+		this.newFuelStationStore.remoteFilter = false;
+		this.newFuelStationStore.filter();
+		this.newFuelStationStore.resumeEvents();
+	},
+
+	onShow: function(){
+		var store = Ext.getCmp('autoEditFirstStation').getStore();
+		if (store && store.count() == 0) this.refreshFuelStationStore();
 	},
 
 	onWorktimeBeginChange: function (field, newValue, oldValue, eOpts) {

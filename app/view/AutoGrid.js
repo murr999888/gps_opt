@@ -55,11 +55,22 @@ Ext.define('Opt.view.AutoGrid', {
 			tooltip: 'Используется при расчете',
 			headerCheckbox: true,
 			width: 25,
+			resizable: false,
 			//checked: true,
 			listeners: {
 				checkchange: 'onChangeInUse',
 				headercheckchange: 'onHeaderCheckChange',
 			}
+		},
+		{	
+			menuDisabled: true,
+			hideable: false,
+			sortable: false,
+			resizable: false,
+			text: '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>',       
+			width: 25,
+			renderer: 'getFuelIcon',
+			align: 'center',
 		},
 
 		{

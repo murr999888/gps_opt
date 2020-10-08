@@ -1,5 +1,5 @@
 Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGrid', {
-	extend: 'Opt.view.FuelStationGrid',
+	extend: 'Ext.grid.Panel',
 	title: 'Заправки',
 	alias: 'widget.fuelstationsviewerfuelstationgridpanel',
 	controller: 'fuelstationsviewerfuelstationgrid',
@@ -123,10 +123,11 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGrid', {
 		items: [
 		{
 			hideable: false,
+			resizeable: false,
+			menuDisabled: true,
 			xtype: 'checkcolumn',
 			text: '',
 			dataIndex: 'in_use',
-			menuDisabled: true,
 			tooltip: 'Используется при расчете',
 			headerCheckbox: true,
 			width: 25,

@@ -97,11 +97,11 @@ Ext.define('Opt.controller.Root', {
         */
         Ext.getStore('Product').load();
         Ext.getStore('ClientGroup').load();
-        Ext.getStore('Auto').load();
 	Ext.getStore('AutosGroup').load();
 	Ext.getStore('Drivers').load();
 	Ext.getStore('HelpTableContent').load();
         Ext.getStore('CalcLog').load();	
+        Ext.getStore('Auto').load();
 
 	this.getDepot();
         Ext.create('widget.main');
@@ -186,6 +186,12 @@ Ext.define('Opt.controller.Root', {
             if (data.error && data.solve == 'addingorders_toroutes' && data.error != 'OK') {
                 self.fireEvent('adding_orders_error', data);
             }
+
+            if (data.solve && data.solve == 'Unknown') {
+		self.fireEvent('optimized_route_error', data);
+                self.fireEvent('distributed_orders_error', data);
+		self.fireEvent('adding_orders_error', data);
+            }
         };
     },
 
@@ -215,8 +221,5 @@ Ext.define('Opt.controller.Root', {
 				Opt.app.showError('Ошибка запроса Депо', response.responseText);
 			}
 		});
-
-
 	},
-
 });

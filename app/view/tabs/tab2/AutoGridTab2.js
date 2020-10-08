@@ -75,6 +75,13 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 								text: 'Сбросить группы клиентов',
 								handler: 'resetAllowedClientGroups',
 							},
+							{
+								xtype: 'menuseparator',
+							},
+							{
+								text: 'Сбросить "Сначала заправить..."',
+								handler: 'resetFirstFuelStation',
+							},
 						]
 					},
 				},

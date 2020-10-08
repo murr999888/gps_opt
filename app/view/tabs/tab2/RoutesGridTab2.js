@@ -134,6 +134,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 
 		items: [
 			{
+				resizable: false,
 				hideable: false,
 				xtype: 'checkcolumn',
 				text: '',

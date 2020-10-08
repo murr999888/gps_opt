@@ -633,3 +633,7 @@
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+
+.leaflet-container.crosshair-cursor-enabled {
+    cursor:crosshair;
+}

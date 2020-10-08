@@ -1,6 +1,7 @@
 Ext.define('Opt.store.Auto', {
     	extend: 'Ext.data.Store',
     	model: 'Opt.model.Auto',
+	//autoLoad: true,
 	proxy: {
         	type: 'ajax',
 		url: 'api/db/db_1cbase',

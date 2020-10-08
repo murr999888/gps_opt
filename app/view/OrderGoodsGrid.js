@@ -20,7 +20,8 @@ Ext.define('Opt.view.OrderGoodsGrid', {
 			hideable: false
 		},
 
-		items: [{
+		items: [
+		{
 			text: 'Наименование',
 			flex: 5,
 			dataIndex: 'full_name',

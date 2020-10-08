@@ -140,25 +140,12 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 		grid.mask('Обновление..');
 
-		var clientGroupsStore = Ext.getStore('ClientGroup');
-		var allowedGroupsArr = [];
-		for (var i=0; i < clientGroupsStore.count(); i++){
-			var record = clientGroupsStore.getAt(i);
-			var copyRecord = record.copy();
-			if (copyRecord.get('id') != 0) {
-				copyRecord.set('in_use', true);
-				allowedGroupsArr.push(copyRecord.data);
-			}
-		};
-
        		Ext.Ajax.request({
 			url: 'api/db/db_1cbase',
 			method: 'GET',
 			params: params,
 
 			success: function (response) {
-
-				store.suspendEvents();
 
  				try {
 					respObj = Ext.JSON.decode(response.responseText);
@@ -167,6 +154,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 					return;
         			}
 
+				store.suspendEvents();
 				store.removeAll();
 				store.save();
 
@@ -190,11 +178,13 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 						record.set('maximize_bottle', true);
 					}
 
+					if (record.get("fuel_rate_by_100") == 0) record.set("fuel_rate_by_100", 12);
+
 					record.set("worktime_begin", def_route_time_begin),
 					record.set("worktime_end", def_route_time_end),
 					record.set("route_begin_endtime", def_route_time_end),
 					record.set("route_end_endtime", def_route_time_end),
-					record.set("allowed_clientgroups", allowedGroupsArr),
+					record.set("fuel_gas", false),
 					record.save();
 				});
 
@@ -222,6 +212,28 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 				});
 
 				storeDrivers.load();
+
+				var clientGroupsStore = Ext.getStore('ClientGroup');
+				clientGroupsStore.on('load', function(){
+					var allowedGroupsArr = [];
+					for (var i=0; i < clientGroupsStore.count(); i++){
+						var record = clientGroupsStore.getAt(i);
+						var copyRecord = record.copy();
+						if (copyRecord.get('id') != 0) {
+							copyRecord.set('in_use', true);
+							allowedGroupsArr.push(copyRecord.data);
+						}
+					};
+
+					for (var i = 0; i < store.count(); i++) {
+						var record = store.getAt(i);
+						record.set("allowed_clientgroups", allowedGroupsArr);
+					}
+
+					store.save();
+				});
+
+				clientGroupsStore.load();
 			},
 
 			failure: function (response) {
@@ -639,5 +651,15 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.viewer.show();
 		this.viewer.focus();
 		if (this.viewer.mapRendered) this.fireEvent("fuelstationsviewermapRender");
+	},
+
+	resetFirstFuelStation: function(){
+		var store = this.getView().store;
+		store.suspendEvents();
+		store.each(function(record){
+			record.set("fuel_first_station", '0');
+		});
+		store.resumeEvents();
+		this.getView().view.refresh();
 	},
 });

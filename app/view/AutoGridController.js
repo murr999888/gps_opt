@@ -110,7 +110,14 @@ Ext.define('Opt.view.AutoGridController', {
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
 		record.save();
+	},
 
+	getFuelIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		if (record.get('fuel_first_station') != 0) {
+			metadata.tdCls = 'vert_middle';
+			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
+		}
+		return val;
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {

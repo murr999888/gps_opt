@@ -198,6 +198,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 			{
 				sortable: false,
 				hideable: false,
+				resizable: false,
 				xtype: 'checkcolumn',
 				text: '',
 				dataIndex: 'in_use',

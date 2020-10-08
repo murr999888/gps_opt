@@ -396,12 +396,25 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				} else {
 					Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
 				}
+				Ext.getCmp('maintab2').unmask();
 			}
 		});
 	},
 
 	checkDataBeforeSend: function () {
+		Ext.getCmp('maintab2').mask('Проверка данных ...');
 		var mode = Ext.getCmp('distordersmode').getValue();
+
+		var depot = Opt.app.getDepot();
+                if (!depot) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Нет данных о депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
 
 		var autos = [];
 		var autosIds = [];
@@ -423,6 +436,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
         	}
 
 		if (autosIds.length == 0) {
+			Ext.getCmp('maintab2').unmask();
 			Ext.Msg.alert({
 				title: 'Внимание',
 				message: 'Нет машин для распределения!',
@@ -432,6 +446,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		}
 		
 		if (strEmptyClientGroups.length != 0) {
+			Ext.getCmp('maintab2').unmask();
 			Ext.Msg.alert({
 				title: 'Внимание',
 				message: 'По этим машинам пустой список доступных групп клиентов! <br />' + strEmptyClientGroups,
@@ -440,13 +455,44 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		var storeOrders = this.ordersStore;
+		//***********************************************
+		// проверка заправки
+		//***********************************************
+		var refuelmode = Ext.getCmp('formparamtab2refuelmode').getValue();		
+		if (refuelmode == 1) {
+			var autosWithFirstFuelStation = [];
+			for (var i = 0; i < storeAutos.count(); i++) {
+				var recordAuto = storeAutos.getAt(i);
+				if (recordAuto.get("in_use") && recordAuto.get("fuel_first_station") != '0') {
+					autosWithFirstFuelStation.push(recordAuto.get('id'));
+				}
+        		}	
 
+			if (autosWithFirstFuelStation.length == 0) {
+				Ext.getCmp('maintab2').unmask();
+	                        Ext.Msg.alert({
+					title: 'Внимание',
+					message: 'При установленном режиме расчета заправок нет машин, <br />отмеченных для расчета с установленными пунктами заправки.',
+					buttons: Ext.Msg.OK,
+				});
+				return;
+			}
+		}
+
+		var storeOrders = this.ordersStore;
+		var ordersCheckArr = [];
 		for (var i = 0; i < storeOrders.count(); i++) {
 			var recordOrder = storeOrders.getAt(i);
 			if (recordOrder.get("in_use")) {
+				ordersCheckArr.push(recordOrder.get("id"));
+
 				if (recordOrder.get("timewindow_begin") > recordOrder.get("timewindow_end")) {
-					Opt.app.showError("Ошибка!", "Есть заказы c неверно установленным окном времени. Операция прервана.");
+					Ext.getCmp('maintab2').unmask();
+					Ext.Msg.alert({
+						title: 'Внимание',
+						message: 'Есть заказы c неверно установленным окном времени',
+						buttons: Ext.Msg.OK,
+					});
 					return;			
 				}
 
@@ -471,23 +517,29 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 		}
 
+		if (ordersCheckArr.length == 0){
+			Ext.getCmp('maintab2').unmask();
+			Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Нет заказов для распределения!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
 		if (rejectedOrders.length > 0) {
+			Ext.getCmp('maintab2').unmask();
 			var alertDialog = Ext.create('Opt.view.dialog.OrderListAlert');
 			alertDialog.down('gridpanel').store.loadData(rejectedOrders);
 			alertDialog.show().focus();
 			return;
 		}
 
-		//this.sendDataToServer();
 		this.checkDestinations();
 	},
 
 	sendForDistributeOrders: function(){
 		var depot = Opt.app.getDepot();
-                if (!depot) {
-                 	Opt.showError("Внимание!","Нет данных о депо!");
-			return;
-		}
 
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
@@ -529,25 +581,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var data = {};
 
 		//********************************************
-		// МАШИНЫ
-		//********************************************
-		var storeAutos = Ext.getStore('Auto2');
-		var useAutosCost = false;
-
-		for (var i = 0; i < storeAutos.count(); i++) {
-			var recordAuto = storeAutos.getAt(i);
-			if (recordAuto.get("in_use")) {
-				autos.push(recordAuto.data);
-			}
-
-			if (recordAuto.get("cost_k") != 1) {
-				useAutosCost = true;
-			}
-		}
-
-		task.parameters.use_autos_cost = useAutosCost;
-
-		//********************************************
 		// ЗАКАЗЫ
 		//********************************************
 		var storeOrders = this.ordersStore;
@@ -575,14 +608,63 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 		}
 
-		if (orders.length < 2) {
-			Ext.Msg.alert({
-				title: 'Внимание',
-				message: 'Нет заказов для распределения!',
-				buttons: Ext.Msg.OK,
-			});
-			return;
+		//********************************************
+		// МАШИНЫ + Заправки + добавление фейковых заказов + initial route
+		//********************************************
+		var storeAutos = Ext.getStore('Auto2');
+		var useAutosCost = false;
+
+                var refuelmode = Ext.getCmp('formparamtab2refuelmode').getValue();		
+
+		for (var i = 0; i < storeAutos.count(); i++) {
+			var recordAuto = storeAutos.getAt(i);
+			var initial_route = [];
+
+	                if (refuelmode == 1) {
+				if (recordAuto.get("in_use") && recordAuto.get("fuel_first_station") != '0') {
+					var fuelStationId = recordAuto.get("fuel_first_station");
+					var fuelStationStore = Ext.getStore("FuelStations");
+					var fuelStation = fuelStationStore.findRecord("klient_id", fuelStationId);
+
+					if (fuelStation){
+						var deepCopy = $.extend(true, {}, fuelStation.data);					
+						//deepCopy.klient_group_id = 'fuel_stations';
+						deepCopy.order_date = orders_date;
+						deepCopy.order_id = fuelStationId;
+						deepCopy.order_number = fuelStationId;
+						deepCopy.tanks_replace_needed = false;
+        					deepCopy.tanks_replace_count = 0;
+						deepCopy.sod = "Заправка перед рейсом";
+						deepCopy.penalty = 5; // в минутах!
+						deepCopy.strings = [];
+						deepCopy.goods = [];
+						var allowedAutos = 
+						{
+							in_use: true,
+							id: recordAuto.get("id"),
+							name: recordAuto.get("name"),
+						};
+						deepCopy.allowed_autos = [allowedAutos];						
+						deepCopy.allowed_autos_backup = [allowedAutos];
+						orders.push(deepCopy);						
+
+						initial_route.push(orders.length-1);
+					}
+				}
+			}
+
+			if (recordAuto.get("in_use")) {
+				var autoIns = recordAuto.data;
+				autoIns.initial_route = initial_route;
+				autos.push(autoIns);
+			}
+
+			if (recordAuto.get("cost_k") != 1) {
+				useAutosCost = true;
+			}
 		}
+
+		task.parameters.use_autos_cost = useAutosCost;
 
 		//********************************************
 		// ТОВАРЫ
@@ -807,6 +889,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	sendDataToServer: function () {
+		Ext.getCmp('maintab2').unmask();
 		var mode = Ext.getCmp('distordersmode').getValue();
 
 		if (mode == 0) {

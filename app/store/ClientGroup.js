@@ -1,7 +1,7 @@
 Ext.define('Opt.store.ClientGroup', {
     	extend: 'Ext.data.Store',
     	model: 'Opt.model.ClientGroup',
-	autoLoad: true,
+	//autoLoad: true,
 	proxy: {
         	type: 'ajax',
 		url: 'api/db/db_1cbase',

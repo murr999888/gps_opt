@@ -20,21 +20,12 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 		fill: false,
 	},
 
-/*
-	layout: {
-		type: 'vbox',
-		align: 'stretch'
-	},
-*/
-
 	header: {
 		titlePosition: 0,
 	},
 
 	items: [
-
 		{
-
 			tools: [
 				{
 					type: 'refresh',
@@ -130,21 +121,30 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
                                         	data: [
 							{
        								id: 0,
-								name: 'Не рассчитывать',
+								name: '< не рассчитывать >',
     							}, 
 							{
        								id: 1,
-								name: '"Сначала заправить.."',
+								name: 'сначала заправить..',
     							}, 
 							{
        								id: 2,
-								name: 'По расходу топлива',
+								name: 'по расходу топлива',
     							}, 
 						]
 					},
 					matchFieldWidth: false,
 					listeners: {
 						select: 'onRefuelModeSelect',
+					},
+					stateful: true,
+					stateId: 'tab2formparamtab2refuelmode',
+					stateEvents: ['select'],
+        				getState: function(){
+						return {value: this.getValue()};
+					},
+        				applyState: function(state) {
+						this.setValue(state.value);
 					},
 				},
 				{

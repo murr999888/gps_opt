@@ -116,6 +116,11 @@ Ext.define('Opt.model.Auto', {
 			name: 'allowed_clientgroups',
 		},
 		{
+			name: 'fuel_gas',
+			type: 'boolean',
+                        defaultValue: false,
+		},
+		{
 			name: 'fuel_tank_capacity',
 			type: 'number',
                         defaultValue: 100,
@@ -137,8 +142,12 @@ Ext.define('Opt.model.Auto', {
 		},
 		{
 			name: 'fuel_first_station',
-			type: 'number',
-			defaultValue: 0,
+			type: 'string',
+			defaultValue: '0',
+		},
+
+		{
+			name: 'initial_route',
 		},
 
 		]

@@ -29,6 +29,7 @@ Ext.define('Opt.view.TrafficGrid', {
 				menuDisabled: true,
 				hideable: false,
 				sortable: false,
+				resizable: false,
 				text: '',       
 				width: 30,
 				renderer: 'getIcon',
@@ -57,6 +58,7 @@ Ext.define('Opt.view.TrafficGrid', {
 			},
 			{
 				hideable: true,
+				resizable: false,
 				xtype: 'checkcolumn',
 				text: '<>',
 				dataIndex: 'both_direction',

@@ -292,3 +292,7 @@ table.clusterPopupTable td {
     position: absolute;
     top: 0;
 }
+
+.vert_middle {
+	vertical-align: middle;
+}

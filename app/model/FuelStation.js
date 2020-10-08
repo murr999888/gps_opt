@@ -25,7 +25,7 @@ Ext.define('Opt.model.FuelStation', {
     			},
 			{	name:'displayField', 
 				convert: function(value, record) {
-					if (record.get('id')==0){
+					if (record.get('klient_id') == '0'){
 						return record.get('klient_name');
 					} else {
     						return record.get('klient_name') + ' (' + record.get('adres') + ')';
