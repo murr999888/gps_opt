@@ -72,9 +72,20 @@ Ext.define('Opt.view.OrdersGrid', {
 		{
 			text: '#',
 			align: 'right',
-			flex: 1,
+			//flex: 1,
+			width: 30,
 			dataIndex: 'num_in_routelist',
 			renderer: 'getNum',
+		},
+		{	
+			menuDisabled: true,
+			hideable: false,
+			sortable: false,
+			resizable: false,
+			text: '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>',       
+			width: 25,
+			renderer: 'getFuelIcon',
+			align: 'center',
 		},
 		{
 			text: 'Расст.',

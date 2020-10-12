@@ -21,6 +21,14 @@ Ext.define('Opt.view.OrdersGridController', {
 		Opt.ux.GridPrinter.print(grid);
 	},
 
+	getFuelIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		if (record.get('node_type') == 3) {
+			//metadata.tdCls = 'vert_middle';
+			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
+		}
+		return val;
+	},
+
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		if (record.get("node_type") != 0) this.openEditDialog(record, false);
 	},

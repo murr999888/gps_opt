@@ -137,6 +137,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					listeners: {
 						select: 'onRefuelModeSelect',
 					},
+					/*
 					stateful: true,
 					stateId: 'tab2formparamtab2refuelmode',
 					stateEvents: ['select'],
@@ -146,6 +147,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
         				applyState: function(state) {
 						this.setValue(state.value);
 					},
+					*/
 				},
 				{
 					xtype: 'checkbox',

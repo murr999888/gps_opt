@@ -8,4 +8,8 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.MainController', {
 	onWindowResize: function () {
 		Ext.getCmp('fuelstationsviewermap').doResize();
 	},
+
+	onShow: function(){
+		this.fireEvent("fuelstationsViewerShow");
+	},
 });

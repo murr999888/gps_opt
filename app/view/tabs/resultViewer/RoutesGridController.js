@@ -277,4 +277,12 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 		Ext.getCmp('resultviewerdroppedgrid').setTitle("Отброшенные заказы (" + droppedOrdersStore.count() + ")");
 		this.setRouteToMap(record);
 	},
+
+	getIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		if (record.get('isRefueled')) {
+			metadata.tdCls = 'vert_middle';
+			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
+		}
+		return val;
+	},
 });

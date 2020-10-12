@@ -9,10 +9,14 @@ Ext.define('Opt.view.Main', {
 
 	layout: 'fit',
 
-	items: [{
+	items: [
+
+		{
 		xtype: 'maintab',
 		id: 'maintab',
 		title: 'Оптимизация и планирование (' + socketSrv + ')',
-	},],
+		},
+
+	],
 	controller: 'mainController',
 });

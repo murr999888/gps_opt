@@ -14,6 +14,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 		controller: {
 			'*': {
 				fuelstationsviewermapRender: 'onMapRender',
+				fuelstationsViewerShow: 'setGridTitle',
 			}
 		},
 	},
@@ -25,7 +26,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 		var store = this.getView().store;
 		store.sort('klient_name', 'ASC');
 
-		store.on('datachanged', function(){
+		store.on('update', function(){
 			self.setGridTitle();
 		});
 
@@ -36,7 +37,16 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 
 	setGridTitle: function(){
         	var store = this.getView().store;
-		this.getView().setTitle("Список заправок (" + store.count() + ")");	
+
+		var inUseCount = 0;
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		var checkedStr = '';
+		if (inUseCount > 0) checkedStr = '&#10003; ' + inUseCount + ' ';
+		this.getView().setTitle('Список заправок ' + checkedStr + '(' + store.count() + ')');
 	},
 
 	printTable: function () {
@@ -134,6 +144,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 				store.resumeEvents();
 				grid.unmask();
 				grid.view.refresh();
+				self.setGridTitle();
 				self.showFuelStationsOnMap();
 			},
 

@@ -31,15 +31,17 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			proxy: {
 				type: 'memory',
 			},
-			listeners: {
-				load: function (store, records, successful, operation, eOpts) {
-					self.setTitle('');
-				}
-			},
-
 		});
 
 		Ext.getCmp('tab2ordersgrid').setStore(this.ordersStore);
+
+		this.ordersStore.on('load', function(){
+			this.fireEvent('tab2ordergridsettitle');
+		});
+
+		this.ordersStore.on('update', function(){
+			this.fireEvent('tab2ordergridsettitle');
+		});
 	},
 
 	onResize: function(panel, width, height, oldWidth, oldHeight, eOpts ) {
@@ -160,6 +162,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				store.sync();
 				store.resumeEvents();
 				store.fireEvent('load');
+				self.fireEvent('tab2ordergridsettitle');
 
 				Ext.getCmp('tab2ordersgrid').view.refresh()
 
@@ -177,11 +180,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				Ext.getCmp('tab2ordersgrid').unmask();
 			}
 		});
-	},
-
-	setTitle: function (filterString) {
-		var store = this.ordersStore;
-		Ext.getCmp("tab2ordersgrid").setTitle("Заказы (" + store.count() + ")" + filterString);
 	},
 
 	setFilter: function () {
@@ -297,7 +295,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 			this.ordersStore.resumeEvents();
 			Ext.getCmp('tab2ordersgrid').view.refresh();
-			this.setTitle(" (фильтр)");
+			this.fireEvent('tab2ordergridsettitle', " (фильтр)");
 		}
 	},
 
@@ -327,7 +325,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		this.ordersStore.clearFilter();
 		this.ordersStore.remoteFilter = false;
 		this.ordersStore.filter();
-		this.setTitle('');
+		this.fireEvent('tab2ordergridsettitle');
 
 		this.ordersStore.resumeEvents();
 		Ext.getCmp('tab2ordersgrid').view.refresh();
@@ -479,6 +477,35 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 		}
 
+		if (refuelmode==2) {
+                	var store = Ext.getStore("FuelStations");
+			if (store.count()==0) {
+				Ext.getCmp('maintab2').unmask();
+	                        Ext.Msg.alert({
+					title: 'Внимание',
+					message: 'Пустой список заправок!',
+					buttons: Ext.Msg.OK,
+				});
+				return;
+			}
+
+			var inUseCount = 0;
+			store.each(function(record){
+				if(record.get("in_use")){
+					inUseCount++;
+				}
+			});
+			if (inUseCount == 0) {
+				Ext.getCmp('maintab2').unmask();
+	                        Ext.Msg.alert({
+					title: 'Внимание',
+					message: 'Нет заправок, отмеченных для расчета!',
+					buttons: Ext.Msg.OK,
+				});
+				return;
+			}
+		}
+
 		var storeOrders = this.ordersStore;
 		var ordersCheckArr = [];
 		for (var i = 0; i < storeOrders.count(); i++) {
@@ -544,7 +571,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
 
-		Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
+		this.fireEvent('tab2droppedgridsettitle');
 
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
@@ -615,52 +642,80 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var useAutosCost = false;
 
                 var refuelmode = Ext.getCmp('formparamtab2refuelmode').getValue();		
+		var fuelStationStore = Ext.getStore("FuelStations");
 
 		for (var i = 0; i < storeAutos.count(); i++) {
 			var recordAuto = storeAutos.getAt(i);
-			var initial_route = [];
+			if (recordAuto.get("in_use")) {
+		                if (refuelmode == 1) { 
+					var initial_route = [];
+					if (recordAuto.get("fuel_first_station") != '0') {
+						var fuelStationId = recordAuto.get("fuel_first_station");
+						var fuelStation = fuelStationStore.findRecord("klient_id", fuelStationId);
 
-	                if (refuelmode == 1) {
-				if (recordAuto.get("in_use") && recordAuto.get("fuel_first_station") != '0') {
-					var fuelStationId = recordAuto.get("fuel_first_station");
-					var fuelStationStore = Ext.getStore("FuelStations");
-					var fuelStation = fuelStationStore.findRecord("klient_id", fuelStationId);
-
-					if (fuelStation){
-						var deepCopy = $.extend(true, {}, fuelStation.data);					
-						//deepCopy.klient_group_id = 'fuel_stations';
-						deepCopy.order_date = orders_date;
-						deepCopy.order_id = fuelStationId;
-						deepCopy.order_number = fuelStationId;
-						deepCopy.tanks_replace_needed = false;
-        					deepCopy.tanks_replace_count = 0;
-						deepCopy.sod = "Заправка перед рейсом";
-						deepCopy.penalty = 5; // в минутах!
-						deepCopy.strings = [];
-						deepCopy.goods = [];
-						var allowedAutos = 
-						{
-							in_use: true,
-							id: recordAuto.get("id"),
-							name: recordAuto.get("name"),
-						};
-						deepCopy.allowed_autos = [allowedAutos];						
-						deepCopy.allowed_autos_backup = [allowedAutos];
-						orders.push(deepCopy);						
-
-						initial_route.push(orders.length-1);
+						if (fuelStation){
+							var deepCopy = $.extend(true, {}, fuelStation.data);					
+							//deepCopy.klient_group_id = 'fuel_stations';
+							deepCopy.order_date = orders_date;
+							deepCopy.order_id = fuelStationId;
+							deepCopy.order_number = fuelStationId;
+							deepCopy.tanks_replace_needed = false;
+       		 					deepCopy.tanks_replace_count = 0;
+							deepCopy.dop = "Заправка перед рейсом";
+							deepCopy.penalty = 0; // в минутах!
+							deepCopy.strings = [];
+							deepCopy.goods = [];
+							var allowedAutos = 
+							{
+								in_use: true,
+								id: recordAuto.get("id"),
+								name: recordAuto.get("name"),
+							};
+							deepCopy.allowed_autos = [allowedAutos];						
+							deepCopy.allowed_autos_backup = [allowedAutos];
+							orders.push(deepCopy);						
+					
+							initial_route.push(orders.length-1);
+						}
 					}
 				}
-			}
 
-			if (recordAuto.get("in_use")) {
+				if (refuelmode == 2) {  // заправка по расходу
+					// добавляем всем машинам все заправки
+					for (var j = 0; j < fuelStationStore.count(); j++) {
+						var fuelStation = fuelStationStore.getAt(j);
+                				if (fuelStation && fuelStation.get("in_use") && (fuelStation.get("gas") == recordAuto.get("fuel_gas"))){
+							var deepCopy = $.extend(true, {}, fuelStation.data);					
+							//deepCopy.klient_group_id = 'fuel_stations';
+							deepCopy.order_date = orders_date;
+							deepCopy.order_id = fuelStationId;
+							deepCopy.order_number = fuelStationId;
+							deepCopy.tanks_replace_needed = false;
+       								deepCopy.tanks_replace_count = 0;
+							deepCopy.dop = "Заправка";
+							deepCopy.penalty = 0; // в минутах!
+							deepCopy.strings = [];
+							deepCopy.goods = [];
+							var allowedAutos = 
+							{
+								in_use: true,
+								id: recordAuto.get("id"),
+								name: recordAuto.get("name"),
+							};
+							deepCopy.allowed_autos = [allowedAutos];						
+							deepCopy.allowed_autos_backup = [allowedAutos];
+							orders.push(deepCopy);						
+						}
+					}
+				}
+
 				var autoIns = recordAuto.data;
 				autoIns.initial_route = initial_route;
 				autos.push(autoIns);
-			}
-
-			if (recordAuto.get("cost_k") != 1) {
-				useAutosCost = true;
+				
+				if (recordAuto.get("cost_k") != 1) {
+					useAutosCost = true;
+				}
 			}
 		}
 
@@ -702,7 +757,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
+		this.fireEvent('tab2droppedgridsettitle');
 		clearStore('tab2droppedgrid');
 
 		var form = Ext.getCmp('formparamtab2');
@@ -893,7 +948,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var mode = Ext.getCmp('distordersmode').getValue();
 
 		if (mode == 0) {
-			Ext.getCmp('tab2routesgrid').setTitle("Маршрутные листы");
+			this.fireEvent('tab2routesgridsettitle');
 			this.sendForDistributeOrders();
 			return;
 		}
@@ -1029,9 +1084,9 @@ console.log(data);
 			storeDroppedOrders.resumeEvents();
 			Ext.getCmp('tab2droppedgrid').view.refresh();
 			
-			Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы (" + storeDroppedOrders.count() + ")");
+			this.fireEvent('tab2droppedgridsettitle');
 		} else {
-			Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
+			this.fireEvent('tab2droppedgridsettitle');
 		}
 
 		if (data.goods.length > 0) {
@@ -1087,7 +1142,7 @@ console.log(data);
 			addAndPlay(sndFile);
 		}, 0);
 
-		this.setRoutesGridTitle(stat);
+		this.fireEvent('tab2routesgridsettitle', stat);
 
 		Ext.create('Opt.view.dialog.MessageWindow',{
 			renderTo: 'maintab2',
@@ -1096,14 +1151,10 @@ console.log(data);
 		}).show();
 	},
 
-	setRoutesGridTitle: function(stat){
-		Ext.getCmp('tab2routesgrid').setTitle('Маршрутные листы (<span title="Общее количество">' + stat.routes_count + '</span>) <span title="Сумма длин всех маршрутов">' + stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(stat.total_duration) + '</span>, заказов (' + stat.orders_routes_count + ')');
-	},
-
 	startTimerMask: function () {
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
-		var timerDecr = formVal.maxsolvetime * 60 + 5;
+		var timerDecr = formVal.maxsolvetime * 60;
 		var timerIncr = 1;
 		Ext.getCmp('maintab2').mask();
 		this.timerWindow = Ext.create('Opt.view.dialog.WaitingCalc', {constrainTo: 'maintab2', renderTo:'maintab2', timerDecr: timerDecr, timerIncr: timerIncr});
@@ -1126,9 +1177,9 @@ console.log(data);
 		clearStore('OrdersGoodsStore');
 		clearStore('RoutesGoodsStore');
 
-		Ext.getCmp('tab2routesgrid').setTitle("Маршрутные листы");
-		Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
-		Ext.getCmp("tab2ordersgrid").setTitle("Заказы");
+		this.fireEvent('tab2routesgridsettitle');
+		this.fireEvent('tab2droppedgridsettitle');
+		this.fireEvent('tab2ordergridsettitle');
 	},
 
 	clearData: function () {
@@ -1237,10 +1288,10 @@ console.log(data);
 			};
 
 			storeDroppedOrders.loadData(arrOrders);
-			Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы (" + storeDroppedOrders.count() + ")");
+			this.fireEvent('tab2droppedgridsettitle');
 			Ext.getCmp('tab2droppedgrid').expand();
 		} else {
-			Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
+			this.fireEvent('tab2droppedgridsettitle');
 		}
 
 		if (data.goods.length > 0) {

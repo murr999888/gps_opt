@@ -8,59 +8,12 @@ Ext.define('Opt.view.tabs.MainTab', {
 		'Opt.view.tabs.tab3.MainTab3',
 		'Opt.view.tabs.tab99.MainTab99',
 	],
-/*
-initComponent: function() {
-        this.width = 560;
-
-        this.tbar = [{
-            xtype:'splitbutton',
-            text:'Menu Button',
-            iconCls: null,
-            glyph: 61,
-            menu:[{
-                text:'Menu Button 1'
-            }]
-        }, '-', {
-            xtype:'splitbutton',
-            text:'Cut',
-            iconCls: null,
-            glyph: 67,
-            menu: [{
-                text:'Cut Menu Item'
-            }]
-        }, {
-            iconCls: null,
-            glyph: 102,
-            text:'Copy'
-        }, {
-            text:'Paste',
-            iconCls: null,
-            glyph: 70,
-            menu:[{
-                text:'Paste Menu Item'
-            }]
-        }, '-', {
-            iconCls: null,
-            glyph: 76,
-            text:'Format'
-        }];
-        this.callParent();
-    },
-*/
 	id: 'maintab',
 	deferredRender: false,
 	activeTab: 0,
 	border: 0,
 	header: {
 		items: [
-
-/*
-			{
-			 	xtype:'button',
-				handler: 'runF',
-			},
-*/
-
 			{
 				xtype: 'button',
 				text: 'Выход',

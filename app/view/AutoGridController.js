@@ -101,6 +101,7 @@ Ext.define('Opt.view.AutoGridController', {
 	},
 
 	getNumbers: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		metadata.style = 'text-align: right;'; 
 		if (val == 0) {
 			return "";
 		}
@@ -114,7 +115,7 @@ Ext.define('Opt.view.AutoGridController', {
 
 	getFuelIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
 		if (record.get('fuel_first_station') != 0) {
-			metadata.tdCls = 'vert_middle';
+			//metadata.tdCls = 'vert_middle';
 			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
 		}
 		return val;

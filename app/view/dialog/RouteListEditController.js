@@ -2,6 +2,12 @@ Ext.define('Opt.view.dialog.RouteListEditController', {
 	extend: 'Opt.view.dialog.BaseEditController',
 	alias: 'controller.routelistedit',
 
+	onShow: function(){
+		var ordersGrid = this.getView().down('ordersgridpanel');
+		var ordersStore = ordersGrid.getStore();
+		ordersGrid.setTitle("Заказы (" + (ordersStore.count()-2) +")");
+	},
+
 	onDriverSelect: function (combo, record, eOpts) {
 		var form = this.lookupReference('form').getForm();
 		form.setValues({

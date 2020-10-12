@@ -12,8 +12,17 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		controller: {
 			'*': {
 				distributed_orders_change_date: 'distributed_orders_change_date',
+				tab2routesgridsettitle: 'setTitle',
 			}
 		}
+	},
+
+	setTitle: function(stat){
+		strTitle = 'Маршрутные листы';
+		if (stat) {
+			strTitle = 'Маршрутные листы (<span title="Общее количество">' + stat.routes_count + '</span>) <span title="Сумма длин всех маршрутов">' + stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(stat.total_duration) + '</span>, заказов (' + stat.orders_routes_count + ')';
+		}
+       		this.getView().setTitle(strTitle);
 	},
 
 	init: function () {
@@ -70,9 +79,11 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
-		this.getView().suspendEvents();
-		this.getView().store.commitChanges();
-		this.getView().resumeEvents();
+		var store = this.getView().getStore();
+		store.suspendEvents();
+		store.commitChanges();
+		store.resumeEvents();
+		this.getView().view.refresh();
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
@@ -104,6 +115,19 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		});
 
 		this.routelistEdit.show().focus();
+/*
+		if (record.get('isRefueled')) {
+			Ext.getCmp('routelistedit_icon_refuel').setSrc('css/images/gas_station_32x32.png');
+		} else {
+	                Ext.getCmp('routelistedit_icon_refuel').setSrc('');
+		}
+*/
+
+		if (record.get('isReloaded')) {
+			Ext.getCmp('routelistedit_icon_reload').setSrc('css/images/truck_load3_32x32.png');
+		} else {
+	                Ext.getCmp('routelistedit_icon_reload').setSrc('');
+		}
 
 	},
 
@@ -145,7 +169,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		this.viewer.show();
 		this.viewer.focus();
 		Ext.getCmp('resultviewerroutesgrid').focus();
-
 		if (this.viewer.mapRendered) this.fireEvent("resultviewermapRender");
 	},
 
@@ -424,5 +447,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		goodsGrid.setStore(Ext.getStore('RoutesGoodsStore'));
 		this.editDialog.show();
 		this.editDialog.focus();
+	},
+
+	getIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		if (record.get('isRefueled')) {
+			metadata.tdCls = 'vert_middle';
+			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
+		}
+		return val;
 	},
 });

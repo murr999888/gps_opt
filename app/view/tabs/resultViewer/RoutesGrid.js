@@ -48,16 +48,17 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 					headercheckchange: 'onHeaderCheckChange',
 				}
 			},
-/*
-			{
-				text: '#',
-				align: 'right',
-				width: 30,
-				renderer: function (value, metaData, record, rowIndex) {
-					return rowIndex + 1;
-				}
+			{	
+				menuDisabled: true,
+				hideable: false,
+				sortable: false,
+				resizable: false,
+				//text: '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>',       
+				text: '?',
+				width: 25,
+				renderer: 'getIcon',
+				align: 'center',
 			},
-*/
 			{
 				hideable: false,
 				text: 'Машина',

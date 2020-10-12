@@ -36,9 +36,41 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 
 					items: [
 						{
-							xtype: 'field',
-							name: 'date_1',
-							fieldLabel: 'Дата',
+							xtype: 'fieldcontainer',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'field',
+									name: 'date_1',
+									fieldLabel: 'Дата',
+									width: 145,
+									labelWidth: 60,
+									padding: '0 5px 0 0',
+								},
+								{
+									xtype: 'image',
+									id: 'routelistedit_icon_refuel',
+									src: 'css/images/gas_station_32x32.png',
+									width: 20,
+									margin: 2,
+								},
+								{
+									xtype: 'field',
+									name: 'refuel_capacity',
+									width: 50,
+									labelWidth: 60,
+									padding: '0 5px 0 0',
+									fieldCls: 'right',
+								},
+								{
+									xtype: 'image',
+									id: 'routelistedit_icon_reload',
+									src: '',
+									width: 20,
+									margin: 2,
+								},
+								
+							],
 						},
 
 						{

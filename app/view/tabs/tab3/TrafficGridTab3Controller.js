@@ -10,6 +10,16 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 	requires: [
 		'Opt.view.dialog.TrafficEdit.TrafficEditMain',
 	],
+	
+	loadMask: null,
+
+	afterRender: function(){
+      		this.loadMask = new Ext.LoadMask({
+   			msg    : 'Ждите окончания выполнения запроса ...',
+    			target : Ext.getCmp('maintab3'),
+			style: 'z-index: 1000;',
+		});
+	},
 
 	sendTraffic: function(){
 		var self = this;
@@ -29,6 +39,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 	},
 
 	sendTrafficToOSRM: function(){
+		var self = this;
 		var store = this.getView().getStore();
 
 		var data = [];
@@ -50,7 +61,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 			data: data
 		};
 
-		Ext.getCmp('tab3left').mask("Ждите окончания запроса ...")
+		this.loadMask.show();
 
 		Ext.Ajax.request({
 			url: 'api/db/vrp',
@@ -61,12 +72,12 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
  				try {
 					respObj = Ext.JSON.decode(response.responseText);
 			        } catch(error) {
-					Ext.getCmp('tab3left').unmask();
+					Ext.getCmp('maintab3').unmask();
 					Opt.app.showError("Ошибка!", error.message);
 					return;
         			}
 
-				Ext.getCmp('tab3left').unmask();
+				self.loadMask.hide();
 
 				if (respObj.success) {
 					Ext.Msg.alert("Внимание!", respObj.message + '<br />' + respObj.data);
@@ -74,7 +85,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 			},
 
 			failure: function (response) {
-				Ext.getCmp('tab3left').unmask();
+				self.loadMask.hide();
 				Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
 			}
 		});

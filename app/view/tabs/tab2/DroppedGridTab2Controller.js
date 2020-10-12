@@ -6,6 +6,24 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		'Opt.view.dialog.OrderEdit',
 	],
 
+	listen: {
+		controller: {
+			'*': {
+				tab2droppedgridsettitle: 'setTitle',
+			}
+		}
+	},
+
+	setTitle: function (filterString) {
+		if (!filterString) filterString = '';
+		var store = this.getView().getStore();
+		if (!store) {
+			this.getView().setTitle('Отброшенные заказы');
+			return;
+		}
+		this.getView().setTitle('Отброшенные заказы ' + '(' + store.count() + ') ' + filterString);
+	},
+
 	init: function () {
 		var self = this;
 		this.getView().getSelectionModel().setSelectionMode('MULTI');

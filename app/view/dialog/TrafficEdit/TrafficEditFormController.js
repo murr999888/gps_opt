@@ -97,7 +97,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditFormController', {
 				var geometryJson = JSON.parse(geometry);
         			mapCmp.setTrafficLineFromRecord(geometryJson);
 			} catch {
-
+				console.log('error JSON.parse');
 			}
 		}
 

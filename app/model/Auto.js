@@ -145,7 +145,11 @@ Ext.define('Opt.model.Auto', {
 			type: 'string',
 			defaultValue: '0',
 		},
-
+		{
+			name: 'fuel_full_tank',
+			type: 'boolean',
+			defaultValue: false,
+		},
 		{
 			name: 'initial_route',
 		},

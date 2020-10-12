@@ -222,6 +222,5 @@ Ext.define('Opt.model.RouteLegs', {
         		type: 'number',
 			defaultValue: 0,
     		},
-
 	],
 });

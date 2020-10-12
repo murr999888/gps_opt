@@ -139,6 +139,7 @@ Ext.define('Opt.controller.Root', {
                 Opt.app.showToast('Внимание!', 'Потеряно соединение с сервером..');
                 self.lastWSStateConnected = false;
                 self.fireEvent("serverDisconnect");
+		console.log("serverDisconnect");
             }
 
             setTimeout(function() {

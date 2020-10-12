@@ -13,6 +13,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		controller: {
 			'*': {
 				distributed_orders_change_date: 'distributed_orders_change_date',
+				tab2ordergridsettitle: 'setTitle',
 			}
 		}
 	},
@@ -92,19 +93,42 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		return str;
 	},
 
+	setTitle: function (filterString) {
+		var store = this.getView().getStore();
+		if (!store) {
+			this.getView().setTitle('Заказы');
+			return;
+		}
+
+		if (!filterString) filterString = '';
+		var inUseCount = 0;
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		var checkedStr = '';
+		if (inUseCount>0) checkedStr = ' &#10003; ' + inUseCount + ' ';
+		this.getView().setTitle('Заказы ' + checkedStr + '(' + store.count() + ') ' + filterString);
+	},
+
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		this.openEditDialog(record);
 	},
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
+		this.setTitle();
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
 		var store = this.getView().store;
+		//store.suspendEvents();
 		store.commitChanges();
+		//store.save();
 		store.resumeEvents();
 		this.getView().view.refresh();
+		this.setTitle('');
 	},
 
 	beforeHeaderCheckChange: function (column, checked, e, eOpts) {

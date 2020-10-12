@@ -12,6 +12,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	},
 
 	init: function () {
+		var self = this;
 		this.getView().getSelectionModel().setSelectionMode('MULTI')
 		if (testmode) {
 			var menu = Ext.getCmp('tab2autosgridmenubuttonChange').menu;
@@ -28,6 +29,11 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 				}
 			);
 		}
+
+		var store = this.getView().getStore();
+		store.on('update', function(){
+			self.setTitle();
+		});
 	},
 
 	afterRender: function () {
@@ -209,6 +215,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 					store.resumeEvents();
 					self.getView().view.refresh();
 					grid.unmask();
+					self.setTitle();
 				});
 
 				storeDrivers.load();
@@ -514,7 +521,16 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	setTitle: function (filterString) {
 		if (!filterString) filterString = '';
-		this.getView().setTitle('Машины' + filterString);
+		var store = this.getView().getStore();
+		var inUseCount = 0;
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		var checkedStr = '';
+		if (inUseCount>0) checkedStr = ' &#10003; ' + inUseCount + ' ';
+		this.getView().setTitle('Машины ' + checkedStr + '(' + store.count() + ') ' + filterString);
 	},
 
 	refreshDrivers: function(){
@@ -637,6 +653,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 				store.save();
 				store.resumeEvents();
 				self.getView().view.refresh();
+				self.setTitle();
 			},
 
 			failure: function (response) {
@@ -659,7 +676,9 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		store.each(function(record){
 			record.set("fuel_first_station", '0');
 		});
+		store.save();
 		store.resumeEvents();
 		this.getView().view.refresh();
+		Ext.getCmp('formparamtab2refuelmode').setValue(0);
 	},
 });

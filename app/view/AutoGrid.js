@@ -106,7 +106,6 @@ Ext.define('Opt.view.AutoGrid', {
 			hideable: true,
 			hidden: true,
 		},
-
 		{
 			text: 'Выезд',
 			flex: 1,
@@ -125,13 +124,49 @@ Ext.define('Opt.view.AutoGrid', {
 			hidden: true,
 			hideable: true,
 		},
-
 		{
 			sortable: false,
 			text: 'Вмест.',
 			flex: 1,
 			renderer: 'getCapacity',
 			hideable: true,
+		},
+		{
+			hideable: true,
+			resizable: false,
+			xtype: 'checkcolumn',
+			tooltip: 'Топливо газ',
+			dataIndex: 'fuel_gas',
+			text: 'Г',
+			menuDisabled: true,
+			width: 25,
+			listeners: {
+        			beforecheckchange: function() {
+            					return false; // HERE
+        			}
+    			},
+		},
+		{
+			hideable: true,
+			sortable: false,
+			align: 'center',
+			text: 'Бак',
+			flex: 1,
+			dataIndex: 'fuel_tank_capacity',
+			hideable: true,
+			hidden: true,
+			renderer: 'getNumbers',
+		},
+		{
+			hideable: true,
+			sortable: false,
+			align: 'center',
+			text: 'Расх.',
+			flex: 1,
+			dataIndex: 'fuel_rate_by_100',
+			hideable: true,
+			hidden: true,
+			renderer: 'getNumbers',
 		},
 		]
 	},

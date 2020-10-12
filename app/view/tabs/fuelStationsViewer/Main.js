@@ -19,6 +19,14 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.Main', {
 		header: false,
 	},
 
+	listeners: {
+            	show: 'onShow', 
+		close: 'onClose', 
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',
+	},
+
 	items: [
 		{
 			animCollapse: false,

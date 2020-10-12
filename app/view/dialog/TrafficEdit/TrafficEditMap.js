@@ -138,7 +138,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 		}
 	},
 
-	getTrafficRoute(fromLatLon, toLatLon){
+	getTrafficRoute: function(fromLatLon, toLatLon){
 		var self = this;
 
 		fromPoint = new L.Routing.waypoint();

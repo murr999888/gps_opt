@@ -148,6 +148,17 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 					headercheckchange: 'onHeaderCheckChange',
 				}
 			},
+			{	
+				menuDisabled: true,
+				hideable: false,
+				sortable: false,
+				resizable: false,
+				//text: '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>',       
+				text: '?',
+				width: 25,
+				renderer: 'getIcon',
+				align: 'center',
+			},
 			{
 				hideable: false,
 				text: 'Машина',
@@ -231,7 +242,15 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 				sortable: true,	
 				hidden: false,
 			},
+			{
+				text: 'Запр.',
+				flex: 1,
+				align: 'right',
+				dataIndex: 'refuel_capacity',
+				hideable: true,
+				sortable: true,	
+				hidden: false,
+			},
 		]
-
 	},
 });

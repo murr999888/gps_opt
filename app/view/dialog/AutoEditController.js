@@ -14,6 +14,12 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 
 		this.refreshFuelStationStore();
 	},
+
+	onShow: function(){
+		var store = Ext.getCmp('autoEditFirstStation').getStore();
+		if (store && store.count() < 2) this.refreshFuelStationStore();
+		this.setFuelMaxValues();
+	},
 	
 	afterRender: function () {
 		this.rendered = true;
@@ -73,11 +79,6 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 		this.newFuelStationStore.remoteFilter = false;
 		this.newFuelStationStore.filter();
 		this.newFuelStationStore.resumeEvents();
-	},
-
-	onShow: function(){
-		var store = Ext.getCmp('autoEditFirstStation').getStore();
-		if (store && store.count() == 0) this.refreshFuelStationStore();
 	},
 
 	onWorktimeBeginChange: function (field, newValue, oldValue, eOpts) {
@@ -219,5 +220,35 @@ Ext.define('Opt.view.dialog.AutoEditController', {
 
 	refreshDriver: function () {
 		Ext.getStore('Drivers').reload();
+	},
+
+	setFuelMaxValues: function(){
+		var form = this.lookupReference('form').getForm();
+		var values = form.getValues();		
+		var tank_capacity = values.fuel_tank_capacity;
+		Ext.getCmp('autoEditFuelBalanceBegin').setMaxValue(tank_capacity);
+		Ext.getCmp('autoEditFuelBalanceMin').setMaxValue(tank_capacity);
+	},
+
+	onChangeFuelTankCapacity: function(field,newValue,oldValue,eOpts){
+		var form = this.lookupReference('form').getForm();
+		var values = form.getValues();
+		if (values.fuel_balance_begin > newValue) {
+			form.setValues(
+				{
+					fuel_balance_begin: newValue,
+				}
+			);		
+        	};
+
+		if (values.fuel_balance_min > newValue) {
+			form.setValues(
+				{
+					fuel_balance_min: newValue,
+				}
+			);		
+        	}
+
+		this.setFuelMaxValues();
 	},
 });

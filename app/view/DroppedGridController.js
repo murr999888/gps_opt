@@ -41,5 +41,4 @@ Ext.define('Opt.view.DroppedGridController', {
 		var str = record.get('city') + '<br />' + record.get('adres');
 		return str;
 	},
-
 });

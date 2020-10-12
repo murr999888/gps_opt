@@ -80,7 +80,7 @@ Ext.define('Opt.view.DroppedGrid', {
 
 				getClass: function (value, metaData, record) {
 					//console.log(metaData);
-					if (record.get("node_type") == 1) {
+					if (record.get("node_type") == 0) {
 						return '';
 					}
 					return 'fa far fa-green fa-edit';
@@ -88,7 +88,7 @@ Ext.define('Opt.view.DroppedGrid', {
 
 				isDisabled: function (view, rowIndex, colIndex, item, record) {
 					// Returns true if 'editable' is false (, null, or undefined)
-					return record.get('node_type') == 1;
+					return record.get('node_type') == 0;
 				}
 			}]
 		},
