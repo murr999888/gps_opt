@@ -33,8 +33,8 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGrid', {
 	tools: [
 		{
 			type: 'refresh',
-			handler: 'loadFuelStation',
-			tooltip: 'Загрузить'
+			handler: 'zoomFuelStation',
+			tooltip: 'Масштабировать'
 		},
 
 		{
@@ -42,6 +42,23 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGrid', {
 			handler: 'printTable',
 			tooltip: 'Печать'
 		}
+	],
+
+	dockedItems: [
+			{
+				xtype: 'toolbar',
+				dock: 'top',
+				items: [
+					{
+						xtype: 'button',
+						text: 'Получить',
+						handler: 'loadFuelStation',
+						//margin : '0 3px 0 3px',
+						iconCls: 'fa fa-download',
+						iconClsBck: 'fa fa-download',
+					}
+				]
+			}
 	],
 /*
 	dockedItems: 

@@ -325,10 +325,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		this.ordersStore.clearFilter();
 		this.ordersStore.remoteFilter = false;
 		this.ordersStore.filter();
-		this.fireEvent('tab2ordergridsettitle');
-
 		this.ordersStore.resumeEvents();
 		Ext.getCmp('tab2ordersgrid').view.refresh();
+		this.fireEvent('tab2ordergridsettitle');
 	},
 
 	clearField: function (field, button, e) {
@@ -572,6 +571,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		clearStore('tab2droppedgrid');
 
 		this.fireEvent('tab2droppedgridsettitle');
+		this.fireEvent('tab2routesgridsettitle', null);
 
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
@@ -580,7 +580,13 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var time_waiting = formVal.maxslacktime;
 		var max_orders_in_route = formVal.maxordersinroute;
 		var refuel_mode = formVal.refuelmode;
+
+		var refuel_full_tank = formVal.refuel_full_tank;
+		if (!refuel_full_tank) refuel_full_tank = false;
+
 		var use_guided_local_search = formVal.useGLS;
+
+		var solutionstrategy = formVal.solutionstrategy;
 
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
@@ -597,7 +603,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			time_waiting: time_waiting * 60,
 			max_orders_in_route: max_orders_in_route,
 			refuel_mode: refuel_mode,
+			refuel_full_tank: refuel_full_tank,
 			use_guided_local_search: use_guided_local_search,
+			solutionstrategy: solutionstrategy,
 		};
 
 		task.error = "";
@@ -1142,7 +1150,7 @@ console.log(data);
 			addAndPlay(sndFile);
 		}, 0);
 
-		this.fireEvent('tab2routesgridsettitle', stat);
+		this.fireEvent('tab2routesgridsetstat', stat);
 
 		Ext.create('Opt.view.dialog.MessageWindow',{
 			renderTo: 'maintab2',
@@ -1177,6 +1185,7 @@ console.log(data);
 		clearStore('OrdersGoodsStore');
 		clearStore('RoutesGoodsStore');
 
+		this.fireEvent('tab2routesgridsetstat', null);
 		this.fireEvent('tab2routesgridsettitle');
 		this.fireEvent('tab2droppedgridsettitle');
 		this.fireEvent('tab2ordergridsettitle');

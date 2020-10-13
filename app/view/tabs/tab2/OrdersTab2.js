@@ -65,15 +65,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_clientname',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2client',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,
@@ -117,15 +108,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_tochkaname',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2tochka',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,
@@ -169,15 +151,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_addr',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2addr',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,
@@ -220,15 +193,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_city',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2city',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,
@@ -271,15 +235,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_clientgroupselect',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2clientgroupselect',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,
@@ -323,15 +278,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'not_productselect',
 											fieldLabel: 'Не',
 											labelWidth: 20,
-											stateful: true,
-											stateId: 'not_formorderstab2productselect',
-											stateEvents: ['change', 'check'],
-											getState: function () {
-												return { "checked": this.getValue() };
-											},
-											applyState: function (state) {
-												this.setValue(state.checked);
-											},
 										},
 										{
 											labelWidth: 70,

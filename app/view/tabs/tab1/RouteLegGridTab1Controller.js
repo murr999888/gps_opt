@@ -10,12 +10,32 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 			'*': {
 				setServiceTimeTab1: 'setServiceTime',
 				setPenaltyTimeTab1: 'setPenaltyTime',
+				tab1SetRouteLegsTitle: 'setGridTitle',
 			}
 		}
 	},
 
 	init: function () {
 		this.getView().getSelectionModel().setSelectionMode('MULTI')
+
+		var store = this.getView().store;
+
+		store.on('load', function(){
+			self.setGridTitle();
+		});
+
+		store.on('update', function(){
+                       	self.setGridTitle();
+		});
+	},
+
+	setGridTitle: function(){
+        	var store = this.getView().store;
+		if (store.count() > 2){
+			this.getView().setTitle('Пункты назначения (' + (store.count()-2) + ')');
+		} else {
+                	this.getView().setTitle('Пункты назначения');
+		}
 	},
 
 	orderEdit: null,

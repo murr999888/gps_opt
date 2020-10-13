@@ -43,7 +43,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 									xtype: 'field',
 									name: 'date_1',
 									fieldLabel: 'Дата',
-									width: 145,
+									width: 130,
 									labelWidth: 60,
 									padding: '0 5px 0 0',
 								},
@@ -57,8 +57,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 								{
 									xtype: 'field',
 									name: 'refuel_capacity',
-									width: 50,
-									labelWidth: 60,
+									width: 30,
 									padding: '0 5px 0 0',
 									fieldCls: 'right',
 								},

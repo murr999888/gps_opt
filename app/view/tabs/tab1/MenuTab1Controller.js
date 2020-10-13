@@ -339,6 +339,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		}
 
 		//self.getWayPoints();
+		this.fireEvent('tab1SetRouteLegsTitle');
 		this.checkDestinations();
 	},
 
@@ -671,6 +672,7 @@ console.log("Время окончания запроса " + Date.now());
 		Ext.getCmp('maptab1').resetLayers();
 		Ext.getCmp('menutab1optimizebutton').setDisabled(true);
 		Ext.getCmp('menutab1savetrack').setDisabled(true);
+		this.fireEvent('tab1SetRouteLegsTitle');
 	},
 
 	resetMap: function () {

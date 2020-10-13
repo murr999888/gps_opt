@@ -108,7 +108,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			}
 		});
 		var checkedStr = '';
-		if (inUseCount>0) checkedStr = ' &#10003; ' + inUseCount + ' ';
+		if (inUseCount>0) checkedStr = ' &#10003;' + inUseCount + ' ';
 		this.getView().setTitle('Заказы ' + checkedStr + '(' + store.count() + ') ' + filterString);
 	},
 
@@ -123,11 +123,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
 		var store = this.getView().store;
-		//store.suspendEvents();
 		store.commitChanges();
-		//store.save();
 		store.resumeEvents();
+		Ext.suspendLayouts();
 		this.getView().view.refresh();
+		Ext.resumeLayouts();
 		this.setTitle('');
 	},
 

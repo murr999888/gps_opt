@@ -11,11 +11,25 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			maxsolvetime: 60,
 			maxordersinroute: 0,
 			refuelmode: 0,
+			refuel_full_tank: false,
 			useGLS: false,
 		});
 	},
 
 	onDateChange: function (field, newValue, oldValue, eOpts) {
 		this.fireEvent("distributed_orders_change_date");
+	},
+
+	onRefuelModeSelect: function(combo, record, eOpts){
+		var form = Ext.getCmp("formparamtab2").getForm();
+		form.setValues({
+			refuel_full_tank: false,
+		});	
+
+		if (record.get("id") == 2) {
+			Ext.getCmp('formparamtab2refuel_full_tank').setDisabled(false);
+		} else {
+			Ext.getCmp('formparamtab2refuel_full_tank').setDisabled(true);
+		}
 	},
 });

@@ -8,20 +8,41 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		'Opt.ux.GridPrinter',
 	],
 
+	stat: null,
+
 	listen: {
 		controller: {
 			'*': {
 				distributed_orders_change_date: 'distributed_orders_change_date',
 				tab2routesgridsettitle: 'setTitle',
+				tab2routesgridsetstat: 'setStat',
 			}
 		}
 	},
 
-	setTitle: function(stat){
-		strTitle = 'Маршрутные листы';
-		if (stat) {
-			strTitle = 'Маршрутные листы (<span title="Общее количество">' + stat.routes_count + '</span>) <span title="Сумма длин всех маршрутов">' + stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(stat.total_duration) + '</span>, заказов (' + stat.orders_routes_count + ')';
+	setStat: function(stat){
+		this.stat = stat;
+		this.setTitle();
+	},
+
+	setTitle: function(){
+		var store = this.getView().getStore();
+		strTitle = 'Маршрутные листы ';
+		var inUseCount = 0;
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		var checkedStr = '';
+		if (inUseCount>0) checkedStr = '&#10003;' + inUseCount + ' ';
+
+		strTitle = strTitle + checkedStr + '(' + store.count() + ') '
+
+		if (this.stat) {
+			 strTitle = strTitle + '<span title="Сумма длин всех маршрутов">' + this.stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(this.stat.total_duration) + '</span>, заказов (' + this.stat.orders_routes_count + ')';
 		}
+
        		this.getView().setTitle(strTitle);
 	},
 
@@ -48,6 +69,15 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		routeGoodsStore.on('remove', function(){
 			self.setGetGoodsButton();
+		});
+
+		var store = this.getView().getStore();
+		store.on('load', function(){
+			self.setTitle();
+		});
+
+		store.on('update', function(){
+                       	self.setTitle();
 		});
 	},
 
@@ -76,6 +106,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
+		this.setTitle();
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
@@ -84,6 +115,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		store.commitChanges();
 		store.resumeEvents();
 		this.getView().view.refresh();
+		this.setTitle();
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {

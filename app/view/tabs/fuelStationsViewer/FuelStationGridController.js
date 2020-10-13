@@ -45,7 +45,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 			}
 		});
 		var checkedStr = '';
-		if (inUseCount > 0) checkedStr = '&#10003; ' + inUseCount + ' ';
+		if (inUseCount > 0) checkedStr = '&#10003;' + inUseCount + ' ';
 		this.getView().setTitle('Список заправок ' + checkedStr + '(' + store.count() + ')');
 	},
 
@@ -104,7 +104,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 		Ext.getCmp('fuelstationsviewermap').resetFuelStations();
 	},
 
-	loadFuelStation: function(){
+	loadFuelStationFromNN: function(){
 		var self = this;
 		var params = {
 			param: 'fuelStations'
@@ -154,8 +154,29 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 			}
 		});
 	},
+	
+	loadFuelStation: function(){
+		var self = this;
+		Ext.Msg.show({
+			title: 'Внимание',
+			message: 'Данные будут загружены. Все изменения будут сброшены.<br />Продолжить?',
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.QUESTION,
+			fn: function (btn) {
+				if (btn === 'yes') {
+					self.loadFuelStationFromNN();
+				} else if (btn === 'no') {
+					return;
+				}
+			}
+		});
+	},
 
 	onMapRender: function (comp, map, layers) {
 		this.showFuelStationsOnMap();
+	},
+
+	zoomFuelStation: function(){
+		Ext.getCmp('fuelstationsviewermap').markersFitBounds();
 	},
 });

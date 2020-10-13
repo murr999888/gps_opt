@@ -41,7 +41,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'form',
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
-                        height: 195,
+                        height: 250,
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
@@ -149,6 +149,78 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					},
 					*/
 				},
+				{
+					xtype: 'checkbox',
+					name: 'refuel_full_tank',
+					id: 'formparamtab2refuel_full_tank',
+					checked: false,
+					inputValue: true,
+					uncheckedValue: false,
+					fieldLabel: 'Заправка по расходу "до полного"',
+					labelWidth: 237,
+					disabled: true,
+				},
+				{
+					readOnly: false,
+					editable: false,
+					xtype: 'combobox',
+					id: 'formparamtab2solutionstrategy',
+					name: 'solutionstrategy',
+					fieldLabel: 'Алгоритм',
+					emptyText: '< нет данных >',
+					queryMode: 'local',
+					displayField: 'name',
+					valueField: 'id',
+					value: 15,
+					store: {
+                                        	data: [
+							{
+								id: 15,
+       								name: 'Automatic',
+    							}, 
+							{
+								id: 3,
+       								name: 'PathCheapestArc',
+    							}, 
+							{
+       								id: 10,
+								name: 'Savings',
+    							}, 
+							{
+       								id: 6,
+								name: 'AllUnperformed',
+    							}, 
+							{
+       								id: 1,
+								name: 'GlobalCheapestArc',
+    							}, 
+							{
+       								id: 2,
+								name: 'LocalCheapestArc',
+    							}, 
+							{
+       								id: 12,
+								name: 'FirstUnboundMinValue',
+    							},
+						]
+					},
+					matchFieldWidth: false,
+					listeners: {
+						//select: 'onRefuelModeSelect',
+					},
+					/*
+					stateful: true,
+					stateId: 'tab2formparamtab2refuelmode',
+					stateEvents: ['select'],
+        				getState: function(){
+						return {value: this.getValue()};
+					},
+        				applyState: function(state) {
+						this.setValue(state.value);
+					},
+					*/
+				},
+
 				{
 					xtype: 'checkbox',
 					name: 'useGLS',

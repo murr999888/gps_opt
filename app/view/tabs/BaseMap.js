@@ -238,6 +238,17 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					fillOpacity: 1,
 					opacity: 1
 				});
+
+				if (feature.properties.node_type != null && feature.properties.node_type == 3) {
+					var point = new L.circleMarker(latlng, {
+						radius: 8,
+						fillColor: "rgba(1, 237, 255, 1)",
+						color: "blue",
+						weight: 4,
+						fillOpacity: 1,
+						opacity: 1
+					});
+				}
 				return point;
 			},
 
@@ -519,7 +530,8 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					naim: record.get("full_name"),
 					adres: record.get("adres"),
 					vremya: record.get("timewindow_string"),
-					sod: record.get("sod")
+					sod: record.get("sod"),
+					node_type: record.get("node_type"),					
 				}
 			};
 

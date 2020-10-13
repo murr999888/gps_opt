@@ -34,6 +34,45 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		store.on('update', function(){
 			self.setTitle();
 		});
+
+		var storeFuelStations = Ext.getStore('FuelStations');
+		storeFuelStations.on('load', function(){
+			self.setFuelStationsButtonTitle();
+		});
+
+		storeFuelStations.on('update', function(){
+                       	self.setFuelStationsButtonTitle();
+		});
+	},
+
+	setTitle: function (filterString) {
+		if (!filterString) filterString = '';
+		var store = this.getView().getStore();
+		var inUseCount = 0;
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		var checkedStr = '';
+		if (inUseCount>0) checkedStr = ' &#10003;' + inUseCount + ' ';
+		this.getView().setTitle('Машины ' + checkedStr + '(' + store.count() + ') ' + filterString);
+	},
+
+	setFuelStationsButtonTitle: function(){
+		var store = Ext.getStore('FuelStations');
+		var storeCount = 0;
+		checkedStr='';
+		var inUseCount = 0;
+
+		store.each(function(record){
+			if(record.get("in_use")){
+				inUseCount++;
+			}
+		});
+		
+		if (inUseCount>0) checkedStr = ' &#10003;' + inUseCount + ' ';
+		Ext.getCmp('tab2fuelstationbutton').setText('<b>Заправки ' + checkedStr + '(' + store.count() + ')<b/>');
 	},
 
 	afterRender: function () {
@@ -44,6 +83,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		}
 
 		this.setTitle();
+		this.setFuelStationsButtonTitle();
 	},
 
 	setAutosGroupMenu: function () {
@@ -517,20 +557,6 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	gridRefresh: function () {
 		this.getView().view.refresh();
-	},
-
-	setTitle: function (filterString) {
-		if (!filterString) filterString = '';
-		var store = this.getView().getStore();
-		var inUseCount = 0;
-		store.each(function(record){
-			if(record.get("in_use")){
-				inUseCount++;
-			}
-		});
-		var checkedStr = '';
-		if (inUseCount>0) checkedStr = ' &#10003; ' + inUseCount + ' ';
-		this.getView().setTitle('Машины ' + checkedStr + '(' + store.count() + ') ' + filterString);
 	},
 
 	refreshDrivers: function(){

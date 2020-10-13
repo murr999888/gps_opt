@@ -28,19 +28,19 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 		preserveScrollOnRefresh: false,
 		getRowClass: function (record, rowIndex, rowParams, store) {
 			var cl = '';
-			if (!record.get('in_use') == true) {
+			if (!record.get('in_use')) {
 				cl = cl + ' row-bk-grey';
 			}
 
-			if (record.get('timewindow_begin') > record.get('timewindow_end')) {
-				cl = cl + ' bkRed row-bk-white';
-			}
+//			if (record.get('timewindow_begin') > record.get('timewindow_end')) {
+//				cl = cl + ' bkRed row-bk-white';
+//			}
 
-/*
-			if (record.get('isOtherCity')) {
-				cl = cl + ' fontbold fontitalic';
-			}
-*/
+
+			//if (record.get('isOtherCity')) {
+			//	cl = cl + ' fontbold fontitalic';
+			//}
+
 			return cl;
 		},
 	},
