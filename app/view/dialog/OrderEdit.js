@@ -11,9 +11,14 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 	modal: true,
 	closable: true,
 	closeAction: 'hide',
-	//stateful: true,
-	//stateId: 'orderedit',
 	title: 'Заказ',
+	listeners: {
+            	show: 'onShow', 
+		close: 'onClose', 
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',
+	},
 	layout: {
 		type: 'vbox',
 		align: 'stretch'

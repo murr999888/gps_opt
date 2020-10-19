@@ -11,6 +11,7 @@ Ext.define('Opt.view.dialog.AddAllowedAutoController', {
 			},
 		});
 
+		store.sort('name', 'ASC');
 		this.getView().down('gridpanel').setStore(store);
 	},
 

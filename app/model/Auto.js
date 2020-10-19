@@ -63,12 +63,6 @@ Ext.define('Opt.model.Auto', {
 			defaultValue: 1,
 		},
 		{
-			name: 'cost_k',
-			type: 'number',
-			defaultValue: 1,
-		},
-
-		{
 			name: 'worktime_begin',
 			type: 'number'
 		},
@@ -86,6 +80,11 @@ Ext.define('Opt.model.Auto', {
 		{
 			name: 'route_end_endtime',
 			type: 'number'
+		},
+		{
+			name: 'race_breaking_time',
+			type: 'number',
+                        defaultValue: 30,
 		},
 		{
 			name: 'maximize_water',
@@ -121,6 +120,11 @@ Ext.define('Opt.model.Auto', {
                         defaultValue: false,
 		},
 		{
+			name: 'fuel_refuel_by_rate',
+			type: 'boolean',
+                        defaultValue: false,
+		},
+		{
 			name: 'fuel_tank_capacity',
 			type: 'number',
                         defaultValue: 100,
@@ -146,14 +150,13 @@ Ext.define('Opt.model.Auto', {
 			defaultValue: '0',
 		},
 		{
-			name: 'fuel_full_tank',
-			type: 'boolean',
-			defaultValue: false,
-		},
-		{
 			name: 'initial_route',
 		},
-
+		{
+			name: 'maxraces',
+			type: 'number',
+			defaultValue: 4,
+		},
 		]
 	}
 );

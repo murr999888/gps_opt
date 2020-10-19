@@ -241,7 +241,7 @@ Ext.define('Opt.view.tabs.BaseMap', {
 
 				if (feature.properties.node_type != null && feature.properties.node_type == 3) {
 					var point = new L.circleMarker(latlng, {
-						radius: 8,
+						radius: 6,
 						fillColor: "rgba(1, 237, 255, 1)",
 						color: "blue",
 						weight: 4,
@@ -267,6 +267,11 @@ Ext.define('Opt.view.tabs.BaseMap', {
 				}
 
 				popupText = popupText + feature.properties.sod + feature.properties.vremya + '</span>';
+
+				if (feature.properties.node_type != null && feature.properties.node_type == 3) {
+					popupText = popupText + '<br /><b>' + feature.properties.dop + '</b>';
+				}
+
 				layer.bindPopup(popupText, popupOptionsOrders);
 			}
 		});
@@ -531,6 +536,7 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					adres: record.get("adres"),
 					vremya: record.get("timewindow_string"),
 					sod: record.get("sod"),
+					dop: record.get("dop"),
 					node_type: record.get("node_type"),					
 				}
 			};

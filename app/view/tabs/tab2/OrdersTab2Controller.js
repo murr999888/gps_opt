@@ -332,7 +332,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 	clearField: function (field, button, e) {
 		field.setValue('');
-		this.setFilter();
+		//this.setFilter();
 	},
 	
 	checkDestinations: function(){
@@ -571,7 +571,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		clearStore('tab2droppedgrid');
 
 		this.fireEvent('tab2droppedgridsettitle');
-		this.fireEvent('tab2routesgridsettitle', null);
+		this.fireEvent('tab2routesgridsetstat', null);
 
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
@@ -580,13 +580,10 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var time_waiting = formVal.maxslacktime;
 		var max_orders_in_route = formVal.maxordersinroute;
 		var refuel_mode = formVal.refuelmode;
-
 		var refuel_full_tank = formVal.refuel_full_tank;
-		if (!refuel_full_tank) refuel_full_tank = false;
-
 		var use_guided_local_search = formVal.useGLS;
-
-		var solutionstrategy = formVal.solutionstrategy;
+		var solution_strategy = formVal.solutionstrategy;
+		var fixed_cost_all_vehicles = formVal.fixedcostallvehicles;
 
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
@@ -601,11 +598,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			maximum_time_per_vehicle: 24 * 60 * 60, // 12 часов
 			dateRoutes: orders_date,
 			time_waiting: time_waiting * 60,
-			max_orders_in_route: max_orders_in_route,
 			refuel_mode: refuel_mode,
 			refuel_full_tank: refuel_full_tank,
 			use_guided_local_search: use_guided_local_search,
-			solutionstrategy: solutionstrategy,
+			solution_strategy: solution_strategy,
+			fixed_cost_all_vehicles: fixed_cost_all_vehicles,
 		};
 
 		task.error = "";
@@ -655,6 +652,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		for (var i = 0; i < storeAutos.count(); i++) {
 			var recordAuto = storeAutos.getAt(i);
 			if (recordAuto.get("in_use")) {
+				var autoIns = recordAuto.data;
+
 		                if (refuelmode == 1) { 
 					var initial_route = [];
 					if (recordAuto.get("fuel_first_station") != '0') {
@@ -664,6 +663,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 						if (fuelStation){
 							var deepCopy = $.extend(true, {}, fuelStation.data);					
 							//deepCopy.klient_group_id = 'fuel_stations';
+							deepCopy.node_type = 3;
 							deepCopy.order_date = orders_date;
 							deepCopy.order_id = fuelStationId;
 							deepCopy.order_number = fuelStationId;
@@ -688,46 +688,76 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					}
 				}
 
-				if (refuelmode == 2) {  // заправка по расходу
-					// добавляем всем машинам все заправки
-					for (var j = 0; j < fuelStationStore.count(); j++) {
-						var fuelStation = fuelStationStore.getAt(j);
-                				if (fuelStation && fuelStation.get("in_use") && (fuelStation.get("gas") == recordAuto.get("fuel_gas"))){
-							var deepCopy = $.extend(true, {}, fuelStation.data);					
-							//deepCopy.klient_group_id = 'fuel_stations';
-							deepCopy.order_date = orders_date;
-							deepCopy.order_id = fuelStationId;
-							deepCopy.order_number = fuelStationId;
-							deepCopy.tanks_replace_needed = false;
+				if (refuelmode == 2 ) {  // заправка по расходу
+					if (recordAuto.get("fuel_refuel_by_rate")) {
+						// добавляем  машине все заправки
+						for (var j = 0; j < fuelStationStore.count(); j++) {
+							var fuelStation = fuelStationStore.getAt(j);
+       		         				if (fuelStation && fuelStation.get("in_use") && (fuelStation.get("gas") == recordAuto.get("fuel_gas"))){
+								var deepCopy = $.extend(true, {}, fuelStation.data);					
+								//deepCopy.klient_group_id = 'fuel_stations';
+								deepCopy.node_type = 3;
+								deepCopy.order_date = orders_date;
+								deepCopy.order_id = fuelStationId;
+								deepCopy.order_number = fuelStationId;
+								deepCopy.tanks_replace_needed = false;
        								deepCopy.tanks_replace_count = 0;
-							deepCopy.dop = "Заправка";
-							deepCopy.penalty = 0; // в минутах!
-							deepCopy.strings = [];
-							deepCopy.goods = [];
-							var allowedAutos = 
-							{
-								in_use: true,
-								id: recordAuto.get("id"),
-								name: recordAuto.get("name"),
-							};
-							deepCopy.allowed_autos = [allowedAutos];						
-							deepCopy.allowed_autos_backup = [allowedAutos];
-							orders.push(deepCopy);						
+								deepCopy.dop = "Заправка";
+								deepCopy.penalty = 0; // в минутах!
+								deepCopy.strings = [];
+								deepCopy.goods = [];
+								var allowedAutos = 
+								{
+									in_use: true,
+									id: recordAuto.get("id"),
+									name: recordAuto.get("name"),
+								};
+								deepCopy.allowed_autos = [allowedAutos];						
+								deepCopy.allowed_autos_backup = [allowedAutos];
+								orders.push(deepCopy);						
+							}
 						}
+
+					} else {
+						autoIns.fuel_balance_begin = 999;
+						autoIns.fuel_tank_capacity = 999;
 					}
 				}
-
-				var autoIns = recordAuto.data;
 				autoIns.initial_route = initial_route;
 				autos.push(autoIns);
-				
-				if (recordAuto.get("cost_k") != 1) {
-					useAutosCost = true;
-				}
 			}
 		}
 
-		task.parameters.use_autos_cost = useAutosCost;
+		//***********************************************************
+		// Добавление фейковых депо
+		//***********************************************************
+		for (var i = 0; i < storeAutos.count(); i++) {
+			var recordAuto = storeAutos.getAt(i);
+			if (recordAuto.get("in_use") && recordAuto.get("maxraces") > 1) {
+				for (var j = 1; j < recordAuto.get("maxraces"); j++) {
+					var deepCopy = $.extend(true, {}, depot);				 	
+					deepCopy.node_type = 4;
+					deepCopy.order_date = orders_date;
+					deepCopy.order_id = '';
+					deepCopy.order_number = '';
+					deepCopy.tanks_replace_needed = false;
+	 				deepCopy.tanks_replace_count = 0;
+					deepCopy.service_time = recordAuto.get("race_breaking_time") * 60;
+					deepCopy.penalty = 0; // в минутах!
+					deepCopy.strings = [];
+					deepCopy.goods = [];
+					var allowedAutos = 
+					{
+						in_use: true,
+						id: recordAuto.get("id"),
+						name: recordAuto.get("name"),
+					};
+					deepCopy.allowed_autos = [allowedAutos];						
+					deepCopy.allowed_autos_backup = [allowedAutos];
+					orders.push(deepCopy);
+				}
+			}
+		}
 
 		//********************************************
 		// ТОВАРЫ
@@ -1061,6 +1091,7 @@ console.log(data);
 				var record = data.routes[i];
 				record.in_use = true;
 				record.auto_name = record.auto.name;
+				record.auto_name_short = record.auto.name_short;
 				record.auto_id = record.auto.id;
 				record.ordersCount = record.orders.length - 2;
 				routesData.push(record);

@@ -189,18 +189,15 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		var droppedOrderStore = Ext.getCmp('tab2droppedgrid').store;
 
 		if (!this.viewer) this.viewer = Ext.create('widget.resultviewermain', { closable: true });
-		//this.viewer = null;
-		//this.viewer = Ext.create('widget.resultviewermain', { closable: true });
 
 		Ext.getCmp('resultviewerroutesgrid').setStore(routeListStore);
 		Ext.getCmp('resultviewerdroppedgrid').setStore(droppedOrderStore);
-
-		Ext.getCmp('resultviewerroutesgrid').setTitle(Ext.getCmp('tab2routesgrid').getTitle());
 
 		Ext.getCmp('resultviewerroutesgrid').getView().getSelectionModel().select(0);
 		this.viewer.show();
 		this.viewer.focus();
 		Ext.getCmp('resultviewerroutesgrid').focus();
+		Ext.getCmp('resultviewerroutesgrid').setTitle(Ext.getCmp('tab2routesgrid').getTitle());
 		if (this.viewer.mapRendered) this.fireEvent("resultviewermapRender");
 	},
 

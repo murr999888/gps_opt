@@ -70,12 +70,16 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
+		this.fireEvent('tab2routesgridsettitle');
+		this.getView().setTitle(Ext.getCmp('tab2routesgrid').getTitle());
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
 		this.getView().suspendEvents();
 		this.getView().store.commitChanges();
 		this.getView().resumeEvents();
+		this.fireEvent('tab2routesgridsettitle');
+		this.getView().setTitle(Ext.getCmp('tab2routesgrid').getTitle());
 	},
 
 	setRouteToMap: function (record) {

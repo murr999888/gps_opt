@@ -22,6 +22,23 @@ Ext.define('Opt.view.tabs.resultViewer.Orders', {
 	listeners: {
 		celldblclick: 'onCellDblClick',
 	},
+	dockedItems: [
+		{
+			xtype: 'toolbar',
+			dock: 'top',
+			items: [
+				{
+					xtype: 'button',
+					text: 'Отгрузка',
+					handler: 'getGoods',
+					id: 'resultviewerGoodsButton',
+					//disabled: true,
+					iconCls: 'fa fa-list',
+					iconClsBck: 'fa fa-list',
+				},
+			]
+		},
+	],
 
 	columns: {
 		defaults: {

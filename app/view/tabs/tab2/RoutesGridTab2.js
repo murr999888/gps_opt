@@ -160,11 +160,19 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 				align: 'center',
 			},
 			{
-				hideable: false,
+				hideable: true,
 				text: 'Машина',
 				flex: 3,
 				dataIndex: 'auto_name',
 				cellWrap: true,
+			},
+			{
+				hideable: true,
+				text: 'Кратко',
+				flex: 2,
+				dataIndex: 'auto_name_short',
+				cellWrap: true,
+				hidden: true,
 			},
 			{
 				hideable: true,
@@ -175,12 +183,18 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 				renderer: 'getDriverName',
 			},
 			{
+				hideable: true,
+				hidden: true,
+				text: 'Х',
+				width: 25,
+				dataIndex: 'race_number',
+			},
+			{
 				text: 'Нач. план',
 				flex: 1,
 				align: 'center',
 				dataIndex: 'route_begin_plan',
 				renderer: 'getTime',
-				//sortable: false,	
 				hideable: true,
 			},
 			{

@@ -28,13 +28,14 @@ Ext.define('Opt.view.tabs.resultViewer.Main', {
 	},
 
 	items: [
-		{
+		{       /*
 			animCollapse: false,
 			collapsible: true,
 			floatable: false,
 			titleCollapse: true,
 			collapsed: false,
 			collapseDirection: 'left',
+			*/
 			header: true,
 			title: 'Результат расчета',
 			xtype: 'resultviewerleft',

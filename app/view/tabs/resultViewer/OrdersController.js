@@ -20,6 +20,16 @@ Ext.define('Opt.view.tabs.resultViewer.OrdersController', {
 		this.getView().setStore(this.orderStore);
 	},
 
+	getGoods: function(){
+		var title = 'Отгрузка по маршруту.';
+		this.editDialog = null;
+		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
+		var goodsGrid = this.editDialog.down('ordergoodsgrid');
+		goodsGrid.setStore(Ext.getStore('RoutesGoodsStore'));
+		this.editDialog.show();
+		this.editDialog.focus();
+	},
+
 	getFuelIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
 		if (record.get('node_type') == 3) {
 			//metadata.tdCls = 'vert_middle';

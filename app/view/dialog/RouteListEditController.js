@@ -6,6 +6,7 @@ Ext.define('Opt.view.dialog.RouteListEditController', {
 		var ordersGrid = this.getView().down('ordersgridpanel');
 		var ordersStore = ordersGrid.getStore();
 		ordersGrid.setTitle("Заказы (" + (ordersStore.count()-2) +")");
+		ordersGrid.view.scrollTo(0,0);
 	},
 
 	onDriverSelect: function (combo, record, eOpts) {

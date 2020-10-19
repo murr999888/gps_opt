@@ -16,6 +16,7 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 	},
 
 	init: function () {
+		var self = this;
 		this.getView().getSelectionModel().setSelectionMode('MULTI')
 
 		var store = this.getView().store;

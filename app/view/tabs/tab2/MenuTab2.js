@@ -92,17 +92,17 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
-					name: 'maxordersinroute',
-					fieldLabel: 'Макс. кол. заказов в маршруте',
-					value: 0,
-					maxValue: 60,
+					name: 'fixedcostallvehicles',
+					fieldLabel: 'Стоимость машины, мин',
+					value: 120,
+					maxValue: 240,
 					minValue: 0,
-					step: 1,
+					step: 10,
 					stateful: true,
-					stateId: 'tab2maxordersinroute',
+					stateId: 'tab2fixedcostallvehicles',
 					stateEvents: ['change'],
 					listeners: {
-						change: 'onMaxOrdersInRouteChange',
+						//change: 'onSlackTimeChange',
 					},
 				},
 				{
@@ -133,21 +133,9 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
     							}, 
 						]
 					},
-					matchFieldWidth: false,
 					listeners: {
 						select: 'onRefuelModeSelect',
 					},
-					/*
-					stateful: true,
-					stateId: 'tab2formparamtab2refuelmode',
-					stateEvents: ['select'],
-        				getState: function(){
-						return {value: this.getValue()};
-					},
-        				applyState: function(state) {
-						this.setValue(state.value);
-					},
-					*/
 				},
 				{
 					xtype: 'checkbox',
@@ -171,7 +159,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					queryMode: 'local',
 					displayField: 'name',
 					valueField: 'id',
-					value: 15,
+					value: 3,
 					store: {
                                         	data: [
 							{
@@ -204,23 +192,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
     							},
 						]
 					},
-					matchFieldWidth: false,
-					listeners: {
-						//select: 'onRefuelModeSelect',
-					},
-					/*
-					stateful: true,
-					stateId: 'tab2formparamtab2refuelmode',
-					stateEvents: ['select'],
-        				getState: function(){
-						return {value: this.getValue()};
-					},
-        				applyState: function(state) {
-						this.setValue(state.value);
-					},
-					*/
 				},
-
 				{
 					xtype: 'checkbox',
 					name: 'useGLS',
@@ -228,8 +200,9 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					checked: false,
 					inputValue: true,
 					uncheckedValue: false,
-					fieldLabel: 'Использовать guided local search',
+					fieldLabel: 'Использовать локальный поиск',
 					labelWidth: 237,
+/*
 					stateful: true,
 					stateId: 'tab2useGLS',
 					stateEvents: ['change', 'check'],
@@ -242,6 +215,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					applyState: function (state) {
 						this.setValue(state.checked);
 					},
+*/
 					autoEl: {
         					tag: 'div',
         					'data-qtip': 'Использовать Guided Local Search',
@@ -255,7 +229,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					fieldStyle: 'text-align: right;',
 					name: 'maxsolvetime',
 					fieldLabel: 'Макс. время поиска решения, мин',
-					value: 60,
+					value: 30,
 					maxValue: 240,
 					minValue: 1,
 					step: 1,

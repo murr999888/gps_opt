@@ -6,6 +6,18 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		'Opt.view.tabs.fuelStationsViewer.Main',
 	],
 
+	listen: {
+		controller: {
+			'*': {
+				tab2refuelmodeselected: 'refreshGrid',
+			}
+		}
+	},
+
+	refreshGrid: function(){
+		this.getView().view.refresh();
+	},
+
 	printTable: function () {
 		var grid = this.getView();
 		Opt.ux.GridPrinter.print(grid);
@@ -55,7 +67,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			}
 		});
 		var checkedStr = '';
-		if (inUseCount>0) checkedStr = ' &#10003;' + inUseCount + ' ';
+		if (inUseCount > 0) checkedStr = ' &#10003;' + inUseCount + ' ';
 		this.getView().setTitle('Машины ' + checkedStr + '(' + store.count() + ') ' + filterString);
 	},
 
@@ -359,6 +371,33 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.view.getView().refresh();
 	},
 
+	setRefuelByRate: function (item, e, Opts) {
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки!');
+			return;
+		}
+                selection.forEach(function(record){
+			record.set("fuel_refuel_by_rate", true);
+		});
+		this.getView().view.refresh();
+	},
+
+	resetRefuelByRate: function (item, e, Opts) {
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки!');
+			return;
+		}
+		
+                selection.forEach(function(record){
+			record.set("fuel_refuel_by_rate", false);
+		});
+		this.getView().view.refresh();
+	},
+
 	setRouteStartBegin: function (item, e, Opts) {
 		var grid = this.getView();
 		var selection = grid.getSelection();
@@ -512,6 +551,18 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.getView().view.refresh();
 	},
 
+	setMaxRaces: function(){
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
+			return;
+		}
+		this.msgbox = null;
+		this.msgbox = Ext.create('Opt.view.dialog.SetMaxRaces', {parentGrid: grid });
+		this.msgbox.show();
+	},
+
 	setAllowedClientGroups: function(){
 		var grid = this.getView();
 		var selection = grid.getSelection();
@@ -519,7 +570,6 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
 			return;
 		}
-
 		this.msgbox = null;
 		this.msgbox = Ext.create('Opt.view.dialog.SetAllowedClientGroups', {parentGrid: grid });
 		this.msgbox.show();
@@ -547,7 +597,20 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 		store.suspendEvents();
 		selection.forEach(function (record) {
-			record.set('allowed_clientgroups', allowedGroupsArr);
+			var copyArr = [];
+			allowedGroupsArr.forEach(function(item){
+				newItem = {};
+				newItem.id = item.id;
+				newItem.in_use = item.in_use;
+				newItem.name = item.name;				
+				if(record.get("is_watercarrier") == true){
+					if(newItem.id != "e04ce00c-3f1e-48c2-b0a2-47e896b1eebd" && newItem.id != "7a4bfbd6-74b2-4e7f-acb0-36f936dbfa42") {
+                                        	newItem.in_use = false;
+					}
+				}
+				copyArr.push(newItem);
+			});
+			record.set('allowed_clientgroups', copyArr);
 		});
 
 		store.sync();

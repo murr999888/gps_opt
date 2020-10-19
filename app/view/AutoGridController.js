@@ -22,8 +22,6 @@ Ext.define('Opt.view.AutoGridController', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-		//this.autoEdit = null;
-		//this.autoEdit = Ext.create('widget.autoedit');
 		if (!this.autoEdit)  this.autoEdit = Ext.create('widget.autoedit');
 		this.autoEdit.down('form').loadRecord(record);
 		var form = this.autoEdit.lookupReference('form').getForm();
@@ -114,7 +112,12 @@ Ext.define('Opt.view.AutoGridController', {
 	},
 
 	getFuelIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
-		if (record.get('fuel_first_station') != 0) {
+		var selectedFuelMode = Ext.getCmp('formparamtab2refuelmode').getValue();
+		if (selectedFuelMode == 1 && record.get('fuel_first_station') != 0) {
+			//metadata.tdCls = 'vert_middle';
+			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
+		}
+		if (selectedFuelMode == 2 && record.get('fuel_refuel_by_rate')) {
 			//metadata.tdCls = 'vert_middle';
 			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
 		}

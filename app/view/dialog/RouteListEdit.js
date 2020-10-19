@@ -11,11 +11,16 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 	id: 'routelistedit',
 	controller: 'routelistedit',
 	modal: true,
-	//stateful: true,
-	//stateId: 'routelistedit',
 	closable: true,
 	closeAction: 'hide',
 	title: 'Маршрутный лист',
+	listeners: {
+            	show: 'onShow', 
+		close: 'onClose', 
+		resize: 'onWindowResize',
+		collapse: 'onWindowResize',
+		expand: 'onWindowResize',
+	},
 	items: [
 		{
 			xtype: 'form',

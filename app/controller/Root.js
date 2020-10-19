@@ -132,15 +132,17 @@ Ext.define('Opt.controller.Root', {
             };
         }
 
-        socket.onclose = function() {
+        socket.onclose = function(event) {
             Ext.getCmp('maintab').header.setIconCls('fa fa-red-indicator fa-shadow fa-circle');
 
             if (this.lastWSStateConnected) {
                 Opt.app.showToast('Внимание!', 'Потеряно соединение с сервером..');
                 self.lastWSStateConnected = false;
                 self.fireEvent("serverDisconnect");
-		console.log("serverDisconnect");
             }
+
+	    console.log("serverDisconnect");
+	    console.log(event);
 
             setTimeout(function() {
                 self.createWS(false);

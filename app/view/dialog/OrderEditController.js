@@ -25,6 +25,12 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 		Ext.getCmp('ordereditallowedautos').setStore(this.orderAllowedAutosStore);
 	},
 
+	onShow: function(){
+		var goodsGrid = this.getView().down('ordergoodsgrid');
+		var goodsStore = goodsGrid.getStore();
+		goodsGrid.view.scrollTo(0,0);
+	},
+
 	afterRender: function () {
 		this.changed = false;
 		if (this.getView().readOnly) {

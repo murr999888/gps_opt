@@ -60,11 +60,19 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 				align: 'center',
 			},
 			{
-				hideable: false,
+				hideable: true,
 				text: 'Машина',
-				flex: 5,
+				flex: 3,
 				dataIndex: 'auto_name',
 				cellWrap: true,
+			},
+			{
+				hideable: true,
+				text: 'Кратко',
+				flex: 2,
+				dataIndex: 'auto_name_short',
+				cellWrap: true,
+				hidden: true,
 			},
 			{
 				text: 'Водитель',
@@ -75,6 +83,13 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 				cellWrap: true,
 				hideable: true,
 				renderer: 'getDriverName',
+			},
+			{
+				hideable: true,
+				hidden: true,
+				text: 'Х',
+				width: 25,
+				dataIndex: 'race_number',
 			},
 			{
 				text: 'Нач. план',
@@ -121,6 +136,7 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 				dataIndex: 'duration',
 				renderer: 'getTime',
 				hideable: true,
+				align: 'center',
 			},
 			{
 				text: 'Вр.общ.',
@@ -128,8 +144,17 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 				dataIndex: 'durationFull',
 				renderer: 'getTime',
 				hideable: true,
+				align: 'center',
 			},
-
+                        {
+				text: 'Зак.',
+				flex: 1,
+				align: 'right',
+				dataIndex: 'ordersCount',
+				hideable: true,
+				sortable: true,	
+				hidden: false,
+			},
 			{
 				xtype: 'actioncolumn',
 				iconCls: 'fa far fa-green fa-edit',

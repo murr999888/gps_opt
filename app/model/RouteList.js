@@ -27,6 +27,10 @@ Ext.define('Opt.model.RouteList', {
 			type: 'string',
 		},
 		{
+			name: 'auto_name_short', 
+			type: 'string',
+		},		
+		{
 			name: 'driver_id', 
 			type: 'string',
 		},

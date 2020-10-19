@@ -67,6 +67,14 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 								xtype: 'menuseparator',
 							},
 							{
+								text: 'Установить количество рейсов',
+								handler: 'setMaxRaces',
+								//iconCls: 'fa fa-user',
+							},
+							{
+								xtype: 'menuseparator',
+							},
+							{
 								text: 'Установить группы клиентов',
 								handler: 'setAllowedClientGroups',
 								iconCls: 'fa fa-user',
@@ -81,6 +89,17 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 							{
 								text: 'Сбросить "Сначала заправить..."',
 								handler: 'resetFirstFuelStation',
+							},
+							{
+								xtype: 'menuseparator',
+							},
+							{
+								text: 'Участвует в расчете заправок по расходу',
+								handler: 'setRefuelByRate',
+							},
+							{
+								text: 'Не участвует в расчете заправок по расходу',
+								handler: 'resetRefuelByRate',
 							},
 						]
 					},
