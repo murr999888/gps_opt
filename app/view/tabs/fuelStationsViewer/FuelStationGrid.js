@@ -45,20 +45,36 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGrid', {
 	],
 
 	dockedItems: [
-			{
-				xtype: 'toolbar',
-				dock: 'top',
-				items: [
-					{
-						xtype: 'button',
-						text: 'Получить',
-						handler: 'loadFuelStation',
-						//margin : '0 3px 0 3px',
-						iconCls: 'fa fa-download',
-						iconClsBck: 'fa fa-download',
-					}
-				]
-			}
+		{
+			xtype: 'toolbar',
+			dock: 'top',
+			items: [
+				{
+					xtype: 'button',
+					text: 'Получить',
+					handler: 'loadFuelStation',
+					//margin : '0 3px 0 3px',
+					iconCls: 'fa fa-download',
+					iconClsBck: 'fa fa-download',
+				},
+        			{
+					xtype: 'button',
+					text: 'Изменить',
+					iconCls: 'fa fa-edit',
+					iconClsBck: 'fa fa-edit',
+					menu: {
+						items: [
+							{
+								text: 'Время заправки',
+								handler: 'setService',
+								iconCls: 'fa fa-clock-o',
+							},                                            
+
+						]
+					},
+				},
+			]
+		}
 	],
 /*
 	dockedItems: 

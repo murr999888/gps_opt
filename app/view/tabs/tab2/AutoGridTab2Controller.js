@@ -6,6 +6,9 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		'Opt.view.tabs.fuelStationsViewer.Main',
 	],
 
+	maxracesbigautos: 3,
+	maxracessmallautos: 4,
+
 	listen: {
 		controller: {
 			'*': {
@@ -238,11 +241,20 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 					if (record.get("fuel_rate_by_100") == 0) record.set("fuel_rate_by_100", 12);
 
-					record.set("worktime_begin", def_route_time_begin),
-					record.set("worktime_end", def_route_time_end),
-					record.set("route_begin_endtime", def_route_time_end),
-					record.set("route_end_endtime", def_route_time_end),
-					record.set("fuel_gas", false),
+					record.set("worktime_begin", def_route_time_begin);
+					record.set("worktime_end", def_route_time_end);
+					record.set("route_begin_endtime", def_route_time_end);
+					record.set("route_end_endtime", def_route_time_end);
+					record.set("fuel_gas", false);
+					if (record.get("is_watercarrier")) {
+						record.set("maxraces", self.maxracesbigautos);
+					} else {
+						if (record.get("bottle") < 50) {
+							record.set("maxraces", self.maxracessmallautos);
+						} else {
+							record.set("maxraces", self.maxracesbigautos);
+						}
+					}
 					record.save();
 				});
 
@@ -561,6 +573,44 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.msgbox = null;
 		this.msgbox = Ext.create('Opt.view.dialog.SetMaxRaces', {parentGrid: grid });
 		this.msgbox.show();
+	},
+
+	saveDefaultMaxRaces: function(){
+		var self = this;
+		var grid = this.getView();
+		var store = grid.getStore();
+		store.suspendEvents();
+		store.each(function (record) {
+			if (record.get("is_watercarrier")) {
+				record.set("maxraces", self.maxracesbigautos);
+			} else {
+				if (record.get("bottle") < 50) {
+					record.set("maxraces", self.maxracessmallautos);
+				} else {
+					record.set("maxraces", self.maxracesbigautos);
+				}
+			}
+			record.save();
+		});
+		store.resumeEvents();
+		this.view.getView().refresh();
+	},
+
+	setMaxRacesDefault: function(){
+		var self = this;
+		Ext.Msg.show({
+			title: 'Внимание',
+			message: 'Макс. количество рейсов для ВСЕХ машин<br />будет установлено по-умолчанию. Продолжить?',
+			buttons: Ext.Msg.YESNO,
+			icon: Ext.Msg.QUESTION,
+			fn: function (btn) {
+				if (btn === 'yes') {
+					self.saveDefaultMaxRaces();
+				} else if (btn === 'no') {
+					return;
+				}
+			}
+		});
 	},
 
 	setAllowedClientGroups: function(){

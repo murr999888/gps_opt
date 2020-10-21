@@ -72,6 +72,11 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 								//iconCls: 'fa fa-user',
 							},
 							{
+								text: 'Сбросить количество рейсов для всех',
+								handler: 'setMaxRacesDefault',
+								//iconCls: 'fa fa-user',
+							},
+							{
 								xtype: 'menuseparator',
 							},
 							{

@@ -55,7 +55,6 @@ Ext.define('Opt.view.dialog.SetAllowedClientGroupsController', {
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
-console.log("onHeaderCheckChange");
 		var store = this.getView().down('grid').store;
 		store.commitChanges();
 	},

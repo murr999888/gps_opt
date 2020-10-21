@@ -194,7 +194,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 							fieldLabel: 'Штраф за отказ от посещения',
 							anchor: '100%',
 							value: 30,
-							maxValue: 300,
+							maxValue: max_penalty_value,
 							minValue: 0,
 							step: 5,
 							labelWidth: 280,

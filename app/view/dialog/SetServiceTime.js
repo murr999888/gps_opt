@@ -23,7 +23,7 @@ Ext.define('Opt.view.dialog.SetServiceTime', {
 				width: 240,
 				readOnly: false,
 				editable: false,
-				fieldLabel: 'Время разгрузки, мин.',
+				fieldLabel: 'Установить время, мин.',
 				anchor: '100%',
 				fieldStyle: 'text-align: right;',
 				value: 5,

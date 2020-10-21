@@ -469,7 +469,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				Ext.getCmp('maintab2').unmask();
 	                        Ext.Msg.alert({
 					title: 'Внимание',
-					message: 'При установленном режиме расчета заправок нет машин, <br />отмеченных для расчета с установленными пунктами заправки.',
+					message: 'Нет машин, отмеченных '
+					+ '<div style="display: inline-block; height: 14px; width: 16px; background: url(css/images/gas_station_16x16.png) no-repeat;"></div><br />' 
+					+ 'для расчета заправок!',
 					buttons: Ext.Msg.OK,
 				});
 				return;
@@ -494,11 +496,33 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					inUseCount++;
 				}
 			});
+
 			if (inUseCount == 0) {
 				Ext.getCmp('maintab2').unmask();
 	                        Ext.Msg.alert({
 					title: 'Внимание',
 					message: 'Нет заправок, отмеченных для расчета!',
+					buttons: Ext.Msg.OK,
+				});
+				return;
+			}
+
+			var autosCheckedForRefuel = [];
+			var storeAutos = Ext.getStore('Auto2');
+			for (var i = 0; i < storeAutos.count(); i++) {
+				var recordAuto = storeAutos.getAt(i);
+				if (recordAuto.get("in_use") && recordAuto.get("fuel_refuel_by_rate")) {
+					autosCheckedForRefuel.push(recordAuto.get('id'));
+				}
+        		}	
+
+			if (autosCheckedForRefuel.length == 0) {
+				Ext.getCmp('maintab2').unmask();
+	                        Ext.Msg.alert({
+					title: 'Внимание',
+					message: 'Нет машин, отмеченных '
+					+ '<div style="display: inline-block; height: 14px; width: 16px; background: url(css/images/gas_station_16x16.png) no-repeat;"></div><br />' 
+					+ 'для расчета заправок по расходу!',
 					buttons: Ext.Msg.OK,
 				});
 				return;
@@ -572,6 +596,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		this.fireEvent('tab2droppedgridsettitle');
 		this.fireEvent('tab2routesgridsetstat', null);
+		Ext.getCmp('tab2droppedgrid').collapse();
 
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
@@ -888,8 +913,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 							// вне зависимости от того, были ли для данного заказа вообще установлены допустимые машины
 							orderCopy.allowed_autos_backup.push({in_use: true, id: recordRoute.id, name: 'fake auto'});
 						}
-
-						//orderCopy.penalty = 12*60*60;
 						orders.push(orderCopy);
 					}
 				}
@@ -1075,6 +1098,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	distributed_orders_recieved: function (data) {
+		Ext.getCmp('formparamtab2useGLS').setValue(false);
 console.log(data);
 		var self = this;
 		if (data.id != this.currTaskId) return;
@@ -1116,11 +1140,13 @@ console.log(data);
 				arrOrders.push(orderRecord)
 			};
 
-			Ext.getCmp('tab2droppedgrid').expand();
 			storeDroppedOrders.suspendEvents();
 			storeDroppedOrders.loadData(arrOrders);
 			storeDroppedOrders.sync();
 			storeDroppedOrders.resumeEvents();
+
+			if (storeDroppedOrders.count()>0) Ext.getCmp('tab2droppedgrid').expand();
+
 			Ext.getCmp('tab2droppedgrid').view.refresh();
 			
 			this.fireEvent('tab2droppedgridsettitle');
@@ -1193,7 +1219,7 @@ console.log(data);
 	startTimerMask: function () {
 		var form = Ext.getCmp('formparamtab2');
 		var formVal = form.getForm().getFieldValues();
-		var timerDecr = formVal.maxsolvetime * 60;
+		var timerDecr = (formVal.maxsolvetime * 60) - 1;
 		var timerIncr = 1;
 		Ext.getCmp('maintab2').mask();
 		this.timerWindow = Ext.create('Opt.view.dialog.WaitingCalc', {constrainTo: 'maintab2', renderTo:'maintab2', timerDecr: timerDecr, timerIncr: timerIncr});

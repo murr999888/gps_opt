@@ -5,6 +5,7 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 	fuelStationEdit: null,
 	requires: [
 		'Opt.ux.GridPrinter',
+		'Opt.view.dialog.SetServiceTime',
 	],
 
 	stateful: true,
@@ -33,6 +34,19 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 		store.on('load', function(){
 			self.setGridTitle();
 		});
+	},
+
+	setService: function () {
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
+			return;
+		}
+
+		this.msgbox = null;
+		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid });
+		this.msgbox.show();
 	},
 
 	setGridTitle: function(){

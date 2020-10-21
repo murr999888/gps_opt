@@ -29,7 +29,7 @@ Ext.define('Opt.view.dialog.SetPenalty', {
 				fieldStyle: 'text-align: right;',
 				value: 30,
 				minValue: 0,
-				maxValue: 180,
+				maxValue: max_penalty_value,
 				step: 10,
 				readOnly: false,
 				editable: false,

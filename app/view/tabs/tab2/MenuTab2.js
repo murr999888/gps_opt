@@ -94,7 +94,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					fieldStyle: 'text-align: right;',
 					name: 'fixedcostallvehicles',
 					fieldLabel: 'Стоимость машины, мин',
-					value: 120,
+					value: 0,
 					maxValue: 240,
 					minValue: 0,
 					step: 10,

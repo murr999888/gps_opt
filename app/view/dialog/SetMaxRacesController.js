@@ -1,6 +1,7 @@
 Ext.define('Opt.view.dialog.SetMaxRacesController', {
 	extend: 'Opt.view.dialog.BaseEditController',
 	alias: 'controller.setmaxraces',
+
 	init: function () {
 	},
 
@@ -18,12 +19,11 @@ Ext.define('Opt.view.dialog.SetMaxRacesController', {
 
 			var grid = this.getView().parentGrid;
 			var selection = grid.getSelection();
-			var store = grid.store;
+			var store = grid.getStore();
 			store.suspendEvents();
 			selection.forEach(function (record) {
-				record.beginEdit();
 				record.set('maxraces', formValues.maxraces);
-				record.commit();
+				record.save();
 			});
 			store.sync();
 			store.resumeEvents();
