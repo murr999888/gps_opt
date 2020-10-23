@@ -171,9 +171,16 @@ Ext.define('Opt.view.tabs.fuelStationsViewer.FuelStationGridController', {
 	
 	loadFuelStation: function(){
 		var self = this;
+		var store = this.getView().getStore();
+
+		if(store.count() == 0) {
+                	self.loadFuelStationFromNN();
+			return;
+		}
+
 		Ext.Msg.show({
 			title: 'Внимание',
-			message: 'Данные будут загружены. Все изменения будут сброшены.<br />Продолжить?',
+			message: 'Данные будут загружены заново. Все изменения будут потеряны.<br />Продолжить?',
 			buttons: Ext.Msg.YESNO,
 			icon: Ext.Msg.QUESTION,
 			fn: function (btn) {

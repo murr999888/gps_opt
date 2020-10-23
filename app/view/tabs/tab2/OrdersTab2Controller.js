@@ -666,7 +666,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		}
 
 		//********************************************
-		// МАШИНЫ + Заправки + добавление фейковых заказов + initial route
+		// МАШИНЫ + Заправки + добавление фейковых заказов + locked route
 		//********************************************
 		var storeAutos = Ext.getStore('Auto2');
 		var useAutosCost = false;
@@ -680,7 +680,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				var autoIns = recordAuto.data;
 
 		                if (refuelmode == 1) { 
-					var initial_route = [];
+					var locked_route = [];
 					if (recordAuto.get("fuel_first_station") != '0') {
 						var fuelStationId = recordAuto.get("fuel_first_station");
 						var fuelStation = fuelStationStore.findRecord("klient_id", fuelStationId);
@@ -708,7 +708,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 							deepCopy.allowed_autos_backup = [allowedAutos];
 							orders.push(deepCopy);						
 					
-							initial_route.push(orders.length-1);
+							locked_route.push(orders.length-1);
 						}
 					}
 				}
@@ -748,7 +748,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 						autoIns.fuel_tank_capacity = 999;
 					}
 				}
-				autoIns.initial_route = initial_route;
+				autoIns.locked_route = locked_route;
 				autos.push(autoIns);
 			}
 		}

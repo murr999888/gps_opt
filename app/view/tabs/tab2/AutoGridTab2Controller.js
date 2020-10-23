@@ -211,6 +211,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
  				try {
 					respObj = Ext.JSON.decode(response.responseText);
 			        } catch(error) {
+					grid.unmask();
 					Opt.app.showError("Ошибка!", error.message);
 					return;
         			}
@@ -385,28 +386,36 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	setRefuelByRate: function (item, e, Opts) {
 		var grid = this.getView();
+		var store = grid.getStore();
 		var selection = grid.getSelection();
 		if (selection.length == 0) {
 			Ext.Msg.alert('Внимание!', 'Выделите строки!');
 			return;
 		}
+		store.suspendEvents();
                 selection.forEach(function(record){
 			record.set("fuel_refuel_by_rate", true);
+			record.save();
 		});
+		store.resumeEvents();
 		this.getView().view.refresh();
 	},
 
 	resetRefuelByRate: function (item, e, Opts) {
 		var grid = this.getView();
+		var store = grid.getStore();
 		var selection = grid.getSelection();
 		if (selection.length == 0) {
 			Ext.Msg.alert('Внимание!', 'Выделите строки!');
 			return;
 		}
 		
+		store.suspendEvents();
                 selection.forEach(function(record){
 			record.set("fuel_refuel_by_rate", false);
+			record.save();
 		});
+		store.resumeEvents();
 		this.getView().view.refresh();
 	},
 
@@ -736,7 +745,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 
 	markWorkingAutos: function(){
 		var self = this;
-
+		var grid = this.getView();
 		var store = this.getView().store;
 
 		var form = Ext.getCmp('formparamtab2').getForm();
@@ -745,6 +754,8 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		byDate = byDate.replace(/-/g, '/'); // для IE 
 
 		var parsedDate = Date.parse(byDate);
+
+		grid.mask("Обновляем...");
 
 		var params = {
 			param: 'workingautos',
@@ -764,6 +775,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 					respObj = Ext.JSON.decode(response.responseText);
 			        } catch(error) {
 					Opt.app.showError("Ошибка!", error.message);
+					grid.unmask();
 					return;
         			}
 
@@ -793,6 +805,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 				store.resumeEvents();
 				self.getView().view.refresh();
 				self.setTitle();
+				grid.unmask();
 			},
 
 			failure: function (response) {

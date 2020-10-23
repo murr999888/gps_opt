@@ -37,6 +37,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesDistTab2', {
 			id: 'tab2droppedgrid',
 			stateful: true,
 			stateId: 'tab2droppedgrid',
+			collapsed: true,
 		},
 /*
 		{

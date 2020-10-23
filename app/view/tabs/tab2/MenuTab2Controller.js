@@ -8,14 +8,14 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 		form.setValues({
 			formparamtab2date: new Date(),
 			maxslacktime: 5,
-			maxsolvetime: 30,
+			maxsolvetime: 15,
 			maxordersinroute: 0,
 			maxraces: 1,
 			refuelmode: 0,
 			refuel_full_tank: false,
 			useGLS: false,
 			solutionstrategy: 3,
-			fixedcostallvehicles: 120,
+			fixedcostallvehicles: 0,
 		});
 	},
 
