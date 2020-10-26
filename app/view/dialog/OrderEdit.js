@@ -196,7 +196,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 							value: 30,
 							maxValue: max_penalty_value,
 							minValue: 0,
-							step: 5,
+							step: 10,
 							labelWidth: 280,
 							labelStyle: 'color:brown',
 							fieldStyle: 'text-align: right;color:brown;',

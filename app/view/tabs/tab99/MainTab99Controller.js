@@ -1,6 +1,12 @@
 Ext.define('Opt.view.tabs.tab99.MainTab99Controller', {
 	extend: 'Ext.app.ViewController',
 	alias: 'controller.mainTab99Controller',
+	requires: [
+		'Opt.ux.GridPrinter',
+	],
+
+	rw: null,
+
 	init: function () {
 		var self = this;
 		Ext.tip.QuickTipManager.init();
@@ -69,8 +75,25 @@ Ext.define('Opt.view.tabs.tab99.MainTab99Controller', {
 		}
 	},
 
+	getNum: function (value, metaData, record, rowIndex) {
+		if(!rowIndex) {
+                 	if (!this.rw) this.rw = 0;
+			return this.rw++;
+		} else {
+			this.rw = null;
+			return rowIndex++;
+		};
+	},
+
 	refreshTableContent: function () {
+		this.rw = null;
 		Ext.getStore('HelpTableContent').reload();
+	},
+
+	printTable: function () {
+		this.rw = null;
+		var grid = Ext.getCmp("helptabletab99");
+		Opt.ux.GridPrinter.print(grid);
 	},
 
 	printContent: function () {

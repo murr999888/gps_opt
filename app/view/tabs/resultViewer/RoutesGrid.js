@@ -88,8 +88,10 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 				hideable: true,
 				hidden: true,
 				text: 'Х',
+				align: 'center',
 				width: 25,
 				dataIndex: 'race_number',
+				renderer: 'getNumbers',
 			},
 			{
 				text: 'Нач. план',
@@ -126,9 +128,10 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 			{
 				text: 'Длина',
 				flex: 1,
-				align: 'right',
+				align: 'center',
 				dataIndex: 'distance',
 				hideable: true,
+				renderer: 'getNumbers',
 			},
 			{
 				text: 'Время',

@@ -26,7 +26,7 @@ Ext.define('Opt.view.OrdersGridController', {
 			//metadata.tdCls = 'vert_middle';
 			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
 		}
-		return val;
+		return '';
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {

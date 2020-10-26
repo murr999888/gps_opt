@@ -68,6 +68,14 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 		Opt.ux.GridPrinter.print(grid);
 	},
 
+	getNumbers: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		metadata.style = 'text-align: right;'; 
+		if (val == 0) {
+			return "";
+		}
+		return val;
+	},
+
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
 		this.fireEvent('tab2routesgridsettitle');
@@ -265,6 +273,8 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 	},
 
 	onMapRender: function () {
+		var mapEdit = Ext.getCmp('resultviewermap');
+		mapEdit.mapRendered = true;
 		this.drowRoute();
 	},
 
@@ -287,6 +297,6 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGridController', {
 			metadata.tdCls = 'vert_middle';
 			return '<div style="height: 14px; width: 14px; background: url(css/images/gas_station_16x16.png) no-repeat; no-repeat center center; background-size: 14px; "></div>';
 		}
-		return val;
+		return '';
 	},
 });

@@ -24,7 +24,12 @@ Opt.ux.GridPrinter = {
   print: function(grid) {
     //We generate an XTemplate here by using 2 intermediary XTemplates - one to create the header,
     //the other to create the body (see the escaped {} below)
-    var columns = grid.getColumns();
+    var columns = [];
+    Ext.each(grid.getColumns(), function(column) {
+	if (column.getXType() != 'actioncolumn') {
+		columns.push(column);
+	}
+    });
     
     //build a useable array of store data for the XTemplate
     var data = [];
@@ -65,10 +70,10 @@ Opt.ux.GridPrinter = {
 	  '<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
 	  '<link type="text/css" rel="stylesheet" href="css/main.css" />',
           '<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
-          '<title>' + grid.getTitle() + '</title>',
+          '<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
         '</head>',
         '<body>',
-	  '<h3>' + grid.getTitle() + '</h3>',
+	  '<h3>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</h3>',
           '<table class="print grid">',
             headings,
             '<tpl for=".">',

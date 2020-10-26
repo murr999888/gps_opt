@@ -759,6 +759,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		for (var i = 0; i < storeAutos.count(); i++) {
 			var recordAuto = storeAutos.getAt(i);
 			if (recordAuto.get("in_use") && recordAuto.get("maxraces") > 1) {
+				var uu = 0;
 				for (var j = 1; j < recordAuto.get("maxraces"); j++) {
 					var deepCopy = $.extend(true, {}, depot);				 	
 					deepCopy.node_type = 4;
@@ -780,7 +781,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					deepCopy.allowed_autos = [allowedAutos];						
 					deepCopy.allowed_autos_backup = [allowedAutos];
 					orders.push(deepCopy);
+					uu++;
 				}
+console.log("Машина " + recordAuto.get("name") + " добавлено " + uu);
 			}
 		}
 

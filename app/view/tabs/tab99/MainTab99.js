@@ -66,9 +66,7 @@ Ext.define('Opt.view.tabs.tab99.MainTab99', {
 						text: '#',
 						align: 'right',
 						flex: 1,
-						renderer: function (value, metaData, record, rowIndex) {
-							return rowIndex + 1;
-						}
+						renderer: 'getNum',
 					},
 					{
 						text: 'Раздел',
