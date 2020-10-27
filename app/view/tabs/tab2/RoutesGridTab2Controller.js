@@ -1,4 +1,4 @@
-Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
+	Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	extend: 'Ext.app.ViewController',
 	alias: 'controller.tab2routesgrid',
 	checkedAll: true,
@@ -26,8 +26,14 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	setTitle: function(){
+		var form = Ext.getCmp('formparamtab2');
+		var formVal = form.getForm().getFieldValues();
+
+		var orders_date = formVal.solvedate;
+
 		var store = this.getView().getStore();
-		strTitle = 'Маршрутные листы ';
+		strTitle = 'Маршрутные листы за ' + orders_date + ' ';
+
 		var inUseCount = 0;
 		store.each(function(record){
 			if(record.get("in_use")){
@@ -485,4 +491,59 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		}
 		return '';
 	},
+
+	getLoadList: function(){
+		var grid = this.getView();
+		var store = this.getView().getStore();
+		var data = Ext.pluck(store.data.items, 'data');
+		var routelists = data.filter(function(routelist){
+			return routelist.in_use == true;p
+		});
+
+	    	var template = new Ext.XTemplate(
+      		'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+      		'<html>',
+        		'<head>',
+          		'<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />',
+	  		'<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">',
+	  		'<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
+	  		'<link type="text/css" rel="stylesheet" href="css/main.css" />',
+          		'<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
+          		'<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
+        		'</head>',
+        		'<body>',
+		  		'<h3>Начальная загрузка по маршрутным листам</h3>',
+        	  		
+	      	    		'<tpl for=".">',
+					'<b>Машина: \{auto_name\}, водитель: \{driver_name\}, рейс: \{race_number\}</b>',
+					'<table class="print">',
+						'<tr style="background-color: #eee;">',
+        						'<td style="width: 300px; text-align: center;">Наименование</td>',
+							'<td style="width: 50px; text-align: center;">Ед.</td>',
+							'<td style="width: 50px; text-align: center;">Кол-во</td>',
+						'</tr>',
+						'<tpl for="goods">',
+							'<tr>',
+	        						'<td>\{full_name\}</td>',
+								'<td style="text-align: right;">\{ed\}</td>',
+								'<td style="text-align: right;">\{kolvo\}</td>',
+							'</tr>',
+      						'</tpl>',
+					'</table>',
+					'<br />',
+       	    			'</tpl>',
+        		'</body>',
+      		'</html>'
+    		);
+
+		var html = template.apply(routelists);
+    
+    		//open up a new printing window, write to it, print it and close
+    		var win = window.open('', 'printgrid' + Date.now());
+    
+    		win.document.write(html);
+		win.document.close();
+	},
+
+  	stylesheetPath: '/css/print.css',
 });

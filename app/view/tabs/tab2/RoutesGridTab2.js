@@ -103,6 +103,23 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 					iconCls: 'fa fa-list',
 					iconClsBck: 'fa fa-list',
 				},
+				{
+					xtype: 'button',
+					text: 'Печать',
+					id: 'tab2getRoutesPrintButton',
+					//disabled: true,
+					iconCls: 'fa fa-print',
+					iconClsBck: 'fa fa-print',
+					menu: {
+						items: [
+							{
+								text: 'Загрузка',
+								handler: 'getLoadList',
+								iconCls: 'fa fa-list',
+							},
+						],
+					},
+				},
 
 				{
 					xtype: 'button',

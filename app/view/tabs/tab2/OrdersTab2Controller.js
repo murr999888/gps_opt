@@ -783,7 +783,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					orders.push(deepCopy);
 					uu++;
 				}
-console.log("Машина " + recordAuto.get("name") + " добавлено " + uu);
+				//console.log("Машина " + recordAuto.get("name") + " добавлено " + uu);
 			}
 		}
 
