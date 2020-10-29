@@ -19,6 +19,7 @@ table.print {
 	border: 1px solid #bbb;
 	border-collapse: collapse;
 	font-size: 12px !important;
+	margin-top: 3px;
 }
 
 table.print th,td {

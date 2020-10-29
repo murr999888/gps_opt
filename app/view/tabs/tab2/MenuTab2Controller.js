@@ -16,6 +16,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			useGLS: false,
 			solutionstrategy: 3,
 			fixedcostallvehicles: 0,
+			globalspancoeff: 0,
 		});
 	},
 

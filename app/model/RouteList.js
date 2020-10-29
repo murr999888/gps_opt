@@ -97,6 +97,18 @@ Ext.define('Opt.model.RouteList', {
 			type: 'boolean',
 		},
 		{
+			name: 'distance',
+			type: 'number'
+		},
+		{
+			name: 'duration',
+			type: 'number'
+		},
+		{
+			name: 'durationFull',
+			type: 'number'
+		},
+		{
 			name: 'isRefueled', 
 			type: 'boolean',
 			defaultValue: false, 

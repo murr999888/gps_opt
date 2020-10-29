@@ -1,4 +1,4 @@
-	Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
+Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	extend: 'Ext.app.ViewController',
 	alias: 'controller.tab2routesgrid',
 	checkedAll: true,
@@ -492,7 +492,7 @@
 		return '';
 	},
 
-	getLoadList: function(){
+	printLoadList: function(){
 		var grid = this.getView();
 		var store = this.getView().getStore();
 		var data = Ext.pluck(store.data.items, 'data');
@@ -515,7 +515,9 @@
 		  		'<h3>Начальная загрузка по маршрутным листам</h3>',
         	  		
 	      	    		'<tpl for=".">',
-					'<b>Машина: \{auto_name\}, водитель: \{driver_name\}, рейс: \{race_number\}</b>',
+					'<div style="margin-top: 20px;">',
+					'<span style="margin-bottom: 10px;"><b>Машина: {auto_name}, водитель: {driver_name}</b></span><br>',
+					'<span style="margin-bottom: 10px;">Рейс: <b>{race_number}</b>, выезд: <b>{[secToHHMMSS(values.route_begin_calc)]}</b>, возврат: <b>{[secToHHMMSS(values.route_end_calc)]}</b>, длина: <b>{distance}</b>, длительность: <b>{[secToHHMMSS(values.durationFull)]}</b></span>',
 					'<table class="print">',
 						'<tr style="background-color: #eee;">',
         						'<td style="width: 300px; text-align: center;">Наименование</td>',
@@ -524,13 +526,13 @@
 						'</tr>',
 						'<tpl for="goods">',
 							'<tr>',
-	        						'<td>\{full_name\}</td>',
-								'<td style="text-align: right;">\{ed\}</td>',
-								'<td style="text-align: right;">\{kolvo\}</td>',
+	        						'<td>{full_name}</td>',
+								'<td style="text-align: right;">{ed}</td>',
+								'<td style="text-align: right;">{kolvo}</td>',
 							'</tr>',
       						'</tpl>',
 					'</table>',
-					'<br />',
+					'</div>',
        	    			'</tpl>',
         		'</body>',
       		'</html>'
@@ -545,5 +547,196 @@
 		win.document.close();
 	},
 
-  	stylesheetPath: '/css/print.css',
+	printAutosList: function(){
+		var grid = this.getView();
+		var store = this.getView().getStore();
+		var data = Ext.pluck(store.data.items, 'data');
+		var routelists = data.filter(function(routelist){
+			return routelist.in_use == true;p
+		});
+
+		var autos = [];
+		var sum = {routes: 0, duration: 0, distance: 0};
+
+		Ext.each(routelists, function(routelist){
+			var au = autos.find(function(auto){
+				return auto.id == routelist.auto_id;
+			});
+
+			if (!au) {
+				autos.push(
+					{
+						id: routelist.auto_id, 
+						name: routelist.auto_name, 
+						duration: routelist.durationFull, 
+						distance: routelist.distance,
+						routes: 1,
+						worktime_begin: routelist.route_begin_calc,
+						worktime_end: routelist.route_end_calc,
+					}
+				);
+			} else {
+				au.duration += routelist.durationFull;
+				au.distance += routelist.distance;
+				au.routes++;
+				if(routelist.route_begin_calc < au.worktime_begin) au.worktime_begin = routelist.route_begin_calc;
+				if(routelist.route_end_calc > au.worktime_end) au.worktime_end = routelist.route_end_calc;
+			}
+
+			sum.routes++;
+			sum.duration += routelist.durationFull;
+			sum.distance += routelist.distance;
+		});
+
+		autos.sort(function(a,b){
+			if (a.auto_name > b.auto_name) {
+				return -1;			
+			} else {
+				return 0;
+			}
+		});
+
+		var sumTemplate = new Ext.XTemplate(
+			'<tr style="background-color: #eee; font-weight: bold;">',
+				'<td colspan="2">Всего:</td>',
+				'<td style="text-align: right;">{routes}</td>',
+				'<td style="text-align: right;">{distance}</td>',
+				'<td style="text-align: right;">{[secToHHMMSS(values.duration)]}</td>',
+				'<td colspan="2"></td>',
+			'</tr>',
+		);
+
+		var sumTr = sumTemplate.apply(sum);
+
+	    	var template = new Ext.XTemplate(
+      		'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+      		'<html>',
+        		'<head>',
+          		'<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />',
+	  		'<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">',
+	  		'<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
+	  		'<link type="text/css" rel="stylesheet" href="css/main.css" />',
+          		'<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
+          		'<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
+        		'</head>',
+        		'<body>',
+		  		'<h3>Статистика машин по маршрутным листам</h3>',
+				 this.getParamTemplate(),
+				 this.getStatTemplate(),
+				'<table class="print">',
+					'<tr style="background-color: #eee; text-align: center;">',
+						'<td style="width: 20px;">№</td>',
+        					'<td style="width: 300px;">Наименование</td>',
+						'<td style="width: 50px;">Маршрутов</td>',
+						'<td style="width: 50px;">Длина</td>',
+						'<td style="width: 50px;">Длит.</td>',
+						'<td style="width: 50px;">Начало</td>',
+						'<td style="width: 50px;">Конец</td>',
+					'</tr>',
+	      	    			'<tpl for=".">',
+						'<tr>',
+							'<td style="text-align: right;">{#}</td>',
+        						'<td>{name}</td>',
+							'<td style="text-align: right;">{routes}</td>',
+							'<td style="text-align: right;">{distance}</td>',
+							'<td style="text-align: right;">{[secToHHMMSS(values.duration)]}</td>',
+							'<td style="text-align: right;">{[secToHHMMSS(values.worktime_begin)]}</td>',
+							'<td style="text-align: right;">{[secToHHMMSS(values.worktime_end)]}</td>',
+						'</tr>',
+       	    				'</tpl>',
+					sumTr,
+				'</table>',
+        		'</body>',
+
+      		'</html>'
+    		);
+
+		var html = template.apply(autos);
+    
+    		//open up a new printing window, write to it, print it and close
+    		var win = window.open('', 'printgrid' + Date.now());
+    
+    		win.document.write(html);
+		win.document.close();
+	},
+
+	getParamTemplate: function(){
+		var form = Ext.getCmp('formparamtab2');
+		var formVal = form.getForm().getFieldValues();
+
+        	var paramTemplate = new Ext.XTemplate(
+		'<table class="print">',
+		'<tr style="background-color: #eee; font-weight: bold;">',
+			'<td style="text-align: center;">Параметр</td>',
+			'<td style="text-align: center;">Значение</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Дата</td>',
+			'<td style="font-weight: bold;">{solvedate}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Допустимое время ожидания, мин</td>',
+			'<td style="font-weight: bold;">{maxslacktime}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Стоимость машины, мин</td>',
+			'<td style="font-weight: bold;">{fixedcostallvehicles}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Глобальный коэффициент дуги</td>',
+			'<td style="font-weight: bold;">{globalspancoeff}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Расчет заправок</td>',
+			'<td style="font-weight: bold;">{refuelmode}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Заправка по расходу "до полного"</td>',
+			'<td style="font-weight: bold;">{refuel_full_tank}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Алгоритм</td>',
+			'<td style="font-weight: bold;">{solutionstrategy}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Использовать локальный поиск</td>',
+			'<td style="font-weight: bold;">{useGLS}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Макс. время поиска решения, мин</td>',
+			'<td style="font-weight: bold;">{maxsolvetime}</td>',
+		'</tr>',
+		'</table>',
+		);
+
+		formVal.refuelmode = Ext.getCmp('formparamtab2refuelmode').getRawValue();
+		formVal.solutionstrategy = Ext.getCmp('formparamtab2solutionstrategy').getRawValue();
+
+		return paramTemplate.apply(formVal);
+	},
+
+	getStatTemplate: function(){
+        	var statTemplate = new Ext.XTemplate(
+		'<table class="print">',
+		'<tr>',
+			'<td style="background-color: #eee; text-align: center;">Начало расчета</td>',
+			'<td style="text-align: center; font-weight: bold;">{calc_begin}</td>',
+			'<td style="background-color: #eee; text-align: center;">Конец расчета</td>',
+			'<td style="text-align: center; font-weight: bold;">{calc_end}</td>',
+			'<td style="background-color: #eee; text-align: center;">Длительность</td>',
+			'<td style="text-align: center; font-weight: bold;">{calc_time}</td>',
+		'</tr>',
+		'<tr>',
+			'<td style="background-color: #eee; text-align: center;">Заказов всего</td>',
+			'<td style="text-align: center; font-weight: bold;">{orders_all_count}</td>',
+			'<td style="background-color: #eee; text-align: center;">Распределено</td>',
+			'<td style="text-align: center; font-weight: bold;">{orders_routes_count}</td>',
+			'<td style="background-color: #eee; text-align: center;">Отброшено</td>',
+			'<td style="text-align: center; font-weight: bold;">{dropped_orders_count}</td>',
+		'</tr>',
+		'</table>',	
+		);
+
+		return statTemplate.apply(this.stat);
+	},
 });

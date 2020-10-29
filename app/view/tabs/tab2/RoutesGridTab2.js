@@ -114,7 +114,12 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 						items: [
 							{
 								text: 'Загрузка',
-								handler: 'getLoadList',
+								handler: 'printLoadList',
+								iconCls: 'fa fa-list',
+							},
+							{
+								text: 'Стат.',
+								handler: 'printAutosList',
 								iconCls: 'fa fa-list',
 							},
 						],

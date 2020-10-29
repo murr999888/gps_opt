@@ -609,7 +609,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var use_guided_local_search = formVal.useGLS;
 		var solution_strategy = formVal.solutionstrategy;
 		var fixed_cost_all_vehicles = formVal.fixedcostallvehicles;
-
+		var globalspancoeff = formVal.globalspancoeff;
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
 		var task = {};
@@ -628,6 +628,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			use_guided_local_search: use_guided_local_search,
 			solution_strategy: solution_strategy,
 			fixed_cost_all_vehicles: fixed_cost_all_vehicles,
+			globalspancoeff: globalspancoeff,
 		};
 
 		task.error = "";
