@@ -44,6 +44,8 @@ Ext.define('Opt.Application', {
 		'Depots',
 		'Traffic',
 		'RoadSigns',
+		'RefuelMode',
+		'CalcAlgorithm',
 	],
 
 	controllers: [

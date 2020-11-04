@@ -1,6 +1,7 @@
 Ext.define('Opt.model.CalcLog', {
     	extend: 'Ext.data.Model',
 	identifier: 'negative',
+/*
     	fields: [
 
 			{
@@ -74,5 +75,6 @@ Ext.define('Opt.model.CalcLog', {
 			},
 
 		]
+*/
 	}
 );

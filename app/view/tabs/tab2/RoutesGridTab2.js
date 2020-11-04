@@ -118,7 +118,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 								iconCls: 'fa fa-list',
 							},
 							{
-								text: 'Стат.',
+								text: 'Сводка',
 								handler: 'printAutosList',
 								iconCls: 'fa fa-list',
 							},

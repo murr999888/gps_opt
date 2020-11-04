@@ -8,7 +8,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		'Opt.ux.GridPrinter',
 	],
 
-	stat: null,
+	calc_stat: null,
+	calc_params: null,
 
 	listen: {
 		controller: {
@@ -16,13 +17,18 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 				distributed_orders_change_date: 'distributed_orders_change_date',
 				tab2routesgridsettitle: 'setTitle',
 				tab2routesgridsetstat: 'setStat',
+				tab2routesgridsetparams: 'setParams',
 			}
 		}
 	},
 
-	setStat: function(stat){
-		this.stat = stat;
+	setStat: function(calc_stat){
+		this.calc_stat = calc_stat;
 		this.setTitle();
+	},
+
+	setParams: function(calc_params){
+		this.calc_params = calc_params;
 	},
 
 	setTitle: function(){
@@ -509,11 +515,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	  		'<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
 	  		'<link type="text/css" rel="stylesheet" href="css/main.css" />',
           		'<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
-          		'<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
+          		'<title>Начальная загрузка по маршрутным листам</title>',
         		'</head>',
         		'<body>',
+				this.getTimeStamp(),
+				'<br />',
+				grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ""), 
 		  		'<h3>Начальная загрузка по маршрутным листам</h3>',
-        	  		
 	      	    		'<tpl for=".">',
 					'<div style="margin-top: 20px;">',
 					'<span style="margin-bottom: 10px;"><b>Машина: {auto_name}, водитель: {driver_name}</b></span><br>',
@@ -556,7 +564,12 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		});
 
 		var autos = [];
-		var sum = {routes: 0, duration: 0, distance: 0};
+		var sum = {
+			routes: 0, 
+			orders: 0,
+			duration: 0, 
+			distance: 0
+		};
 
 		Ext.each(routelists, function(routelist){
 			var au = autos.find(function(auto){
@@ -571,6 +584,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 						duration: routelist.durationFull, 
 						distance: routelist.distance,
 						routes: 1,
+						orders: routelist.ordersCount,
 						worktime_begin: routelist.route_begin_calc,
 						worktime_end: routelist.route_end_calc,
 					}
@@ -579,11 +593,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 				au.duration += routelist.durationFull;
 				au.distance += routelist.distance;
 				au.routes++;
+				au.orders += routelist.ordersCount;
 				if(routelist.route_begin_calc < au.worktime_begin) au.worktime_begin = routelist.route_begin_calc;
 				if(routelist.route_end_calc > au.worktime_end) au.worktime_end = routelist.route_end_calc;
 			}
 
 			sum.routes++;
+			sum.orders += routelist.ordersCount;
 			sum.duration += routelist.durationFull;
 			sum.distance += routelist.distance;
 		});
@@ -600,6 +616,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			'<tr style="background-color: #eee; font-weight: bold;">',
 				'<td colspan="2">Всего:</td>',
 				'<td style="text-align: right;">{routes}</td>',
+				'<td style="text-align: right;">{orders}</td>',
 				'<td style="text-align: right;">{distance}</td>',
 				'<td style="text-align: right;">{[secToHHMMSS(values.duration)]}</td>',
 				'<td colspan="2"></td>',
@@ -617,17 +634,23 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	  		'<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
 	  		'<link type="text/css" rel="stylesheet" href="css/main.css" />',
           		'<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
-          		'<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
+          		'<title>Сводка расчета маршрутных листов</title>',
         		'</head>',
         		'<body>',
-		  		'<h3>Статистика машин по маршрутным листам</h3>',
+				this.getTimeStamp(),
+				'<br />',
+				grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ""),
+		  		'<h3>Сводка расчета маршрутных листов</h3>',
 				 this.getParamTemplate(),
+				'<br />',
 				 this.getStatTemplate(),
+				'<br />',
 				'<table class="print">',
 					'<tr style="background-color: #eee; text-align: center;">',
 						'<td style="width: 20px;">№</td>',
         					'<td style="width: 300px;">Наименование</td>',
 						'<td style="width: 50px;">Маршрутов</td>',
+						'<td style="width: 50px;">Заказов</td>',
 						'<td style="width: 50px;">Длина</td>',
 						'<td style="width: 50px;">Длит.</td>',
 						'<td style="width: 50px;">Начало</td>',
@@ -638,6 +661,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 							'<td style="text-align: right;">{#}</td>',
         						'<td>{name}</td>',
 							'<td style="text-align: right;">{routes}</td>',
+							'<td style="text-align: right;">{orders}</td>',
 							'<td style="text-align: right;">{distance}</td>',
 							'<td style="text-align: right;">{[secToHHMMSS(values.duration)]}</td>',
 							'<td style="text-align: right;">{[secToHHMMSS(values.worktime_begin)]}</td>',
@@ -661,34 +685,38 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	getParamTemplate: function(){
-		var form = Ext.getCmp('formparamtab2');
-		var formVal = form.getForm().getFieldValues();
+		var date = parseInt("20201103");
+		var new_date = new Date(date / 10000, (date % 10000 / 100)-1, date % 100);
+		this.calc_params.orders_date_text = new_date.toLocaleDateString();
+
+		this.calc_params.refuel_mode_text = Ext.getStore("RefuelMode").getById(this.calc_params.refuel_mode).get("name");
+		this.calc_params.solution_strategy_text = Ext.getStore("CalcAlgorithm").getById(this.calc_params.solution_strategy).get("name");
 
         	var paramTemplate = new Ext.XTemplate(
-		'<table class="print">',
+		'<table class="print_sm">',
 		'<tr style="background-color: #eee; font-weight: bold;">',
 			'<td style="text-align: center;">Параметр</td>',
 			'<td style="text-align: center;">Значение</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Дата</td>',
-			'<td style="font-weight: bold;">{solvedate}</td>',
+			'<td style="font-weight: bold;">{orders_date_text}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Допустимое время ожидания, мин</td>',
-			'<td style="font-weight: bold;">{maxslacktime}</td>',
+			'<td style="font-weight: bold;">{time_waiting}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Стоимость машины, мин</td>',
-			'<td style="font-weight: bold;">{fixedcostallvehicles}</td>',
+			'<td style="font-weight: bold;">{fixed_cost_all_vehicles}</td>',
 		'</tr>',
 		'<tr>',
-			'<td>Глобальный коэффициент дуги</td>',
-			'<td style="font-weight: bold;">{globalspancoeff}</td>',
+			'<td>Глобальный коэффициент дуги (по времени)</td>',
+			'<td style="font-weight: bold;">{globalspancoeff_time}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Расчет заправок</td>',
-			'<td style="font-weight: bold;">{refuelmode}</td>',
+			'<td style="font-weight: bold;">{refuel_mode_text}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Заправка по расходу "до полного"</td>',
@@ -696,23 +724,20 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		'</tr>',
 		'<tr>',
 			'<td>Алгоритм</td>',
-			'<td style="font-weight: bold;">{solutionstrategy}</td>',
+			'<td style="font-weight: bold;">{solution_strategy_text}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Использовать локальный поиск</td>',
-			'<td style="font-weight: bold;">{useGLS}</td>',
+			'<td style="font-weight: bold;">{use_guided_local_search}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Макс. время поиска решения, мин</td>',
-			'<td style="font-weight: bold;">{maxsolvetime}</td>',
+			'<td style="font-weight: bold;">{time_limit}</td>',
 		'</tr>',
 		'</table>',
 		);
 
-		formVal.refuelmode = Ext.getCmp('formparamtab2refuelmode').getRawValue();
-		formVal.solutionstrategy = Ext.getCmp('formparamtab2solutionstrategy').getRawValue();
-
-		return paramTemplate.apply(formVal);
+		return paramTemplate.apply(this.calc_params);
 	},
 
 	getStatTemplate: function(){
@@ -737,6 +762,11 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		'</table>',	
 		);
 
-		return statTemplate.apply(this.stat);
+		return statTemplate.apply(this.calc_stat);
+	},
+
+	getTimeStamp: function(){
+       		var dateTime = new Date(); 
+		return '<span>Сформировано ' + dateTime.toLocaleString() + '</span>';
 	},
 });

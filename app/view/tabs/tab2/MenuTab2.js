@@ -41,7 +41,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'form',
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
-                        height: 275,
+                        height: 277,
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
@@ -111,8 +111,8 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
-					name: 'globalspancoeff',
-					fieldLabel: 'Глобальный коэффициент дуги',
+					name: 'globalspancoeff_time',
+					fieldLabel: 'Глобальный коэфф. дуги (время)',
 					value: 0,
 					maxValue: 100,
 					minValue: 0,
@@ -133,22 +133,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					displayField: 'name',
 					valueField: 'id',
 					value: 0,
-					store: {
-                                        	data: [
-							{
-       								id: 0,
-								name: '< не рассчитывать >',
-    							}, 
-							{
-       								id: 1,
-								name: 'сначала заправить..',
-    							}, 
-							{
-       								id: 2,
-								name: 'по расходу топлива',
-    							}, 
-						]
-					},
+					store: 'RefuelMode',
 					listeners: {
 						select: 'onRefuelModeSelect',
 					},
@@ -176,38 +161,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					displayField: 'name',
 					valueField: 'id',
 					value: 3,
-					store: {
-                                        	data: [
-							{
-								id: 15,
-       								name: 'Automatic',
-    							}, 
-							{
-								id: 3,
-       								name: 'PathCheapestArc',
-    							}, 
-							{
-       								id: 10,
-								name: 'Savings',
-    							}, 
-							{
-       								id: 6,
-								name: 'AllUnperformed',
-    							}, 
-							{
-       								id: 1,
-								name: 'GlobalCheapestArc',
-    							}, 
-							{
-       								id: 2,
-								name: 'LocalCheapestArc',
-    							}, 
-							{
-       								id: 12,
-								name: 'FirstUnboundMinValue',
-    							},
-						]
-					},
+					store: 'CalcAlgorithm',
 				},
 				{
 					xtype: 'checkbox',
@@ -218,20 +172,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					uncheckedValue: false,
 					fieldLabel: 'Использовать локальный поиск',
 					labelWidth: 237,
-/*
-					stateful: true,
-					stateId: 'tab2useGLS',
-					stateEvents: ['change', 'check'],
-					listeners: {
-						change: 'onChangeUseGLS',
-					},
-					getState: function () {
-						return { "checked": this.getValue() };
-					},
-					applyState: function (state) {
-						this.setValue(state.checked);
-					},
-*/
 					autoEl: {
         					tag: 'div',
         					'data-qtip': 'Использовать Guided Local Search',

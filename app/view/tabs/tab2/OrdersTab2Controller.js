@@ -399,6 +399,13 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	checkDataBeforeSend: function () {
+		var self = this;
+		if (!Opt.app.socket.readyState || !Opt.app.socket.readyState == 1) {
+			Opt.app.showError("Ошибка!","Нет соединения с сервером!");
+			console.log(Opt.app.socket.readyState);
+			return;
+		}
+
 		Ext.getCmp('maintab2').mask('Проверка данных ...');
 		var mode = Ext.getCmp('distordersmode').getValue();
 
@@ -585,7 +592,24 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		this.checkDestinations();
+		if (Ext.getCmp('formparamtab2useGLS').getValue() == true) {
+			Ext.Msg.show({
+				title: 'Внимание',
+				message: 'Установлен флаг локального поиска. Продолжить?',
+				buttons: Ext.Msg.YESNO,
+				icon: Ext.Msg.QUESTION,
+				fn: function (btn) {
+					if (btn === 'yes') {
+						self.checkDestinations();
+					} else if (btn === 'no') {
+						Ext.getCmp('maintab2').unmask();
+						return;
+					}
+				}
+			});
+		} else {
+			this.checkDestinations();
+		}
 	},
 
 	sendForDistributeOrders: function(){
@@ -596,6 +620,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		this.fireEvent('tab2droppedgridsettitle');
 		this.fireEvent('tab2routesgridsetstat', null);
+		this.fireEvent('tab2routesgridsetparams', null);
 		Ext.getCmp('tab2droppedgrid').collapse();
 
 		var form = Ext.getCmp('formparamtab2');
@@ -609,7 +634,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var use_guided_local_search = formVal.useGLS;
 		var solution_strategy = formVal.solutionstrategy;
 		var fixed_cost_all_vehicles = formVal.fixedcostallvehicles;
-		var globalspancoeff = formVal.globalspancoeff;
+		var globalspancoeff_time = formVal.globalspancoeff_time;
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
 		var task = {};
@@ -621,14 +646,14 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			depot_index: 0,
 			time_limit: formVal.maxsolvetime,
 			maximum_time_per_vehicle: 24 * 60 * 60, // 12 часов
-			dateRoutes: orders_date,
+			orders_date: orders_date,
 			time_waiting: time_waiting * 60,
 			refuel_mode: refuel_mode,
 			refuel_full_tank: refuel_full_tank,
 			use_guided_local_search: use_guided_local_search,
 			solution_strategy: solution_strategy,
 			fixed_cost_all_vehicles: fixed_cost_all_vehicles,
-			globalspancoeff: globalspancoeff,
+			globalspancoeff_time: globalspancoeff_time,
 		};
 
 		task.error = "";
@@ -1102,7 +1127,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	distributed_orders_recieved: function (data) {
-		Ext.getCmp('formparamtab2useGLS').setValue(false);
 console.log(data);
 		var self = this;
 		if (data.id != this.currTaskId) return;
@@ -1193,16 +1217,16 @@ console.log(data);
 		}
 
 		var logStore = Ext.getStore('CalcLog'); 
-		var stat = data.stat;
+		var calc_stat = data.calc_stat;
+		var calc_params = data.calc_params;
 		var user = Opt.app.getUser();
-		stat.user_id = user.id; 
-		stat.calc_type = data.solve;
-		stat.host_name = Opt.app.user.data.host_name;
-		stat.host_addr = Opt.app.user.data.host_ip;
-		var newRecord = Ext.create('Opt.model.CalcLog', stat);
+		calc_stat.user_id = user.id; 
+		calc_stat.calc_type = data.solve;
+		calc_stat.host_name = Opt.app.user.data.host_name;
+		calc_stat.host_addr = Opt.app.user.data.host_ip;
+		var newRecord = Ext.create('Opt.model.CalcLog', Object.assign(calc_stat, calc_params));
 		logStore.add(newRecord);
 		logStore.sync();
-		
 
 		this.stopTimerMask();
 
@@ -1211,12 +1235,13 @@ console.log(data);
 			addAndPlay(sndFile);
 		}, 0);
 
-		this.fireEvent('tab2routesgridsetstat', stat);
+		this.fireEvent('tab2routesgridsetstat', calc_stat);
+		this.fireEvent('tab2routesgridsetparams', calc_params);
 
 		Ext.create('Opt.view.dialog.MessageWindow',{
 			renderTo: 'maintab2',
 			title: 'Внимание!', 
-			message: "Создание маршрутов завершено.<br /> Время расчета: <b>" + stat.calc_time + "</b><br /> Общая длина маршрутов: <b>" + stat.total_distance + "</b> м. <br /> Общая продолжительность: <b>" + secToHHMMSS(stat.total_duration) + "</b>",
+			message: "Создание маршрутов завершено.<br /> Время расчета: <b>" + calc_stat.calc_time + "</b><br /> Общая длина маршрутов: <b>" + calc_stat.total_distance + "</b> м. <br /> Общая продолжительность: <b>" + secToHHMMSS(calc_stat.total_duration) + "</b>",
 		}).show();
 	},
 
@@ -1247,6 +1272,7 @@ console.log(data);
 		clearStore('RoutesGoodsStore');
 
 		this.fireEvent('tab2routesgridsetstat', null);
+		this.fireEvent('tab2routesgridsetparams', null);
 		this.fireEvent('tab2routesgridsettitle');
 		this.fireEvent('tab2droppedgridsettitle');
 		this.fireEvent('tab2ordergridsettitle');

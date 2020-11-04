@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
     			echo json_encode(array('success'=>true, 'message'=>'', 'data' =>array(array('id'=>$id))));
 		} else {
-var_dump($obj);
+//var_dump($obj);
               		if (isset($obj["id"])){
 				unset($obj["id"]);
 			}

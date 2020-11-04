@@ -678,6 +678,7 @@ console.log("Время окончания запроса " + Date.now());
 	resetMap: function () {
 		this.resetData();
 		this.resetDistanceDurationFileds();
+		Ext.getCmp('tab1droppedgrid').collapse();
 		var comboML = Ext.getCmp('maptab1')
 		var record = Ext.getCmp("menutab1mlselect").getSelection();
 		this.setTimeFields(record);
@@ -686,10 +687,13 @@ console.log("Время окончания запроса " + Date.now());
 
 	optimizeRoute: function () {
 		var self = this;
-		if (!Opt.app.socket || Opt.app.socket.OPEN != 1) {
-			Ext.Msg.alert("Внимание!", "Нет соединения с сервером!");
+
+		if (!Opt.app.socket.readyState || !Opt.app.socket.readyState == 1) {
+			Opt.app.showError("Ошибка!","Нет соединения с сервером!");
+			console.log(Opt.app.socket.readyState);
 			return;
 		}
+
 		var containNotValidOrders = false;
 
 		for (var i = 0; i < this.routeLegsStore.count() - 1; i++) {
