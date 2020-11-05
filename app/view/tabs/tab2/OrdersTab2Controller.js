@@ -635,6 +635,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var solution_strategy = formVal.solutionstrategy;
 		var fixed_cost_all_vehicles = formVal.fixedcostallvehicles;
 		var globalspancoeff_time = formVal.globalspancoeff_time;
+		var softlowerbound_water = formVal.softlowerbound_water;
+
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
 		var task = {};
@@ -654,6 +656,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			solution_strategy: solution_strategy,
 			fixed_cost_all_vehicles: fixed_cost_all_vehicles,
 			globalspancoeff_time: globalspancoeff_time,
+			softlowerbound_water: softlowerbound_water,
 		};
 
 		task.error = "";

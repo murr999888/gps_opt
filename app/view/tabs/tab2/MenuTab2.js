@@ -41,7 +41,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'form',
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
-                        height: 277,
+                        height: 303,
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
@@ -68,7 +68,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					]
 				},
 				{
-					labelWidth: 205,
+					labelWidth: 195,
 					editable: false,
 					width: 255,
 					xtype: 'numberfield',
@@ -87,7 +87,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					},
 				},
 				{
-					labelWidth: 205,
+					labelWidth: 195,
 					editable: false,
 					width: 255,
 					xtype: 'numberfield',
@@ -106,7 +106,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					},
 				},
 				{
-					labelWidth: 205,
+					labelWidth: 195,
 					editable: false,
 					width: 255,
 					xtype: 'numberfield',
@@ -117,9 +117,25 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					maxValue: 100,
 					minValue: 0,
 					step: 5,
+				},
+				{
+					labelWidth: 195,
+					editable: false,
+					width: 255,
+					xtype: 'numberfield',
+					fieldStyle: 'text-align: right;',
+					name: 'softlowerbound_water',
+					fieldLabel: 'Мягкая нижняя граница (вода, л.)',
+					value: 0,
+					maxValue: 5000,
+					minValue: 0,
+					step: 100,
 					stateful: true,
-					stateId: 'tab2globalspancoeff',
+					stateId: 'tab2softlowerbound_water',
 					stateEvents: ['change'],
+					listeners: {
+						//change: 'onMaxSolveTimeChange',
+					},
 				},
 				{
 					readOnly: false,
@@ -178,7 +194,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
     					},
 				},
 				{
-					labelWidth: 205,
+					labelWidth: 195,
 					editable: false,
 					width: 255,
 					xtype: 'numberfield',

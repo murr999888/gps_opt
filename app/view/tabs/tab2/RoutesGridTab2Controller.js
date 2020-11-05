@@ -93,12 +93,18 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		});
 	},
 
+	setButtonsDisabled: function(disabled){
+		Ext.getCmp('tab2getRoutesGoodsButton').setDisabled(disabled);
+		Ext.getCmp('tab2getRoutesPrintButton').setDisabled(disabled);
+		Ext.getCmp('tab2mapbutton').setDisabled(disabled);
+	},
+
 	setGetGoodsButton: function(){
 		var routeGoodsStore = Ext.getStore('RoutesGoodsStore');
 		if (routeGoodsStore.count() > 0) {
-			Ext.getCmp('tab2getRoutesGoodsButton').setDisabled(false);
+			this.setButtonsDisabled(false);
 		} else {
-			Ext.getCmp('tab2getRoutesGoodsButton').setDisabled(true);		
+			this.setButtonsDisabled(true);		
 		}
 	},
 	
@@ -703,11 +709,11 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			'<td style="font-weight: bold;">{orders_date_text}</td>',
 		'</tr>',
 		'<tr>',
-			'<td>Допустимое время ожидания, мин</td>',
+			'<td>Допустимое время ожидания, сек.</td>',
 			'<td style="font-weight: bold;">{time_waiting}</td>',
 		'</tr>',
 		'<tr>',
-			'<td>Стоимость машины, мин</td>',
+			'<td>Стоимость машины, мин.</td>',
 			'<td style="font-weight: bold;">{fixed_cost_all_vehicles}</td>',
 		'</tr>',
 		'<tr>',
@@ -715,12 +721,22 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			'<td style="font-weight: bold;">{globalspancoeff_time}</td>',
 		'</tr>',
 		'<tr>',
+			'<td>Мягкая нижняя граница (вода, л.)</td>',
+			'<td style="font-weight: bold;">{softlowerbound_water}</td>',
+		'</tr>',
+		'<tr>',
 			'<td>Расчет заправок</td>',
 			'<td style="font-weight: bold;">{refuel_mode_text}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Заправка по расходу "до полного"</td>',
-			'<td style="font-weight: bold;">{refuel_full_tank}</td>',
+			'<td style="font-weight: bold;">',
+			'<tpl if="refuel_full_tank">',
+				'Да',
+			'<tpl else>',
+				'Нет',
+			'</tpl>',
+			'</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Алгоритм</td>',
@@ -728,7 +744,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		'</tr>',
 		'<tr>',
 			'<td>Использовать локальный поиск</td>',
-			'<td style="font-weight: bold;">{use_guided_local_search}</td>',
+			'<td style="font-weight: bold;">',
+			'<tpl if="use_guided_local_search">',
+				'Да',
+			'<tpl else>',
+				'Нет',
+			'</tpl>',
+			'</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Макс. время поиска решения, мин</td>',
@@ -769,4 +791,4 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
        		var dateTime = new Date(); 
 		return '<span>Сформировано ' + dateTime.toLocaleString() + '</span>';
 	},
-});
+});1

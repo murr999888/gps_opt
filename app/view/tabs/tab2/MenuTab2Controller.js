@@ -9,7 +9,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			formparamtab2date: new Date(),
 			maxslacktime: 5,
 			maxsolvetime: 15,
-			maxordersinroute: 0,
 			maxraces: 1,
 			refuelmode: 0,
 			refuel_full_tank: false,
