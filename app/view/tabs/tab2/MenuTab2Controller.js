@@ -16,6 +16,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			solutionstrategy: 3,
 			fixedcostallvehicles: 0,
 			globalspancoeff_time: 0,
+			softlowerbound_water: 0,
 		});
 	},
 

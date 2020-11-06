@@ -548,6 +548,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 					'</table>',
 					'</div>',
        	    			'</tpl>',
+				'<br />',
+				'<br />',
         		'</body>',
       		'</html>'
     		);
@@ -676,8 +678,9 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
        	    				'</tpl>',
 					sumTr,
 				'</table>',
+				'<br />',
+				'<br />',
         		'</body>',
-
       		'</html>'
     		);
 

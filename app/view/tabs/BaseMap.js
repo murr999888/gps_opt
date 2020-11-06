@@ -65,8 +65,11 @@ Ext.define('Opt.view.tabs.BaseMap', {
 
 		if (currZoom < 12) return; 
 
-		this.trafficLineGroup = L.featureGroup();
 		var store = Ext.getStore('Traffic');
+
+		if (store.count() == 0) return;
+
+		this.trafficLineGroup = L.featureGroup();
 
 		store.each(function(record){
 			var geometryString = record.get('geometry');

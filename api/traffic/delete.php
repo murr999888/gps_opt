@@ -17,7 +17,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	if ($obj)  {
 		if (is_array($obj)) {
 			foreach ($obj as $result) {
-
 				$strq = "DELETE FROM ?n WHERE ?n = ?s";
 				$DB->query($strq, 'traffic_points', 'parent_id', $result["id"]);
 
