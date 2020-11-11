@@ -3,7 +3,7 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2Controller', {
 	alias: 'controller.tab2depotgrid',
 	requires: [
 		'Opt.ux.GridPrinter',
-		//'Opt.view.dialog.OrderEdit',
+		'Opt.view.dialog.MainDepotEdit',
 	],
 
 	init: function () {
@@ -28,6 +28,41 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2Controller', {
 		});
 */
 	},
+
+	openMainDepoDialog: function(){
+		var self = this;
+		var mainDepot = Opt.app.getMainDepot();
+		var record = Ext.create('Opt.model.Depot', mainDepot);
+		if (!this.mainDepotEdit) this.mainDepotEdit = Ext.create('widget.maindepotedit');
+		this.mainDepotEdit.down('form').loadRecord(record);
+console.log(record);
+
+/*
+		var orderGoodStore = this.orderEdit.down('ordergoodsgrid').store;
+		orderGoodStore.loadData(record.get("goods"));
+		orderGoodStore.sync();
+
+		orderGoodStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var allowedAutoStore = this.orderEdit.down('allowedautosgrid').store;
+		allowedAutoStore.loadData(record.get("allowed_autos"));
+		allowedAutoStore.sync();
+*/
+		var form = this.mainDepotEdit.down('form').getForm();
+		form.setValues({
+			timewindow_begin_1: secToHHMM(record.get("timewindow_begin")),
+			timewindow_end_1: secToHHMM(record.get("timewindow_end")),
+		});
+
+		this.mainDepotEdit.on('close', function (panel) {
+			//self.onCloseEditOrderDialog(panel);
+		});
+
+		this.mainDepotEdit.show().focus();
+	},
+
 /*
 	setGetGoodsButton: function(){
 		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');

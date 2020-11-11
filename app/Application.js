@@ -46,6 +46,7 @@ Ext.define('Opt.Application', {
 		'RoadSigns',
 		'RefuelMode',
 		'CalcAlgorithm',
+		'TempResults',
 	],
 
 	controllers: [
@@ -60,11 +61,11 @@ Ext.define('Opt.Application', {
 		return this.socket;
 	},
 
-	getDepot: function () {
+	getMainDepot: function () {
 		return this.depot;
 	},
 
-	setDepot: function (depot) {
+	setMainDepot: function (depot) {
 		this.depot = depot;
 		this.depot.node_type = 0;
 		this.depot.goods = [];

@@ -114,6 +114,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	getOrders: function () {
 		var self = this;
 		Ext.getCmp('tab2ordersgrid').mask('Запрос заказов ...');
+		Ext.getStore('TempResults').removeAll();
+
 		this.clearStores();
 		this.clearFilter();
 
@@ -339,7 +341,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		// проверим достижимость точек
 		checkedArr = [];
 
-		var depot = Opt.app.getDepot();
+		var depot = Opt.app.getMainDepot();
 		checkedArr.push([depot.lon,depot.lat]);
 
 		for (var i = 0; i < this.ordersStore.count(); i++) {
@@ -352,7 +354,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 		}
 
-		if (checkedArr.length > 2) this.checkPointsAvail(checkedArr,300);
+		if (checkedArr.length >= 2) this.checkPointsAvail(checkedArr,300);
 	},
 
 	checkPointsAvail: function(arr, radius){
@@ -409,7 +411,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		Ext.getCmp('maintab2').mask('Проверка данных ...');
 		var mode = Ext.getCmp('distordersmode').getValue();
 
-		var depot = Opt.app.getDepot();
+		var depot = Opt.app.getMainDepot();
                 if (!depot) {
 			Ext.getCmp('maintab2').unmask();
                  	Ext.Msg.alert({
@@ -613,7 +615,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	sendForDistributeOrders: function(){
-		var depot = Opt.app.getDepot();
+		var depot = Opt.app.getMainDepot();
 
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
@@ -846,7 +848,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	sendForAddingOrders: function(){
-	        var depot = Opt.app.getDepot();
+	        var depot = Opt.app.getMainDepot();
                 if (!depot) {
                  	Opt.showError("Внимание!","Нет данных о депо!");
 			return;
@@ -1148,6 +1150,9 @@ console.log(data);
 				record.auto_name = record.auto.name;
 				record.auto_name_short = record.auto.name_short;
 				record.auto_id = record.auto.id;
+				record.water = record.auto.water;
+				record.bottle = record.auto.bottle;
+				record.tank = record.auto.tank;
 				record.ordersCount = record.orders.length - 2;
 				routesData.push(record);
 			}
@@ -1231,7 +1236,9 @@ console.log(data);
 		logStore.add(newRecord);
 		logStore.sync();
 
-		this.stopTimerMask();
+		var storeTempResults = Ext.getStore('TempResults');
+		var newRecord = Ext.create('Opt.model.TempResults', data);
+		storeTempResults.add(newRecord);
 
 		var sndFile = 'sfx/alert.mp3';
 		setTimeout(function () {
@@ -1241,6 +1248,8 @@ console.log(data);
 		this.fireEvent('tab2routesgridsetstat', calc_stat);
 		this.fireEvent('tab2routesgridsetparams', calc_params);
 
+		this.stopTimerMask();
+	
 		Ext.create('Opt.view.dialog.MessageWindow',{
 			renderTo: 'maintab2',
 			title: 'Внимание!', 
@@ -1266,6 +1275,7 @@ console.log(data);
 	},
 
 	clearStores: function () {
+		Ext.getStore('TempResults').removeAll();
 		clearStore('tab2ordersgrid');
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');

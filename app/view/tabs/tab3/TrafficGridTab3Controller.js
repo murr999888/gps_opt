@@ -72,8 +72,9 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
  				try {
 					respObj = Ext.JSON.decode(response.responseText);
 			        } catch(error) {
-					Ext.getCmp('maintab3').unmask();
+					self.loadMask.hide();
 					Opt.app.showError("Ошибка!", error.message);
+					console.log(error);
 					return;
         			}
 
@@ -87,6 +88,8 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 			failure: function (response) {
 				self.loadMask.hide();
 				Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
+				console.log(response);
+				return;
 			}
 		});
 	},

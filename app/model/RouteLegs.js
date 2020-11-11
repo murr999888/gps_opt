@@ -2,10 +2,11 @@ Ext.define('Opt.model.RouteLegs', {
     	extend: 'Ext.data.Model',
     	identifier: 'negative',
 // node_type
-// 0 - депо
-// 1 - обычный заказ
-// 2 - дополнительное место загрузки
-// 3 - заправка
+// 0 - РґРµРїРѕ
+// 1 - РѕР±С‹С‡РЅС‹Р№ Р·Р°РєР°Р·
+// 2 - РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРµ РјРµСЃС‚Рѕ Р·Р°РіСЂСѓР·РєРё
+// 3 - Р·Р°РїСЂР°РІРєР°
+
 
 	fields: [
 		{
@@ -47,12 +48,6 @@ Ext.define('Opt.model.RouteLegs', {
 
 		{
         		name: 'adres',
-        		type: 'string',
-			defaultValue: '',
-    		},
-
-		{
-        		name: 'district',
         		type: 'string',
 			defaultValue: '',
     		},

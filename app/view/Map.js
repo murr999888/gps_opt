@@ -327,9 +327,6 @@ Ext.define('Opt.view.Map', {
 
 		osm = this.tileLayers[0];
 
-		mapbox = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=mapbox',{maxZoom:18}, [
-		        { 'header': 'Authorization', 'value': 'mlApp'},
-    		]);
 		cadastr = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr',{maxZoom:20});
 		//cadastr_h = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=cadastr_h',{maxZoom:20});
 		visicom = L.tileLayer('http://10.10.1.10/tileproxy/tiles.php?z={z}&x={x}&y={y}&r=visi', {tms : true,});
@@ -372,7 +369,6 @@ Not supported: Birdseye and BirdseyeWithLabels
 
 		this.map.addControl(new L.Control.Layers({
 			"OSM": osm,
-			"Mapbox": mapbox,
 			"Google": googleRoad,
 			"Google(Hybrid)": googleSat,
 			"Мариуполь ортофото": ortomar,

@@ -27,6 +27,18 @@ Ext.define('Opt.model.RouteList', {
 			type: 'string',
 		},
 		{
+			name: 'water', 
+			type: 'number',
+		},
+		{
+			name: 'bottle', 
+			type: 'number',
+		},
+		{
+			name: 'tank', 
+			type: 'number',
+		},
+		{
 			name: 'auto_name_short', 
 			type: 'string',
 		},		

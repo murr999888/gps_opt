@@ -18,7 +18,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 		type: 'vbox',
 		align: 'stretch'
 	},
-	height: 530,
+	height: 430,
 	changed: false,
 	items: [
 		{
@@ -42,23 +42,23 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 							items: [
 								{
 									xtype: 'timepickeruiws',
-									name: 'worktime_begin_1',
+									name: 'timewindow_begin_1',
 									fieldLabel: 'Время работы с',
 									labelWidth: 100,
 									width: 145,
 									hourMin: 8,
 									hourMax: 20,
 									listeners: {
-										change: 'onWorktimeBeginChange',
+										change: 'onTimeWindowBeginChange',
 									},
 								},
 								{
 									xtype: 'hiddenfield',
-									name: 'worktime_begin',
+									name: 'timewindow_begin',
 								},
 								{
 									xtype: 'timepickeruiws',
-									name: 'worktime_end_1',
+									name: 'timewindow_end_1',
 									padding: '0 0 0 10px',
 									fieldLabel: 'по',
 									labelWidth: 20,
@@ -66,12 +66,12 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 									hourMax: 20,
 									width: 75,
 									listeners: {
-										change: 'onWorktimeEndChange',
+										change: 'onTimeWindowEndChange',
 									},
 								},
 								{
 									xtype: 'hiddenfield',
-									name: 'worktime_end',
+									name: 'timewindow_end',
 								},
 							]
 						},
@@ -89,11 +89,6 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 							xtype: 'field',
 							name: 'adres',
 							fieldLabel: 'Адрес',
-						},
-						{
-							xtype: 'field',
-							name: 'dop',
-							fieldLabel: 'Дополнение',
 						},
 						{
 							xtype: 'fieldcontainer',
@@ -117,45 +112,6 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 								},
 							]
 						},
-						{
-							xtype: 'numberfield',
-							name: 'service_time_min',
-							editable: false,			
-							readOnly: false,
-							fieldLabel: 'Время разгрузки, мин.',
-							anchor: '100%',
-							maxValue: 60,
-							minValue: 1,
-							step: 1,
-							labelWidth: 280,
-							labelStyle: 'color:blue',
-							fieldStyle: 'text-align: right;color:blue;',
-							listeners: {
-								change: 'onServiceTimeMinChange',
-							},
-						},
-						{
-							xtype: 'hidden',
-							name: 'service_time',
-						},
-						{
-							xtype: 'numberfield',
-							name: 'penalty',
-							editable: false,
-							readOnly: false,
-							fieldLabel: 'Штраф за отказ от посещения',
-							anchor: '100%',
-							value: 30,
-							maxValue: 300,
-							minValue: 0,
-							step: 5,
-							labelWidth: 280,
-							labelStyle: 'color:brown',
-							fieldStyle: 'text-align: right;color:brown;',
-							listeners: {
-								change: 'onPenaltyChange',
-							},
-						},
 					]
 				},
 			]
@@ -172,7 +128,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 				border: false,
 			},
 			items: [
-/*
+
 				{
 					xtype: 'panel',
 					title: 'Отгрузка',
@@ -181,11 +137,23 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 						{
 							tools: null,
 							xtype: 'ordergoodsgrid',
-							id: 'ordereditgoods',
+							id: 'mainDepotEditLoadGoods',
 						},
 					]
 				},
-*/
+				{
+					xtype: 'panel',
+					title: 'Возврат',
+					layout: 'fit',
+					items: [
+						{
+							tools: null,
+							xtype: 'ordergoodsgrid',
+							id: 'mainDepotEditUnLoadGoods',
+						},
+					]
+				},
+
 			]
 		}
 	]

@@ -47,6 +47,14 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 			},
 		});
 
+		this.droppedOrdersStore.on('load', function(){
+			self.fireEvent('tab1_set_dropped_title');
+		});
+
+		this.droppedOrdersStore.on('datachanged', function(){
+			self.fireEvent('tab1_set_dropped_title');
+		});
+
 		Ext.getCmp('tab1droppedgrid').setStore(this.droppedOrdersStore);
 
 		this.ordersStore = Ext.create('Ext.data.Store', {
@@ -318,7 +326,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 	loadPointsToGrid: function (data) {
 		var self = this;
 
-		var depot = Opt.app.getDepot();
+		var depot = Opt.app.getMainDepot();
                 if (!depot) {
                  	Opt.showError("Внимание!","Нет данных о депо!");
 			return;

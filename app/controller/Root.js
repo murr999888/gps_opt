@@ -103,7 +103,7 @@ Ext.define('Opt.controller.Root', {
         Ext.getStore('CalcLog').load();	
         Ext.getStore('Auto').load();
 
-	this.getDepot();
+	this.getMainDepot();
         Ext.create('widget.main');
         Ext.get('spinner').setVisible(false);
         self.createWS();
@@ -198,7 +198,7 @@ Ext.define('Opt.controller.Root', {
         };
     },
 
-	getDepot: function(){
+	getMainDepot: function(){
 		var self = this;
 		var params = {
 			param: 'Depot',
@@ -217,7 +217,7 @@ Ext.define('Opt.controller.Root', {
 					return;
         			}
 
-				Opt.app.setDepot(respObj.data);
+				Opt.app.setMainDepot(respObj.data);
 			},
 
 			failure: function (response) {

@@ -17,6 +17,7 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		Ext.getCmp('ordereditgoods').setStore(this.orderGoodsStore);
 */
 
+/*
 		this.orderAllowedAutosStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.AllowedAuto',
 			proxy: {
@@ -25,6 +26,7 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		});
 
 		Ext.getCmp('maindepoteditallowedautos').setStore(this.orderAllowedAutosStore);
+*/
 	},
 
 	afterRender: function () {
@@ -44,27 +46,13 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		}
 	},
 
-	onPenaltyChange: function (field, newValue, oldValue, eOpts) {
-		if (oldValue) this.changed = true;
-	},
-
-	onServiceTimeMinChange: function (field, newValue, oldValue, eOpts) {
-		var seconds = newValue * 60;
-		var form = this.lookupReference('form').getForm();
-		form.setValues({
-			service_time: seconds
-		});
-
-		if (oldValue) this.changed = true;
-	},
-
 	onSaveClick: function (button) {
 		var dialog, store, record;
 		dialog = button.up('window').down('form');
 		dialog.updateRecord();
 
 		record = dialog.getRecord();
-		record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
+		//record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
 		store = record.store;
 		if (store) {
 			if (record.phantom) {
@@ -91,8 +79,26 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 	},
 
 	closeView: function (dialog) {
-		var allowedAutosStore = this.getView().down('allowedautosgrid').store;
-		allowedAutosStore.rejectChanges();
+		//var allowedAutosStore = this.getView().down('allowedautosgrid').store;
+		//allowedAutosStore.rejectChanges();
 		this.getView().close();
+	},
+
+	onTimeWindowBeginChange: function (field, newValue, oldValue, eOpts) {
+		var seconds = hmsToSecondsOnly(newValue) * 60;
+		var form = this.lookupReference('form').getForm();
+
+		form.setValues({
+			timewindow_begin: seconds
+		});
+	},
+
+	onTimeWindowEndChange: function (field, newValue, oldValue, eOpts) {
+		var seconds = hmsToSecondsOnly(newValue) * 60;
+		var form = this.lookupReference('form').getForm();
+
+		form.setValues({
+			timewindow_end: seconds
+		});
 	},
 });

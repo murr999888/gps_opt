@@ -138,7 +138,7 @@ Ext.define('Opt.view.AutoGrid', {
 			hideable: true,
 			sortable: false,
 			align: 'center',
-			text: 'Х',
+			text: 'Р',
 			tooltip: 'Максимальное количество рейсов машины',
 			width: 25,
 			resizable: false,

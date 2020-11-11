@@ -22,6 +22,55 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		}
 	},
 
+	init: function () {
+		var self = this;
+		this.goodsEditStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		this.ordersEditStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.RouteLegs',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+	        var routeGoodsStore = Ext.getStore('RoutesGoodsStore');
+		routeGoodsStore.on('load', function(){
+			self.setGetGoodsButton();
+		});
+
+		routeGoodsStore.on('remove', function(){
+			self.setGetGoodsButton();
+		});
+
+		var store = this.getView().getStore();
+		store.on('load', function(){
+			self.setTitle();
+		});
+
+		store.on('update', function(){
+                       	self.setTitle();
+		});
+
+
+		var tempResultsStore = Ext.getStore('TempResults');
+		tempResultsStore.on('clear', function(){
+			self.setResultButtonDisabled(tempResultsStore.count() == 0);
+		});
+
+		tempResultsStore.on('datachanged', function(){
+			self.setResultButtonDisabled(tempResultsStore.count() == 0);
+		});
+	},
+
+	setResultButtonDisabled: function(disabled){
+		Ext.getCmp('tab2resultsbutton').setDisabled(disabled);
+	},
+
 	setStat: function(calc_stat){
 		this.calc_stat = calc_stat;
 		this.setTitle();
@@ -56,41 +105,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		}
 
        		this.getView().setTitle(strTitle);
-	},
-
-	init: function () {
-		var self = this;
-		this.goodsEditStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.OrderGood',
-			proxy: {
-				type: 'memory',
-			},
-		});
-
-		this.ordersEditStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.RouteLegs',
-			proxy: {
-				type: 'memory',
-			},
-		});
-
-	        var routeGoodsStore = Ext.getStore('RoutesGoodsStore');
-		routeGoodsStore.on('load', function(){
-			self.setGetGoodsButton();
-		});
-
-		routeGoodsStore.on('remove', function(){
-			self.setGetGoodsButton();
-		});
-
-		var store = this.getView().getStore();
-		store.on('load', function(){
-			self.setTitle();
-		});
-
-		store.on('update', function(){
-                       	self.setTitle();
-		});
 	},
 
 	setButtonsDisabled: function(disabled){
@@ -529,8 +543,9 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 				grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ""), 
 		  		'<h3>Начальная загрузка по маршрутным листам</h3>',
 	      	    		'<tpl for=".">',
-					'<div style="margin-top: 20px;">',
+					'<div class="dontbreak">',
 					'<span style="margin-bottom: 10px;"><b>Машина: {auto_name}, водитель: {driver_name}</b></span><br>',
+					'<span style="margin-bottom: 10px;"><b>Вода: {water}, баллонов: {bottle}, емкостей: {tank}</b></span><br>',
 					'<span style="margin-bottom: 10px;">Рейс: <b>{race_number}</b>, выезд: <b>{[secToHHMMSS(values.route_begin_calc)]}</b>, возврат: <b>{[secToHHMMSS(values.route_end_calc)]}</b>, длина: <b>{distance}</b>, длительность: <b>{[secToHHMMSS(values.durationFull)]}</b></span>',
 					'<table class="print">',
 						'<tr style="background-color: #eee;">',
@@ -650,9 +665,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 				grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ""),
 		  		'<h3>Сводка расчета маршрутных листов</h3>',
 				 this.getParamTemplate(),
-				'<br />',
 				 this.getStatTemplate(),
-				'<br />',
 				'<table class="print">',
 					'<tr style="background-color: #eee; text-align: center;">',
 						'<td style="width: 20px;">№</td>',

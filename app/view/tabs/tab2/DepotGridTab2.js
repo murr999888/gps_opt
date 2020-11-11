@@ -64,6 +64,7 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2', {
 					xtype: 'button',
 					text: 'Главное депо',
 					id: 'tab2depotgridmaindepotButton',
+					handler: 'openMainDepoDialog',
 					//iconCls: 'fa fa-filter',
 				},
 			]

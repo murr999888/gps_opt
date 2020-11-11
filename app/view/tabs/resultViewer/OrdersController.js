@@ -24,8 +24,38 @@ Ext.define('Opt.view.tabs.resultViewer.OrdersController', {
 		var title = 'Отгрузка по маршруту.';
 		this.editDialog = null;
 		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
+
+		var sumGoodsArr = []; 
+
+		var store = this.getView().getStore();
+		for (var i=0; i < store.count(); i++){
+			var order = store.getAt(i);
+			var goods = order.get('goods');
+			for (var j=0; j < goods.length; j++){
+				var good = goods[j];
+				var index = sumGoodsArr.findIndex((element)=>element.id == good.id); 
+				if (index == -1) {
+					if (good.kolvo > 0){
+						var goodCopy = $.extend(true, {}, good);
+						sumGoodsArr.push(goodCopy);
+					}
+				} else {
+					sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+				};
+			}; 
+		};
+
 		var goodsGrid = this.editDialog.down('ordergoodsgrid');
-		goodsGrid.setStore(Ext.getStore('RoutesGoodsStore'));
+
+		var goodsStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		goodsStore.loadData(sumGoodsArr);
+		goodsGrid.setStore(goodsStore);
 		this.editDialog.show();
 		this.editDialog.focus();
 	},

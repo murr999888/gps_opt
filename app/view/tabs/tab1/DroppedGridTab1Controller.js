@@ -6,8 +6,26 @@ Ext.define('Opt.view.tabs.tab1.DroppedGridTab1Controller', {
 		'Opt.view.DroppedGridController',
 	],
 
+	listen: {
+		controller: {
+			'*': {
+
+				tab1_set_dropped_title: 'setGridTitle',
+			}
+		}
+	},
+
 	init: function () {
 		this.getView().getSelectionModel().setSelectionMode('MULTI');
+	},
+
+	setGridTitle: function(){
+        	var store = this.getView().store;
+		if (store.count() > 0){
+			this.getView().setTitle('Отброшенные заказы (' + store.count() + ')');
+		} else {
+                	this.getView().setTitle('Отброшенные заказы');
+		}
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {

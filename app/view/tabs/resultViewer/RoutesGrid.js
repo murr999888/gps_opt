@@ -87,7 +87,7 @@ Ext.define('Opt.view.tabs.resultViewer.RoutesGrid', {
 			{
 				hideable: true,
 				hidden: true,
-				text: 'Х',
+				text: 'Р',
 				align: 'center',
 				width: 25,
 				dataIndex: 'race_number',

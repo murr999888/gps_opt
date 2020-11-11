@@ -10,16 +10,34 @@ body {
 
 html, body {
       width: 100%;
-      height: 100%;
+      height: 99%;
+}
+
+
+@media print
+{
+  table { page-break-after:auto;}
+  tr    { page-break-inside:avoid; page-break-after:auto }
+  td    { page-break-inside:avoid; page-break-after:auto }
+  thead { display:table-header-group }
+  tfoot { display:table-footer-group }
+  .dontbreak {
+	break-inside: avoid;
+  }
+}
+
+@page {
+  margin-left: 2cm;
 }
 
 table.print {
 	width: 100%;
-	max-width: 800px;
+	max-width: 650px;
 	border: 2px solid #bbb;
 	border-collapse: collapse;
 	font-size: 12px !important;
 	margin-top: 3px;
+	margin-bottom: 20px;
 }
 
 table.print th,td {
@@ -51,6 +69,7 @@ table.print_sm {
 	border-collapse: collapse;
 	font-size: 12px !important;
 	margin-top: 3px;
+	margin-bottom: 20px;
 }
 
 table.print_sm th,td {
@@ -74,3 +93,4 @@ table.print_sm th {
 	text-align: center;
  	padding: 3px;
 }
+

@@ -147,6 +147,18 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 					handler: 'openViewer',
 					iconCls: 'fa fa-globe',
 				},
+				{
+					xtype: 'tbspacer',
+					flex: 1,
+				},
+				{
+					xtype: 'button',
+					text: 'Результаты',
+					disabled: true,
+					id: 'tab2resultsbutton',
+					handler: 'openResultDialog',
+					iconCls: 'fa fa-undo',
+				},
 			]
 		},
 	],
@@ -210,7 +222,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 			{
 				hideable: true,
 				hidden: true,
-				text: 'Х',
+				text: 'Р',
 				width: 25,
 				dataIndex: 'race_number',
 			},
