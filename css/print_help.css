@@ -1,0 +1,62 @@
+html {
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+
+body {
+    font-size: 12px;
+    margin: 5px;
+    padding: 0px;
+}
+
+html, body {
+      width: 100%;
+      height: 99%;
+}
+
+.help {
+	max-width: 1000px;	
+}
+
+.help img {
+	margin: 0 0 0 10px;
+	/*float: left;*/
+}
+
+.help li {
+	padding: 3px 0;
+}
+
+.help p {
+	line-height: 18px;
+}	
+
+.help ul {
+	list-style-type: square; /* Маркеры в виде квадрата */
+    	list-style-position: outside; /* Маркеры размещаются за пределами текстового блока */
+	line-height: 20px;
+}
+
+.help ol {
+	line-height: 20px;
+}
+
+@media print
+{
+  table { page-break-after:auto;}
+  tr    { page-break-inside:avoid; page-break-after:auto }
+  td    { page-break-inside:avoid; page-break-after:auto }
+  thead { display:table-header-group }
+  tfoot { display:table-footer-group }
+  .help {
+	clear: both;
+        page-break-after: always;
+  }
+
+  img {
+	break-inside: avoid;
+  }
+}
+
+@page {
+  margin-left: 2cm;
+}

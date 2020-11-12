@@ -651,7 +651,9 @@ console.log("Время окончания запроса " + Date.now());
 			firstdistance: 0,
 			firstduration: '',
 			firstfullduration: '',
-			slacktimevalue: 30
+			slacktimevalue: 30,
+			useGLS: false,
+			maxsolvetime: 1,
 		});
 
 		var record = Ext.getCmp("menutab1mlselect").getSelection();
@@ -742,10 +744,11 @@ console.log("Время окончания запроса " + Date.now());
 		task.parameters = {
 			autos_num: 1,
 			depot_index: 0,
-			time_limit: 10,
 			time_waiting: formVal.slacktimevalue * 60, // мин
 			maximum_time_per_vehicle: 24 * 60 * 60,
 			increaseTimeCoeff: formVal.coeffincreasetransittime,
+			use_guided_local_search: formVal.useGLS,
+			time_limit: formVal.maxsolvetime * 60,
 		};
 		task.error = "";
 

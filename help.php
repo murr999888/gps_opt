@@ -32,7 +32,6 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 		$cont = file_get_contents("help/helpTableContent.json");
 		if (!$cont) return;
 		$decoded = json_decode($cont, TRUE);
-
 		$data  = $decoded['data'];
 
 		$fulltext = '';

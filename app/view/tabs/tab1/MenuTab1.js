@@ -31,19 +31,19 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 			xtype: 'form',
 			reference: 'formtab1',
 			id: 'formtab1',
-			height: 157,
+			height: 205,
 			border: 0,
 			items: [
 				{
 					xtype: 'fieldcontainer',
 					layout: 'hbox',
-					height: 125,
+					height: 172,
 					items: [
 						{
 							flex: 1,
 							xtype: 'fieldset',
 							layout: 'vbox',
-							height: 125,
+							height: 170,
 							padding: 5,
 							items: [
 								{
@@ -182,7 +182,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 							padding: '5 5',
 							margin: '0 0 0 8px',
 							width: 285,
-							height: 125,
+							height: 170,
 							defaults: {
 								labelWidth: 210,
 								editable: false,
@@ -206,6 +206,37 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 									],
 									listeners: {
 										change: 'onIncreaseTimeChange',
+									},
+								},
+								{
+									xtype: 'checkbox',
+									name: 'useGLS',
+									id: 'formparamtab1useGLS',
+									checked: false,
+									inputValue: true,
+									uncheckedValue: false,
+									fieldLabel: 'Использовать локальный поиск',
+									autoEl: {
+        									tag: 'div',
+        									'data-qtip': 'Использовать Guided Local Search',
+    									},
+								},
+								{
+									editable: false,
+									anchor: '100%',
+									xtype: 'numberfield',
+									fieldStyle: 'text-align: right;',
+									name: 'maxsolvetime',
+									fieldLabel: 'Макс. время поиска решения, мин',
+									value: 1,
+									maxValue: 5,
+									minValue: 1,
+									step: 1,
+									stateful: true,
+									stateId: 'tab1maxsolvetime',
+									stateEvents: ['change'],
+									listeners: {
+										change: 'onMaxSolveTimeChange',
 									},
 								},
 								{

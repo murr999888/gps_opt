@@ -239,33 +239,6 @@ table.clusterPopupTable td {
 	background-color:#abc7ff
 }
 
-.help {
-	max-width: 1000px;	
-}
-
-.help img {
-	margin: 0 0 0 10px;
-	/*float: left;*/
-}
-
-.help li {
-	padding: 3px 0;
-}
-
-.help p {
-	line-height: 18px;
-}	
-
-.help ul {
-	list-style-type: square; /* Маркеры в виде квадрата */
-    	list-style-position: outside; /* Маркеры размещаются за пределами текстового блока */
-	line-height: 20px;
-}
-
-.help ol {
-	line-height: 20px;
-}
-
 .x-menu-item-icon-default {
     color: #555;
 }
@@ -295,4 +268,31 @@ table.clusterPopupTable td {
 
 .vert_middle {
 	vertical-align: middle;
+}
+
+.help {
+	max-width: 1000px;	
+}
+
+.help img {
+	margin: 0 0 0 10px;
+	/*float: left;*/
+}
+
+.help li {
+	padding: 3px 0;
+}
+
+.help p {
+	line-height: 18px;
+}	
+
+.help ul {
+	list-style-type: square; /* Маркеры в виде квадрата */
+    	list-style-position: outside; /* Маркеры размещаются за пределами текстового блока */
+	line-height: 20px;
+}
+
+.help ol {
+	line-height: 20px;
 }
