@@ -100,8 +100,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		strTitle = strTitle + checkedStr + '(' + store.count() + ') '
 
-		if (this.stat) {
-			 strTitle = strTitle + '<span title="Сумма длин всех маршрутов">' + this.stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(this.stat.total_duration) + '</span>, заказов (' + this.stat.orders_routes_count + ')';
+		if (this.calc_stat) {
+			 strTitle = strTitle + '<span title="Сумма длин всех маршрутов">' + this.calc_stat.total_distance + ' м.</span>, <span title="Сумма продолжительностей всех маршрутов">' + secToHHMMSS(this.calc_stat.total_duration) + '</span>, заказов (' + this.calc_stat.orders_routes_count + ')';
 		}
 
        		this.getView().setTitle(strTitle);
@@ -707,7 +707,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	getParamTemplate: function(){
-		var date = parseInt("20201103");
+		var date = parseInt(this.calc_params.orders_date);
 		var new_date = new Date(date / 10000, (date % 10000 / 100)-1, date % 100);
 		this.calc_params.orders_date_text = new_date.toLocaleDateString();
 
@@ -725,16 +725,30 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			'<td style="font-weight: bold;">{orders_date_text}</td>',
 		'</tr>',
 		'<tr>',
-			'<td>Допустимое время ожидания, сек.</td>',
-			'<td style="font-weight: bold;">{time_waiting}</td>',
+			'<td>Допустимое время ожидания, мин.</td>',
+			'<td style="font-weight: bold;">{[values.time_waiting/60]}</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Стоимость машины, мин.</td>',
 			'<td style="font-weight: bold;">{fixed_cost_all_vehicles}</td>',
 		'</tr>',
 		'<tr>',
-			'<td>Глобальный коэффициент дуги (по времени)</td>',
-			'<td style="font-weight: bold;">{globalspancoeff_time}</td>',
+			'<td>Глобальный коэффициент дуги (продолжительность)</td>',
+			'<td style="font-weight: bold;">{globalspancoeff_duration}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Глобальный коэффициент дуги (расстояние)</td>',
+			'<td style="font-weight: bold;">{globalspancoeff_distance}</td>',
+		'</tr>',
+		'<tr>',
+			'<td>Минимизация времени</td>',
+			'<td style="font-weight: bold;">',
+			'<tpl if="minimize_time">',
+				'Да',
+			'<tpl else>',
+				'Нет',
+			'</tpl>',
+			'</td>',
 		'</tr>',
 		'<tr>',
 			'<td>Мягкая нижняя граница (вода, л.)</td>',

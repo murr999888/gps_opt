@@ -15,8 +15,10 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			useGLS: false,
 			solutionstrategy: 3,
 			fixedcostallvehicles: 0,
-			globalspancoeff_time: 0,
+			globalspancoeff_duration: 0,
+			globalspancoeff_distance: 0,
 			softlowerbound_water: 0,
+			minimize_time: true,
 		});
 	},
 
@@ -36,5 +38,14 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			Ext.getCmp('formparamtab2refuel_full_tank').setDisabled(true);
 		}
 		this.fireEvent("tab2refuelmodeselected");
+	},
+
+	onFullLoadBeginWaterChange: function (checkbox, newValue, oldValue, eOpts) {
+		var form = Ext.getCmp("formparamtab2").getForm();
+		if (newValue) {
+			form.setValues({
+				softlowerbound_water: 0,
+			});	
+		}
 	},
 });

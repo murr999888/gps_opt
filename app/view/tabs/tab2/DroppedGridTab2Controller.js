@@ -133,14 +133,6 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		this.editDialog = null;
 		this.editDialog = Ext.create('Opt.view.dialog.AddAllowedAuto', { mode: 'list_order', tab: selection, secondaryGrid: secGrid });
 		var autoGrid = this.editDialog.down('grid');
-
-		autosStore.each(function (record) {
-			var newRecord = record.copy();
-			newRecord.beginEdit();
-			newRecord.set('in_use', false);
-			newRecord.commit();
-			autoGrid.store.add(newRecord);
-		});
 		this.editDialog.show();
 	},
 

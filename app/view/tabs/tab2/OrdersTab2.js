@@ -231,49 +231,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 										{
 											xtype: 'checkbox',
 											value: false,
-											id: 'not_formorderstab2clientgroupselect',
-											name: 'not_clientgroupselect',
-											fieldLabel: 'Не',
-											labelWidth: 20,
-										},
-										{
-											labelWidth: 70,
-											editable: false,
-											width: 315,
-											padding: '0 0 0 10px',
-
-											value: 0,
-											xtype: 'combobox',
-											id: 'formorderstab2clientgroupselect',
-											name: 'clientgroupselect',
-											fieldLabel: 'Группа',
-											store: 'ClientGroup',
-											queryMode: 'local',
-											displayField: 'name',
-											valueField: 'id',
-											editable: false,
-											listeners: {
-												select: 'onClientCSelect',
-											},
-											triggers: {
-												clearField: {
-													cls: 'x-form-clear-trigger',
-													handler: function (combo) {
-														combo.setValue(0);
-													},
-												},
-											},
-										},
-									],
-								},
-								{
-									xtype: 'fieldcontainer',
-									layout: 'hbox',
-									border: 0,
-									items: [
-										{
-											xtype: 'checkbox',
-											value: false,
 											id: 'not_formorderstab2productselect',
 											name: 'not_productselect',
 											fieldLabel: 'Не',
@@ -310,6 +267,50 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 										},
 									],
 								},
+								{
+									xtype: 'fieldcontainer',
+									layout: 'hbox',
+									border: 0,
+									items: [
+										{
+											xtype: 'checkbox',
+											value: false,
+											id: 'not_formorderstab2clientgroupselect',
+											name: 'not_clientgroupselect',
+											fieldLabel: 'Не',
+											labelWidth: 20,
+										},
+										{
+											labelWidth: 70,
+											editable: false,
+											width: 315,
+											padding: '0 0 0 10px',
+
+											value: 0,
+											xtype: 'combobox',
+											id: 'formorderstab2clientgroupselect',
+											name: 'clientgroupselect',
+											fieldLabel: 'Группа',
+											store: 'ClientGroup',
+											queryMode: 'local',
+											displayField: 'name',
+											valueField: 'id',
+											editable: false,
+											listeners: {
+												select: 'onClientCSelect',
+											},
+											triggers: {
+												clearField: {
+													cls: 'x-form-clear-trigger',
+													handler: function (combo) {
+														combo.setValue(0);
+													},
+												},
+											},
+										},
+									],
+								},
+
 								{
 									xtype: 'fieldcontainer',
 									layout: 'hbox',

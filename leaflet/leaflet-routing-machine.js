@@ -82,12 +82,12 @@ function corslite(url, callback, cors) {
 
     // GET is the only supported HTTP Verb by XDomainRequest and is the
     // only one supported here.
+
     x.open('GET', url, true);
 
     // Send the request. Sending data is not supported.
     x.send(null);
     sent = true;
-
     return x;
 }
 

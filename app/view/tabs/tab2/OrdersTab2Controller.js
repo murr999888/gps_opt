@@ -636,8 +636,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var use_guided_local_search = formVal.useGLS;
 		var solution_strategy = formVal.solutionstrategy;
 		var fixed_cost_all_vehicles = formVal.fixedcostallvehicles;
-		var globalspancoeff_time = formVal.globalspancoeff_time;
+		var globalspancoeff_duration = formVal.globalspancoeff_duration;
+		var globalspancoeff_distance = formVal.globalspancoeff_distance;
 		var softlowerbound_water = formVal.softlowerbound_water;
+		var full_load_begin_water = formVal.full_load_begin_water;
+		var minimize_time = formVal.minimize_time;
 
 		orders_date = orders_date.replace(/-/g, ''); // для IE 
 
@@ -657,8 +660,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			use_guided_local_search: use_guided_local_search,
 			solution_strategy: solution_strategy,
 			fixed_cost_all_vehicles: fixed_cost_all_vehicles,
-			globalspancoeff_time: globalspancoeff_time,
+			globalspancoeff_duration: globalspancoeff_duration,
+			globalspancoeff_distance: globalspancoeff_distance,
 			softlowerbound_water: softlowerbound_water,
+			full_load_begin_water: full_load_begin_water,
+			minimize_time: minimize_time,
 		};
 
 		task.error = "";

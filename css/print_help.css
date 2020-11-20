@@ -4,7 +4,7 @@ html {
 
 body {
     font-size: 12px;
-    margin: 5px;
+    margin: 15px;
     padding: 0px;
 }
 
@@ -40,6 +40,15 @@ html, body {
 	line-height: 20px;
 }
 
+.alertdiv{
+	padding: 5px 10px; 
+	border: 2px solid #000; 
+	background-color: bisque; 
+	/*font-size: 14px;*/
+	border-radius: 10px;
+
+}
+
 @media print
 {
   table { page-break-after:auto;}
@@ -55,6 +64,11 @@ html, body {
   img {
 	break-inside: avoid;
   }
+
+  .no-print, .no-print *
+    {
+        display: none !important;
+    }
 }
 
 @page {
