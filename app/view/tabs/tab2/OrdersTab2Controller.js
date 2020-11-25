@@ -341,7 +341,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		// проверим достижимость точек
 		checkedArr = [];
 
-		var depot = Opt.app.getMainDepot();
+		var depot = Ext.clone(Opt.app.getMainDepot().data);
+		delete depot.id;
+
 		checkedArr.push([depot.lon,depot.lat]);
 
 		for (var i = 0; i < this.ordersStore.count(); i++) {
@@ -411,12 +413,72 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		Ext.getCmp('maintab2').mask('Проверка данных ...');
 		var mode = Ext.getCmp('distordersmode').getValue();
 
-		var depot = Opt.app.getMainDepot();
+
+		var mainDepotStore = Ext.getStore('MainDepot');
+
+		if (mainDepotStore.count() == 0) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Пустое хранилище данных о главном депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
+		var depot = Ext.clone(Opt.app.getMainDepot().data);
+		if(depot) delete depot.id;
+
                 if (!depot) {
 			Ext.getCmp('maintab2').unmask();
                  	Ext.Msg.alert({
 				title: 'Внимание',
-				message: 'Нет данных о депо!',
+				message: 'Нет данных о главном депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
+		if(depot.goods_capacity_in.length == 0 || depot.goods_capacity_in.length == 0) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Не заполнены данные по емкости товаров главного депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
+		var uses = 0;
+		for(var i=1; i < depot.goods_capacity_out.length; i++){
+			if (depot.goods_capacity_out[i].in_use){
+				uses++;
+			}
+		}
+
+		if (uses == 0) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Не отмечены для использования строки по емкости товаров (отгрузка) главного депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
+		uses = 0;
+
+		for(var i=1; i < depot.goods_capacity_in.length; i++){
+			if (depot.goods_capacity_in[i].in_use){
+				uses++;
+			}
+		}
+
+		if (uses == 0) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Не отмечены для использования строки по емкости товаров (возврат) главного депо!',
 				buttons: Ext.Msg.OK,
 			});
 			return;
@@ -615,7 +677,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	sendForDistributeOrders: function(){
-		var depot = Opt.app.getMainDepot();
+		var depot = Ext.clone(Opt.app.getMainDepot().data);
+		delete depot.id;
 
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
@@ -854,7 +917,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 	},
 
 	sendForAddingOrders: function(){
-	        var depot = Opt.app.getMainDepot();
+	        var depot = Ext.clone(Opt.app.getMainDepot().data);
+		delete depot.id;
+
                 if (!depot) {
                  	Opt.showError("Внимание!","Нет данных о депо!");
 			return;
@@ -1251,9 +1316,6 @@ console.log(data);
 			addAndPlay(sndFile);
 		}, 0);
 
-		this.fireEvent('tab2routesgridsetstat', calc_stat);
-		this.fireEvent('tab2routesgridsetparams', calc_params);
-
 		this.stopTimerMask();
 	
 		Ext.create('Opt.view.dialog.MessageWindow',{
@@ -1261,6 +1323,9 @@ console.log(data);
 			title: 'Внимание!', 
 			message: "Создание маршрутов завершено.<br /> Время расчета: <b>" + calc_stat.calc_time + "</b><br /> Общая длина маршрутов: <b>" + calc_stat.total_distance + "</b> м. <br /> Общая продолжительность: <b>" + secToHHMMSS(calc_stat.total_duration) + "</b>",
 		}).show();
+
+		this.fireEvent('tab2routesgridsetstat', calc_stat);
+		this.fireEvent('tab2routesgridsetparams', calc_params);
 	},
 
 	startTimerMask: function () {

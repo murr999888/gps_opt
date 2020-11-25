@@ -3,7 +3,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 	alias: 'widget.maindepotedit',
 	requires: [
 		'Opt.view.dialog.MainDepotEditController',
-		//'Opt.view.DepotGoodsGrid',
+		'Opt.view.DepotGoodsGrid',
 		//'Opt.view.AllowedAutosGrid',
 	],
 
@@ -11,14 +11,19 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 	modal: true,
 	closable: true,
 	closeAction: 'hide',
-	//stateful: true,
-	//stateId: 'orderedit',
+	height: 475,  
+	width: 500,
 	title: 'Главное депо',
+	listeners: {
+            	show: 'onShow', 
+		//resize: 'onWindowResize',
+		//collapse: 'onWindowResize',
+		//expand: 'onWindowResize',
+	},
 	layout: {
 		type: 'vbox',
 		align: 'stretch'
 	},
-	height: 430,
 	changed: false,
 	items: [
 		{
@@ -118,8 +123,8 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 		},
 		{
 			xtype: 'tabpanel',
-			height: 150,
-			width: 300,
+			height: 270,
+			width: 400,
 			deferredRender: false,
 			activeTab: 0,
 			border: 0,
@@ -131,25 +136,23 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 
 				{
 					xtype: 'panel',
-					title: 'Отгрузка',
+					title: 'Емкость отгрузки',
 					layout: 'fit',
 					items: [
 						{
-							tools: null,
-							xtype: 'ordergoodsgrid',
-							id: 'mainDepotEditLoadGoods',
+							xtype: 'depotgoodsgrid_out',
+							id: 'mainDepotEditLoadGoods_out',
 						},
 					]
 				},
 				{
 					xtype: 'panel',
-					title: 'Возврат',
+					title: 'Емкость возврата',
 					layout: 'fit',
 					items: [
 						{
-							tools: null,
-							xtype: 'ordergoodsgrid',
-							id: 'mainDepotEditUnLoadGoods',
+							xtype: 'depotgoodsgrid_in',
+							id: 'mainDepotEditUnLoadGoods_in',
 						},
 					]
 				},

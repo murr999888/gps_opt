@@ -228,7 +228,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					fieldStyle: 'text-align: right;',
 					name: 'maxsolvetime',
 					fieldLabel: 'Макс. время поиска решения, мин',
-					value: 30,
+					value: 15,
 					maxValue: 240,
 					minValue: 1,
 					step: 1,
@@ -251,7 +251,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'tab2depotgridpanel',
 			id: 'tab2depotgrid',
 			flex: 3,
-			collapsed: true,
+			//collapsed: true,
 		},
 	],
 });

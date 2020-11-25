@@ -102,8 +102,13 @@ Ext.define('Opt.controller.Root', {
 	Ext.getStore('HelpTableContent').load();
         Ext.getStore('CalcLog').load();	
         Ext.getStore('Auto').load();
+	Ext.getStore('MainDepot').load();
+	Ext.getStore('Depots').load();
 
-	this.getMainDepot();
+	if (Ext.getStore('MainDepot').count() == 0) {
+		this.getMainDepotFromServer();
+	}
+
         Ext.create('widget.main');
         Ext.get('spinner').setVisible(false);
         self.createWS();
@@ -198,8 +203,10 @@ Ext.define('Opt.controller.Root', {
         };
     },
 
-	getMainDepot: function(){
+	getMainDepotFromServer: function(){
 		var self = this;
+		var store = Ext.getStore("MainDepot");
+
 		var params = {
 			param: 'Depot',
 		};
@@ -221,7 +228,7 @@ Ext.define('Opt.controller.Root', {
 			},
 
 			failure: function (response) {
-				Opt.app.showError('Ошибка запроса Депо', response.responseText);
+				Opt.app.showError('Ошибка запроса Основного депо', response.responseText);
 			}
 		});
 	},

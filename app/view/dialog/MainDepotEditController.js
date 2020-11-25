@@ -6,27 +6,35 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 	changed: false,
 
 	init: function () {
-/*
-		this.orderGoodsStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.OrderGood',
+		var self = this;
+		this.storeIn = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.Depot',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		Ext.getCmp('ordereditgoods').setStore(this.orderGoodsStore);
-*/
-
-/*
-		this.orderAllowedAutosStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.AllowedAuto',
+		this.storeOut = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.Depot',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		Ext.getCmp('maindepoteditallowedautos').setStore(this.orderAllowedAutosStore);
-*/
+		this.getView().down('depotgoodsgrid_in').setStore(this.storeIn);
+		this.getView().down('depotgoodsgrid_out').setStore(this.storeOut);
+	},
+
+	onShow: function(){
+		var self = this;
+		var dialog = this.getView().down('form');
+		var record = dialog.getRecord();
+
+		var dataIn = record.get("goods_capacity_in");
+		if (dataIn.length > 0) this.storeIn.loadData(dataIn);
+
+		var dataOut = record.get("goods_capacity_out");
+		if (dataOut.length > 0) this.storeOut.loadData(dataOut);
 	},
 
 	afterRender: function () {
@@ -52,7 +60,9 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		dialog.updateRecord();
 
 		record = dialog.getRecord();
-		//record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
+		record.set('goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
+		record.set('goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
+
 		store = record.store;
 		if (store) {
 			if (record.phantom) {

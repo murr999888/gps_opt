@@ -22,9 +22,11 @@ Ext.define('Opt.Application', {
 		'CalcLog',
 		'FuelStation',
 		'Depot',
+		'MainDepot',
 		'Traffic',
 		'TrafficPoints',
 		'RoadSign',
+		'DepotGood',
 	],
 	stores: [
 		'Auto',
@@ -41,6 +43,7 @@ Ext.define('Opt.Application', {
 		'RoutesGoodsStore',
 		'CalcLog',
 		'FuelStations',
+		'MainDepot',
 		'Depots',
 		'Traffic',
 		'RoadSigns',
@@ -62,14 +65,23 @@ Ext.define('Opt.Application', {
 	},
 
 	getMainDepot: function () {
-		return this.depot;
+		var store = Ext.getStore("MainDepot");
+		var mainDepot = store.getAt(0);
+		return mainDepot;
 	},
 
 	setMainDepot: function (depot) {
-		this.depot = depot;
-		this.depot.node_type = 0;
-		this.depot.goods = [];
-		this.depot.strings = [];
+		var store = Ext.getStore("MainDepot");
+		var record  = Ext.create("Opt.model.MainDepot", depot);
+		record.set("in_use", true);
+		record.set("node_type", 0);
+		record.set("goods", []);
+		record.set("strings", []);
+      		record.set("goods_capacity_in",[]);
+       		record.set("goods_capacity_out",[]);
+
+		store.insert(0, record);
+		store.sync();
 	},
 
 	setUser: function (data) {

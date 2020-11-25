@@ -326,7 +326,9 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 	loadPointsToGrid: function (data) {
 		var self = this;
 
-		var depot = Opt.app.getMainDepot();
+		var depot = Ext.clone(Opt.app.getMainDepot().data);
+		delete depot.id;
+
                 if (!depot) {
                  	Opt.showError("Внимание!","Нет данных о депо!");
 			return;

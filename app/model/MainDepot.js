@@ -1,15 +1,15 @@
-Ext.define('Opt.model.Depot', {
+Ext.define('Opt.model.MainDepot', {
 	identifier: 'negative',
     	extend: 'Opt.model.RouteLegs',
 	proxy: {
         	type: 'localstorage',
-        	id  : 'depot'
+        	id  : 'maindepot'
     	},
 	fields: [
 		{
         		name: 'isMainDepot',
         		type: 'boolean',
-			defaultValue: false,
+			defaultValue: true,
 		},
 		{
         		name: 'goods_capacity_in',

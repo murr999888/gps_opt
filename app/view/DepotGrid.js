@@ -47,14 +47,6 @@ Ext.define('Opt.view.DepotGrid', {
 			hideable: true,
 		},
 		{
-			text: 'Ш',
-			align: 'right',
-			flex: 1,
-			dataIndex: 'penalty',
-			hideable: true,
-		},
-
-		{
 			text: 'Окно',
 			cellWrap: true,
 			flex: 2,

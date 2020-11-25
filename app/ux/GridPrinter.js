@@ -60,6 +60,8 @@ Opt.ux.GridPrinter = {
     //use the headerTpl and bodyTpl XTemplates to create the main XTemplate below
     var headings = this.headerTpl.apply(columns);
     var body     = this.bodyTpl.apply(columns);
+    var gridTitle = grid.getTitle();
+    var tableTitle =  gridTitle ? gridTitle.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") : 'Таблица';
     
     var template = new Ext.XTemplate(
       '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
@@ -70,10 +72,10 @@ Opt.ux.GridPrinter = {
 	  '<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
 	  '<link type="text/css" rel="stylesheet" href="css/main.css" />',
           '<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
-          '<title>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</title>',
+          '<title>' + tableTitle + '</title>',
         '</head>',
         '<body>',
-	  '<h3>' + grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") + '</h3>',
+	  '<h3>' + tableTitle + '</h3>',
           '<table class="print grid">',
             headings,
             '<tpl for=".">',
