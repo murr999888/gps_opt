@@ -18,8 +18,15 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 		type: 'vbox',
 		align: 'stretch'
 	},
-	height: 530,
+	height: 580,  
+	width: 500,
 	changed: false,
+	listeners: {
+            	show: 'onShow', 
+		//resize: 'onWindowResize',
+		//collapse: 'onWindowResize',
+		//expand: 'onWindowResize',
+	},
 	items: [
 		{
 			xtype: 'form',
@@ -42,7 +49,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 							items: [
 								{
 									xtype: 'timepickeruiws',
-									name: 'worktime_begin_1',
+									name: 'timewindow_begin_1',
 									fieldLabel: 'Время работы с',
 									labelWidth: 100,
 									width: 145,
@@ -54,11 +61,11 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 								},
 								{
 									xtype: 'hiddenfield',
-									name: 'worktime_begin',
+									name: 'timewindow_begin',
 								},
 								{
 									xtype: 'timepickeruiws',
-									name: 'worktime_end_1',
+									name: 'timewindow_end_1',
 									padding: '0 0 0 10px',
 									fieldLabel: 'по',
 									labelWidth: 20,
@@ -71,7 +78,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 								},
 								{
 									xtype: 'hiddenfield',
-									name: 'worktime_end',
+									name: 'timewindow_end',
 								},
 							]
 						},
@@ -79,6 +86,11 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 							xtype: 'field',
 							name: 'klient_name',
 							fieldLabel: 'Клиент',
+						},
+						{
+							xtype: 'field',
+							name: 'tochka_name',
+							fieldLabel: 'Точка',
 						},
 						{
 							xtype: 'field',
@@ -122,10 +134,9 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 							name: 'service_time_min',
 							editable: false,			
 							readOnly: false,
-							fieldLabel: 'Время разгрузки, мин.',
-							anchor: '100%',
+							fieldLabel: 'Время погрузки/разгрузки, мин.',
 							maxValue: 60,
-							minValue: 1,
+							minValue: 0,
 							step: 1,
 							labelWidth: 280,
 							labelStyle: 'color:blue',
@@ -144,8 +155,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 							editable: false,
 							readOnly: false,
 							fieldLabel: 'Штраф за отказ от посещения',
-							anchor: '100%',
-							value: 30,
+							value: 0,
 							maxValue: 300,
 							minValue: 0,
 							step: 5,
@@ -162,8 +172,8 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 		},
 		{
 			xtype: 'tabpanel',
-			height: 150,
-			width: 300,
+			height: 270,
+			width: 400,
 			deferredRender: false,
 			activeTab: 0,
 			border: 0,
@@ -172,32 +182,32 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 				border: false,
 			},
 			items: [
-/*
+
 				{
 					xtype: 'panel',
-					title: 'Отгрузка',
+					title: 'Емкость отгрузки',
 					layout: 'fit',
 					items: [
 						{
-							tools: null,
-							xtype: 'ordergoodsgrid',
-							id: 'ordereditgoods',
+							xtype: 'depotgoodsgrid_out',
+							id: 'mainDepotEditLoadGoods_out',
+							printTitle: 'Емкость отгрузки',
 						},
 					]
 				},
-*/
 				{
 					xtype: 'panel',
-					title: 'Допустимые машины',
+					title: 'Емкость возврата',
 					layout: 'fit',
 					items: [
 						{
-							xtype: 'allowedautosgrid',
-							id: 'depoteditallowedautos',
+							xtype: 'depotgoodsgrid_in',
+							id: 'mainDepotEditUnLoadGoods_in',
+							printTitle: 'Емкость возврата',
 						},
-					],
+					]
+				},
 
-				}
 			]
 		}
 	]

@@ -100,15 +100,9 @@ Ext.define('Opt.view.tabs.tab99.MainTab99Controller', {
 		var helpcontenttab99 = Ext.getCmp('helpcontenttab99');
 		var height = screen.height;
 		var width = screen.width;
-
-		var win = window.open("", "Справка", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=" + width + ",height=" + height);
-		var html = helpcontenttab99.html;
-
-		var find = './help';
-		var re = new RegExp(find, 'g');
-		html = html.replace(re, window.location.href + '/help');
-		win.document.body.innerHTML = html;
+		window.open("help.php?param=getPartHelp&filename=" + this.filename, "Cправка");
 	},
+
 
 	printAllHelp: function(){
 		var height = screen.height;

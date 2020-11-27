@@ -1,8 +1,6 @@
 Ext.define('Opt.view.dialog.MainDepotEditController', {
 	extend: 'Opt.view.dialog.BaseEditController',
 	alias: 'controller.maindepotedit',
-	orderGoodsStore: null,
-	orderAllowedAutosStore: null,
 	changed: false,
 
 	init: function () {

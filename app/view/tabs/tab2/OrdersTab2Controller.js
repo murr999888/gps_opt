@@ -299,6 +299,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			Ext.getCmp('tab2ordersgrid').view.refresh();
 			this.fireEvent('tab2ordergridsettitle', " (фильтр)");
 		}
+
+		this.fireEvent('tab2ordersgriddeselect');
 	},
 
 	clearForm: function () {
@@ -319,6 +321,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			in_use: false,
 			not_in_use: false,
 		});
+		this.fireEvent('tab2ordersgriddeselect');
 	},
 
 	clearFilter: function () {

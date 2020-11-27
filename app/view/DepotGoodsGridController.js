@@ -49,7 +49,7 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 		var grid = this.getView();
 		var store = grid.getStore();
 		var params = {
-			param: 'Prod',
+			param: 'Goods',
 		};
 
 		Ext.Ajax.request({

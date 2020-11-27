@@ -447,7 +447,7 @@ function secToHHMMSS(sec) {
 }
 
 function secToHHMM(sec) {
-	if (!sec || sec == 0) return '';
+	if (!sec || sec == 0) return '00:00:00';
  	var sec_num = parseInt(sec, 10); // don't forget the second param
 	var hours   = Math.floor(sec_num / 3600);
     	var minutes = Math.floor((sec_num - (hours * 3600)) / 60);

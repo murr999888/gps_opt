@@ -6,9 +6,6 @@ Ext.define('Opt.view.DepotGridController', {
 		'Opt.ux.GridPrinter',
 	],
 
-	init: function(){
-	},
-
 	printTable: function () {
 		var grid = this.getView();
 		Opt.ux.GridPrinter.print(grid);
@@ -34,4 +31,7 @@ Ext.define('Opt.view.DepotGridController', {
 		return str;
 	},
 
+   	getServiceTime: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		return minToHHMM(val.toFixed());
+	},
 });

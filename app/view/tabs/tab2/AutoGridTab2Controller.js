@@ -6,9 +6,6 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		'Opt.view.tabs.fuelStationsViewer.Main',
 	],
 
-	maxracesbigautos: 3,
-	maxracessmallautos: 4,
-
 	listen: {
 		controller: {
 			'*': {
@@ -247,15 +244,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 					record.set("route_begin_endtime", def_route_time_end);
 					record.set("route_end_endtime", def_route_time_end);
 					record.set("fuel_gas", false);
-					if (record.get("is_watercarrier")) {
-						record.set("maxraces", self.maxracesbigautos);
-					} else {
-						if (record.get("bottle") < 50) {
-							record.set("maxraces", self.maxracessmallautos);
-						} else {
-							record.set("maxraces", self.maxracesbigautos);
-						}
-					}
+					record.set("maxraces", 5);
 					record.save();
 				});
 

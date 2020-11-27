@@ -35,7 +35,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 					border: 0,
 					margin: 5,
 					defaults: {
-						labelWidth: 70,
+						labelWidth: 100,
 						width: 350,
 						readOnly: true,
 					},
@@ -83,7 +83,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 						{
 							xtype: 'field',
 							name: 'klient_name',
-							fieldLabel: 'Клиент',
+							fieldLabel: 'Наименование',
 						},
 						{
 							xtype: 'field',
@@ -103,7 +103,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 									xtype: 'field',
 									name: 'lat',
 									fieldLabel: 'lat',
-									labelWidth: 70,
+									labelWidth: 100,
 									width: 160,
 									border: 1
 								},
@@ -142,6 +142,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 						{
 							xtype: 'depotgoodsgrid_out',
 							id: 'mainDepotEditLoadGoods_out',
+							printTitle: 'Емкость отгрузки',
 						},
 					]
 				},
@@ -153,6 +154,7 @@ Ext.define('Opt.view.dialog.MainDepotEdit', {
 						{
 							xtype: 'depotgoodsgrid_in',
 							id: 'mainDepotEditUnLoadGoods_in',
+							printTitle: 'Емкость возврата',
 						},
 					]
 				},

@@ -29,7 +29,7 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2', {
 	tools: [
 		{
 			type: 'refresh',
-			handler: 'refreshAddDepot',
+			handler: 'refreshDepots',
 			tooltip: 'Загрузить'
 		},
 		{
@@ -44,18 +44,6 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2', {
 			xtype: 'toolbar',
 			dock: 'top',
 			items: [
-				{
-					xtype: 'button',
-					text: 'Добавить',
-					id: 'tab2depotgridaddButton',
-					//iconCls: 'fa fa-filter',
-				},
-				{
-					xtype: 'button',
-					text: 'Удалить',
-					id: 'tab2depotgridremoveButton',
-					//iconCls: 'fa fa-filter',
-				},
 				{
 					xtype: 'tbspacer',
 					flex: 1,

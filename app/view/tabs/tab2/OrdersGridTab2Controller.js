@@ -14,6 +14,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			'*': {
 				distributed_orders_change_date: 'distributed_orders_change_date',
 				tab2ordergridsettitle: 'setTitle',
+				tab2ordersgriddeselect: 'setAllDeselected',
 			}
 		}
 	},

@@ -61,7 +61,16 @@ Opt.ux.GridPrinter = {
     var headings = this.headerTpl.apply(columns);
     var body     = this.bodyTpl.apply(columns);
     var gridTitle = grid.getTitle();
-    var tableTitle =  gridTitle ? gridTitle.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "") : 'Таблица';
+
+    if (!gridTitle ) {
+	gridTitle = grid.printTitle;
+    }
+
+    if (!gridTitle ) {
+	gridTitle = 'Таблица';
+    }
+
+    var tableTitle =  gridTitle.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "");
     
     var template = new Ext.XTemplate(
       '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',

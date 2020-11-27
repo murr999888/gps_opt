@@ -5,8 +5,7 @@ session_start();
 if (!isset($_SESSION['user'])) {
 	header("HTTP/1.1 401 Unauthorized");
     	exit;
-}
-*/
+}*/
 
 if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 	if ($_GET['param'] == 'getHelp') {
@@ -16,6 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 		} else {
 			$text = '';
 		}
+		
 		echo $text;
 	}
 
@@ -28,10 +28,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 
 	if ($_GET['param'] == 'getAllHelp') {
 		$template = file_get_contents("help/AllHelpTemplate.html");
-
 		$cont = file_get_contents("help/helpTableContent.json");
 		if (!$cont) return;
 		$decoded = json_decode($cont, TRUE);
+
 		$data  = $decoded['data'];
 
 		$fulltext = '';
@@ -44,6 +44,24 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 			} else {
 				$fulltext .= '';
 			}
+
+			//$fulltext .= '<br / >';
+		}
+
+		$template = str_replace("#CONTENT#", $fulltext, $template);
+		echo $template;
+	}
+
+	if ($_GET['param'] == 'getPartHelp') {
+		$template = file_get_contents("help/AllHelpTemplate.html");
+		$full_name = 'help/' . $_GET['filename'];
+
+		$fulltext = '';
+
+		if (file_exists($full_name)){
+			$fulltext .= file_get_contents($full_name);
+		} else {
+			$fulltext .= '';
 		}
 
 		$template = str_replace("#CONTENT#", $fulltext, $template);

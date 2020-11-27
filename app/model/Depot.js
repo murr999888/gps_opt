@@ -1,9 +1,9 @@
 Ext.define('Opt.model.Depot', {
-	identifier: 'negative',
     	extend: 'Opt.model.RouteLegs',
+	identifier: 'negative',
 	proxy: {
         	type: 'localstorage',
-        	id  : 'depot'
+        	id  : 'depot',
     	},
 	fields: [
 		{

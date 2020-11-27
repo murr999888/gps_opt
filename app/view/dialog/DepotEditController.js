@@ -6,25 +6,35 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 	changed: false,
 
 	init: function () {
-/*
-		this.orderGoodsStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.OrderGood',
+		var self = this;
+		this.storeIn = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.Depot',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		Ext.getCmp('ordereditgoods').setStore(this.orderGoodsStore);
-*/
-
-		this.orderAllowedAutosStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.AllowedAuto',
+		this.storeOut = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.Depot',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		Ext.getCmp('ordereditallowedautos').setStore(this.orderAllowedAutosStore);
+		this.getView().down('depotgoodsgrid_in').setStore(this.storeIn);
+		this.getView().down('depotgoodsgrid_out').setStore(this.storeOut);
+	},
+
+	onShow: function(){
+		var self = this;
+		var dialog = this.getView().down('form');
+		var record = dialog.getRecord();
+
+		var dataIn = record.get("goods_capacity_in");
+		if (dataIn.length > 0) this.storeIn.loadData(dataIn);
+
+		var dataOut = record.get("goods_capacity_out");
+		if (dataOut.length > 0) this.storeOut.loadData(dataOut);
 	},
 
 	afterRender: function () {
@@ -63,8 +73,23 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 		dialog = button.up('window').down('form');
 		dialog.updateRecord();
 
+		var form = this.lookupReference('form').getForm();
+		var values = form.getValues();
+
 		record = dialog.getRecord();
-		record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
+
+		var timewindow_string = '';
+		if (values.timewindow_begin == 8*60*60 && values.timewindow_end == 20*60*60){
+			timewindow_string = 'т/д';
+		} else {
+			timewindow_string = values.timewindow_begin_1 + ' - ' + values.timewindow_end_1;
+		}
+
+		record.set('timewindow_string', timewindow_string);
+		record.set('goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
+		record.set('goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
+
+		//record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
 		store = record.store;
 		if (store) {
 			if (record.phantom) {
@@ -91,8 +116,26 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 	},
 
 	closeView: function (dialog) {
-		var allowedAutosStore = this.getView().down('allowedautosgrid').store;
-		allowedAutosStore.rejectChanges();
+		//var allowedAutosStore = this.getView().down('allowedautosgrid').store;
+		//allowedAutosStore.rejectChanges();
 		this.getView().close();
+	},
+
+	onWorktimeBeginChange: function (field, newValue, oldValue, eOpts) {
+		var seconds = hmsToSecondsOnly(newValue) * 60;
+		var form = this.lookupReference('form').getForm();
+
+		form.setValues({
+			timewindow_begin: seconds
+		});
+	},
+
+	onWorktimeEndChange: function (field, newValue, oldValue, eOpts) {
+		var seconds = hmsToSecondsOnly(newValue) * 60;
+		var form = this.lookupReference('form').getForm();
+
+		form.setValues({
+			timewindow_end: seconds
+		});
 	},
 });
