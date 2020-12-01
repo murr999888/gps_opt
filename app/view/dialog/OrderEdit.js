@@ -3,7 +3,8 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 	alias: 'widget.orderedit',
 	requires: [
 		'Opt.view.dialog.OrderEditController',
-		'Opt.view.OrderGoodsGrid',
+		'Opt.view.OrderUnloadingGoodsGrid',
+		'Opt.view.OrderLoadingGoodsGrid',
 		'Opt.view.AllowedAutosGrid',
 	],
 
@@ -227,8 +228,20 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 					items: [
 						{
 							tools: null,
-							xtype: 'ordergoodsgrid',
-							id: 'ordereditgoods',
+							xtype: 'orderunloadinggoodsgrid',
+							id: 'ordereditunloadinggoods',
+						},
+					]
+				},
+				{
+					xtype: 'panel',
+					title: 'Погрузка',
+					layout: 'fit',
+					items: [
+						{
+							tools: null,
+							xtype: 'orderloadinggoodsgrid',
+							id: 'ordereditloadinggoods',
 						},
 					]
 				},

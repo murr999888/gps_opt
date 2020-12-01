@@ -39,15 +39,5 @@ Ext.define('Opt.view.tabs.tab2.RoutesDistTab2', {
 			stateId: 'tab2droppedgrid',
 			collapsed: true,
 		},
-/*
-		{
-			flex: 1,
-			xtype: 'ordergoodsgrid',
-			id: 'tab2routestotals',
-			title: 'Отгрузка по МЛ',
-			stateful: true,
-			stateId: 'tab2routestotals',
-		}
-*/
 	],
 });

@@ -1,18 +1,18 @@
 Ext.define('Opt.view.dialog.GoodsEdit', {
 	extend: 'Ext.window.Window',
+	xtype: 'goodsedit',
 	alias: 'widget.goodsedit',
 	requires: [
 		'Opt.view.OrderGoodsGrid',
 		'Opt.view.dialog.GoodsEditController',
 	],
 
-	id: 'goodsedit',
 	stateful: true,
 	stateId: 'goodsedit',
 	controller: 'goodsedit',
 	constrain: true,
 	modal: true,
-	closeAction: 'destroy',
+	closeAction: 'hide',
 	closable: true,
 	resizable: true,
 	style: 'background-color: #fff;',

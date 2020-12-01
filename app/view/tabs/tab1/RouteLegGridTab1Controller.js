@@ -180,13 +180,23 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab1orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
-		var orderGoodsStore = this.orderEdit.down('ordergoodsgrid').store;
-		orderGoodsStore.suspendEvents();
-		orderGoodsStore.loadData(record.get("goods"));
-		orderGoodsStore.sync();
-		orderGoodsStore.resumeEvents();
+		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
+		orderUnloadingGoodsStore.suspendEvents();
+		orderUnloadingGoodsStore.loadData(record.get("unloading_goods"));
+		orderUnloadingGoodsStore.sync();
+		orderUnloadingGoodsStore.resumeEvents();
 
-		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
+		this.orderEdit.down('orderunloadinggoodsgrid').store.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var orderLoadingGoodsStore = this.orderEdit.down('orderloadinggoodsgrid').store;
+		orderLoadingGoodsStore.suspendEvents();
+		orderLoadingGoodsStore.loadData(record.get("loading_goods"));
+		orderLoadingGoodsStore.sync();
+		orderLoadingGoodsStore.resumeEvents();
+
+		this.orderEdit.down('orderloadinggoodsgrid').store.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
@@ -196,7 +206,7 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 		allowedAutosStore.sync();
 		allowedAutosStore.resumeEvents();
 
-		this.orderEdit.down('tabpanel').items.items[1].setDisabled(true);
+		this.orderEdit.down('tabpanel').items.items[2].setDisabled(true);
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({

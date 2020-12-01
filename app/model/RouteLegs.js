@@ -59,7 +59,13 @@ Ext.define('Opt.model.RouteLegs', {
     		},
 
 		{
-        		name: 'goods',
+        		name: 'unloading_goods',
+			defaultValue: [],
+    		},
+
+		{
+        		name: 'loading_goods',
+			defaultValue: [],
     		},
 
 		{

@@ -168,12 +168,12 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 				Ext.getCmp('tab2ordersgrid').view.refresh()
 
-				var storeTotals = Ext.getStore('OrdersGoodsStore');
-				storeTotals.suspendEvents();
-				storeTotals.loadData(respObj.data.goods);
-				storeTotals.sync();
-				storeTotals.resumeEvents();
-				storeTotals.fireEvent('load');
+				var storeUnloadingGoodsTotals = Ext.getStore('OrdersUnloadingGoodsStore');
+				storeUnloadingGoodsTotals.suspendEvents();
+				storeUnloadingGoodsTotals.loadData(respObj.data.goods);
+				storeUnloadingGoodsTotals.sync();
+				storeUnloadingGoodsTotals.resumeEvents();
+				storeUnloadingGoodsTotals.fireEvent('load');
 				Ext.getCmp('tab2ordersgrid').unmask();
 			},
 
@@ -737,7 +737,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		var orders = [];
 		var autos = [];
-		var goods = [];
+		var unloading_goods = [];
+		var loading_goods = [];
 		var data = {};
 
 		//********************************************
@@ -800,7 +801,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 							deepCopy.dop = "Заправка перед рейсом";
 							deepCopy.penalty = 0; // в минутах!
 							deepCopy.strings = [];
-							deepCopy.goods = [];
+							deepCopy.unloading_goods = [];
+							deepCopy.loading_goods = [];
 							var allowedAutos = 
 							{
 								in_use: true,
@@ -833,7 +835,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 								deepCopy.dop = "Заправка";
 								deepCopy.penalty = 0; // в минутах!
 								deepCopy.strings = [];
-								deepCopy.goods = [];
+								deepCopy.unloading_goods = [];
+								deepCopy.loading_goods = [];
 								var allowedAutos = 
 								{
 									in_use: true,
@@ -874,7 +877,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					deepCopy.service_time = recordAuto.get("race_breaking_time") * 60;
 					deepCopy.penalty = 0; // в минутах!
 					deepCopy.strings = [];
-					deepCopy.goods = [];
+					deepCopy.unloading_goods = [];
+					deepCopy.loading_goods = [];
 					var allowedAutos = 
 					{
 						in_use: true,
@@ -893,17 +897,17 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		//********************************************
 		// ТОВАРЫ
 		//********************************************
-		var storeGoods = Ext.getStore('OrdersGoodsStore');
-		for (var i = 0; i < storeGoods.count(); i++) {
-			var recordGoods = storeGoods.getAt(i);
-			var deepCopy = $.extend(true, {}, recordGoods.data);
+		var storeUnloadingGoods = Ext.getStore('OrdersUnloadingGoodsStore');
+		for (var i = 0; i < storeUnloadingGoods.count(); i++) {
+			var recordUnloadingGoods = storeUnloadingGoods.getAt(i);
+			var deepCopy = $.extend(true, {}, recordUnloadingGoods.data);
 			deepCopy.kolvo = 0;
-			goods.push(deepCopy);
+			unloading_goods.push(deepCopy);
 		}
 
 		data.autos = autos;
 		data.orders = orders;
-		data.goods = goods;
+		data.goods = unloading_goods;
 
 		task.data = data;
 
@@ -917,199 +921,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			Opt.app.showError("Ошибка!","Нет соединения с сервером!");
 			console.log(Opt.app.socket.readyState);
 		}
-	},
-
-	sendForAddingOrders: function(){
-	        var depot = Ext.clone(Opt.app.getMainDepot().data);
-		delete depot.id;
-
-                if (!depot) {
-                 	Opt.showError("Внимание!","Нет данных о депо!");
-			return;
-		}
-
-		this.fireEvent('tab2droppedgridsettitle');
-		clearStore('tab2droppedgrid');
-
-		var form = Ext.getCmp('formparamtab2');
-		var formVal = form.getForm().getFieldValues();
-
-		var orders_date = formVal.solvedate;
-		var time_waiting = formVal.maxslacktime;
-
-		orders_date = orders_date.replace(/-/g, ''); // для IE 
-
-		var task = {};
-
-		this.currTaskId = Date.now().toString();
-		task.id = this.currTaskId;
-		task.solve = "addingorders_toroutes";
-		task.parameters = {
-			depot_index: 0,
-			time_limit: formVal.maxsolvetime,
-			maximum_time_per_vehicle: 24 * 60 * 60, // 12 часов
-			dateRoutes: orders_date,
-			time_waiting: time_waiting * 60,
-		};
-
-		task.error = "";
-
-		var orders = [];
-		var autos = [];
-		var goods = [];
-		var data = {};
-
-		orders.push(depot);
-
-		var routesGrid = Ext.getCmp('tab2routesgrid');
-		var storeRoutes = routesGrid.store;
-
-		var storeAutos = Ext.getStore('Auto2');
-
-		// получаем массив машин по маршрутным листам
-		for (var i = 0; i < storeRoutes.count(); i++) {
-			var recordRoute = storeRoutes.getAt(i);
-			if (recordRoute.get("in_use")) {
-				// ищем машину для этого маршрута
-				var routeId = recordRoute.get('id');
-				var autoId = recordRoute.get('auto_id');
-				var autoIndex = storeAutos.find("id", autoId);
-				var autoRecord = storeAutos.getAt(autoIndex);
-
-				// делаем копию записи машины для изменения
-				var autoRecordCopy = $.extend(true, {}, autoRecord.data); 
-
-				// заменяем id машины на id маршрута
-				autoRecordCopy.trueId = autoRecordCopy.id;
-				autoRecordCopy.id = routeId;
-
-		      		// устанавливаем время работы машины по маршрутному листу
-				autoRecordCopy.worktime_begin = recordRoute.get('route_begin_plan');
-				autoRecordCopy.worktime_end = recordRoute.get('route_end_plan');
-				autoRecordCopy.route_begin_endtime = recordRoute.get('route_end_plan');
-				autoRecordCopy.route_end_endtime = recordRoute.get('route_end_plan');
-				// устанавливаем водителя по маршрутному листу
-				autoRecordCopy.driver_id = recordRoute.get('driver_id');
-				autoRecordCopy.driver_name = recordRoute.get('driver_name');
-				autos.push(autoRecordCopy);
-			}
-		}
-
-		var swap_orders = Ext.getCmp('tab2allowswaporders').getValue();
-
-		// обрабатываем заказы В МАРШРУТЕ
-		for (var i = 0; i < storeRoutes.count(); i++) {
-			var recordRoute = storeRoutes.getAt(i);
-			if (recordRoute.get("in_use")) {
-				// обрабатываем заказы, уже находящиеся в маршруте (из бэкапа)
-				var ordersInRoute = recordRoute.data.orders_backup;
-				for (var j = 0; j < ordersInRoute.length; j++) {
-					var order = ordersInRoute[j];
-					if (order.node_type != 0){
-						// делаем копию заказа для изменения
-						var orderCopy = $.extend(true, {}, order); 
-						orderCopy.isAdded = false;
-						orderCopy.allowed_autos_backup = [];
-
-						if (swap_orders) {
-							// обмен разрешен - задаем в качестве допустимых все машины маршрутов
-							for (var t = 0; t < autos.length; t++){
-								orderCopy.allowed_autos_backup.push({in_use: true, id: autos[t].id, name: autos[t].name});
-							}
-						} else {
-							// обмен не разрешен - устанавливаем единственной допустимой машиной id маршрута
-							// вне зависимости от того, были ли для данного заказа вообще установлены допустимые машины
-							orderCopy.allowed_autos_backup.push({in_use: true, id: recordRoute.id, name: 'fake auto'});
-						}
-						orders.push(orderCopy);
-					}
-				}
-			}
-		}
-
-		var storeOrders = this.ordersStore;
-
-		// обрабатываем распределяемые заказы
-		for (var i = 0; i < storeOrders.count(); i++) {
-			var recordOrder = storeOrders.getAt(i);
-			if (recordOrder.get("in_use")) {
-				var deepCopy = $.extend(true, {}, recordOrder.data);
-				var allowedAutos = deepCopy.allowed_autos;
-				var parsedAutos = [];
-
-				deepCopy.isAdded = true;
-
-				// заменяем машину из списка допустимых на соответствующие идентификаторы маршрута
-				// т.е. Мерс1 на Маршрут1 и Маршрут2
-				if (allowedAutos.length > 0) {
-					for (var j = 0; j < allowedAutos.length; j++) {
-						if (allowedAutos[j].in_use) {
-							for (var k = 0; k < autos.length; k++) {
-								if (autos[k].trueId == allowedAutos[j].id) {
-			                                                parsedAutos.push({in_use: true, id: autos[k].id, name: 'fake auto'});
-								}
-							}
-						}
-					}
-
-				}
-				deepCopy.allowed_autos_backup = parsedAutos;
-				orders.push(deepCopy);
-			}
-		}
-
-		if (orders.length < 2) {
-			Ext.Msg.alert({
-				title: 'Внимание',
-				message: 'Нет заказов для распределения!',
-				buttons: Ext.Msg.OK,
-			});
-			return;
-		}
-
-		// объединяем перечень товаров: из заказов и маршрутов
-		var unionArr = [];
-		var storeOrdersGoods = Ext.getStore('OrdersGoodsStore');
-		for (var i = 0; i < storeOrdersGoods.count(); i++) {
-			var recordOrderGoods = storeOrdersGoods.getAt(i);
-			var recordOrderGoodsCopy = $.extend(true, {}, recordOrderGoods.data); 
-			recordOrderGoodsCopy.kolvo = 0;
-			unionArr.push(recordOrderGoodsCopy);
-		}
-
-		var storeRoutesGoods = Ext.getStore('RoutesGoodsStore');
-		for (var i = 0; i < storeRoutesGoods.count(); i++) {
-			var recordRoutesGoods = storeRoutesGoods.getAt(i);
-			// получаем id текущей записи goods маршрутов
-			var goodsId = recordRoutesGoods.get('id');
-			var orderGoodsIndex = storeOrdersGoods.find("id", goodsId);
-			var recordOrderGoods = storeOrdersGoods.getAt(orderGoodsIndex);
-			// если записи заказов с таким id не найдено, добавляем запись маршрутов в массив
-			if (!recordOrderGoods) {
-				var recordRoutesGoodsCopy = $.extend(true, {}, recordRoutesGoods.data); 
-				recordRoutesGoodsCopy.kolvo = 0;
-				unionArr.push(recordRoutesGoodsCopy);
-			}
-		}
-
-		data.autos = autos;
-		data.orders = orders;
-		data.goods = unionArr;
-
-		task.data = data;
-
-		this.startTimerMask();
-
-		console.log(task);
-
-		if (Opt.app.socket.readyState && Opt.app.socket.readyState == 1) {
-			Opt.app.socket.send(JSON.stringify(task));
-		} else {
-			this.stopTimerMask();
-			Opt.app.showError("Ошибка!","Нет соединения с сервером!");
-			console.log(Opt.app.socket.readyState);
-		}
-
 	},
 
 	sendDataToServer: function () {
@@ -1121,11 +932,12 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			this.sendForDistributeOrders();
 			return;
 		}
-
+	/*
 		if (mode == 1) {
 			this.sendForAddingOrders();
 			return;
 		}
+	*/
 	},
 
 	sendData: function () {
@@ -1237,13 +1049,13 @@ console.log(data);
 			Ext.getCmp('tab2routesgrid').view.refresh();
 		}
 
-		if (data.droppedOrders.length > 0) {
+		if (data.dropped_orders.length > 0) {
 			var storeDroppedOrders = Ext.getCmp('tab2droppedgrid').store;
 
 			var orderGrid = Ext.getCmp("tab2ordersgrid");
 			var arrOrders = [];
-			for (var i = 0; i < data.droppedOrders.length; i++){
-				var record = data.droppedOrders[i];
+			for (var i = 0; i < data.dropped_orders.length; i++){
+				var record = data.dropped_orders[i];
 				var orderId = record.order_id;
 				var orderIndex = orderGrid.store.find("order_id", orderId);
 				var orderRecord = orderGrid.store.getAt(orderIndex);
@@ -1264,29 +1076,46 @@ console.log(data);
 			this.fireEvent('tab2droppedgridsettitle');
 		}
 
-		if (data.goods.length > 0) {
-			var goodsStore = Ext.getStore('RoutesGoodsStore');
+		if (data.unloading_goods.length > 0) {
+			var unloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
 
-			var goodsData = [];
-			for (var i = 0; i < data.goods.length; i++){
-				var record = data.goods[i];
+			var unloadingGoodsData = [];
+			for (var i = 0; i < data.unloading_goods.length; i++){
+				var record = data.unloading_goods[i];
 				if (record.kolvo > 0) {
-					goodsData.push(record);
+					unloadingGoodsData.push(record);
 				}
 			}
-			goodsStore.suspendEvents();
-			goodsStore.loadData(goodsData);
-			goodsStore.sync();
-			goodsStore.resumeEvents();
-			goodsStore.fireEvent('load');
+			unloadingGoodsStore.suspendEvents();
+			unloadingGoodsStore.loadData(unloadingGoodsData);
+			unloadingGoodsStore.sync();
+			unloadingGoodsStore.resumeEvents();
+			unloadingGoodsStore.fireEvent('load');
 		}
 
-		if (data.droppedGoods.length > 0) {
+		if (data.loading_goods.length > 0) {
+			var loadingGoodsStore = Ext.getStore('RoutesLoadingGoodsStore');
+
+			var loadingGoodsData = [];
+			for (var i = 0; i < data.loading_goods.length; i++){
+				var record = data.loading_goods[i];
+				if (record.kolvo > 0) {
+					loadingGoodsData.push(record);
+				}
+			}
+			loadingGoodsStore.suspendEvents();
+			loadingGoodsStore.loadData(loadingGoodsData);
+			loadingGoodsStore.sync();
+			loadingGoodsStore.resumeEvents();
+			loadingGoodsStore.fireEvent('load');
+		}
+
+		if (data.dropped_goods.length > 0) {
 			var goodsStore = Ext.getStore('DroppedGoodsStore');
 
 			var goodsData = [];
-			for (var i = 0; i < data.droppedGoods.length; i++){
-				var record = data.droppedGoods[i];
+			for (var i = 0; i < data.dropped_goods.length; i++){
+				var record = data.dropped_goods[i];
 				if (record.kolvo > 0) {
 					goodsData.push(record);
 				}
@@ -1355,8 +1184,10 @@ console.log(data);
 		clearStore('tab2droppedgrid');
 
 		clearStore('DroppedGoodsStore');
-		clearStore('OrdersGoodsStore');
-		clearStore('RoutesGoodsStore');
+		clearStore('OrdersUnloadingGoodsStore');
+		clearStore('OrdersLoadingGoodsStore');
+		clearStore('RoutesUnloadingGoodsStore');
+		clearStore('RoutesLoadingGoodsStore');
 
 		this.fireEvent('tab2routesgridsetstat', null);
 		this.fireEvent('tab2routesgridsetparams', null);
@@ -1445,7 +1276,8 @@ console.log(data);
 					routeRecord.set('duration', currRoute.duration);
 					routeRecord.set('durationFull', currRoute.durationFull);
 					routeRecord.set("orders", currRoute.orders);
-					routeRecord.set("goods", currRoute.goods);
+					routeRecord.set("unloading_goods", currRoute.unloading_goods);
+					routeRecord.set("loading_goods", currRoute.loading_goods);
                				routeRecord.set("ordersCount", currRoute.orders.length - 2);
 					routeRecord.commit();
 				} else {
@@ -1477,17 +1309,30 @@ console.log(data);
 			this.fireEvent('tab2droppedgridsettitle');
 		}
 
-		if (data.goods.length > 0) {
-			var goodsStore = Ext.getStore("RoutesGoodsStore");
-			var goodsData = [];
-			for (var i = 0; i < data.goods.length; i++){
-				var record = data.goods[i];
+		if (data.unloading_goods.length > 0) {
+			var unloadingGoodsStore = Ext.getStore("RoutesUnloadingGoodsStore");
+			var unloadingGoodsData = [];
+			for (var i = 0; i < data.unloading_goods.length; i++){
+				var record = data.unloading_goods[i];
 				if (record.kolvo > 0) {
-					goodsData.push(record);
+					unloadingGoodsData.push(record);
 				}
 			}
-			goodsStore.loadData(goodsData);
-			goodsStore.fireEvent('load');
+			unloadingGoodsStore.loadData(unloadingGoodsData);
+			unloadingGoodsStore.fireEvent('load');
+		}
+
+		if (data.loading_goods.length > 0) {
+			var loadingGoodsStore = Ext.getStore("RoutesLoadingGoodsStore");
+			var loadingGoodsData = [];
+			for (var i = 0; i < data.loading_goods.length; i++){
+				var record = data.loading_goods[i];
+				if (record.kolvo > 0) {
+					loadingGoodsData.push(record);
+				}
+			}
+			loadingGoodsStore.loadData(loadingGoodsData);
+			loadingGoodsStore.fireEvent('load');
 		}
 
 		if (data.droppedGoods.length > 0) {

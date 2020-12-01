@@ -41,14 +41,25 @@ Ext.define('Opt.view.tabs.tab1.DroppedGridTab1Controller', {
 		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab1orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
-		var orderGoodsStore = this.orderEdit.down('ordergoodsgrid').store;
+		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
 
-		orderGoodsStore.suspendEvents();
-		orderGoodsStore.loadData(record.get("goods"));
-		orderGoodsStore.sync();
-		orderGoodsStore.resumeEvents();
+		orderUnloadingGoodsStore.suspendEvents();
+		orderUnloadingGoodsStore.loadData(record.get("unloading_goods"));
+		orderUnloadingGoodsStore.sync();
+		orderUnloadingGoodsStore.resumeEvents();
 
-		orderGoodsStore.filterBy(function (record) {
+		orderUnloadingGoodsStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var orderLoadingGoodsStore = this.orderEdit.down('orderloadinggoodsgrid').store;
+
+		orderLoadingGoodsStore.suspendEvents();
+		orderLoadingGoodsStore.loadData(record.get("loading_goods"));
+		orderLoadingGoodsStore.sync();
+		orderLoadingGoodsStore.resumeEvents();
+
+		orderLoadingGoodsStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 

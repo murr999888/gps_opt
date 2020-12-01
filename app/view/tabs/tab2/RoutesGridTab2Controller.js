@@ -5,6 +5,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	routelistEdit: null,
 	requires: [
 		'Opt.view.dialog.RouteListEdit',
+		'Opt.view.dialog.GoodsEdit',
 		'Opt.ux.GridPrinter',
 	],
 
@@ -24,7 +25,14 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	init: function () {
 		var self = this;
-		this.goodsEditStore = Ext.create('Ext.data.Store', {
+		this.unloadingGoodsEditStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		this.loadingGoodsEditStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.OrderGood',
 			proxy: {
 				type: 'memory',
@@ -38,13 +46,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			},
 		});
 
-	        var routeGoodsStore = Ext.getStore('RoutesGoodsStore');
-		routeGoodsStore.on('load', function(){
-			self.setGetGoodsButton();
+	        var routeUnloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
+		routeUnloadingGoodsStore.on('load', function(){
+			self.setGetUnloadingGoodsButton();
 		});
 
-		routeGoodsStore.on('remove', function(){
-			self.setGetGoodsButton();
+		routeUnloadingGoodsStore.on('remove', function(){
+			self.setGetUnloadingGoodsButton();
 		});
 
 		var store = this.getView().getStore();
@@ -108,14 +116,24 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	setButtonsDisabled: function(disabled){
-		Ext.getCmp('tab2getRoutesGoodsButton').setDisabled(disabled);
+		Ext.getCmp('tab2getRoutesUnloadingGoodsButton').setDisabled(disabled);
+		Ext.getCmp('tab2getRoutesLoadingGoodsButton').setDisabled(disabled);
 		Ext.getCmp('tab2getRoutesPrintButton').setDisabled(disabled);
 		Ext.getCmp('tab2mapbutton').setDisabled(disabled);
 	},
 
-	setGetGoodsButton: function(){
-		var routeGoodsStore = Ext.getStore('RoutesGoodsStore');
-		if (routeGoodsStore.count() > 0) {
+	setGetUnloadingGoodsButton: function(){
+		var routeUnloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
+		if (routeUnloadingGoodsStore.count() > 0) {
+			this.setButtonsDisabled(false);
+		} else {
+			this.setButtonsDisabled(true);		
+		}
+	},
+
+	setGetLoadingGoodsButton: function(){
+		var routeLoadingGoodsStore = Ext.getStore('RoutesLoadingGoodsStore');
+		if (routeLoadingGoodsStore.count() > 0) {
 			this.setButtonsDisabled(false);
 		} else {
 			this.setButtonsDisabled(true);		
@@ -157,11 +175,17 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		this.routelistEdit.down('form').loadRecord(record);
 
-		this.routelistEdit.down('ordergoodsgrid').setStore(this.goodsEditStore);
+		this.routelistEdit.down('orderunloadinggoodsgrid').setStore(this.unloadingGoodsEditStore);
+		this.routelistEdit.down('orderloadinggoodsgrid').setStore(this.loadingGoodsEditStore);
 
-		this.goodsEditStore.loadData(record.get('goods'));
+		this.unloadingGoodsEditStore.loadData(record.get('unloading_goods'));
+		this.loadingGoodsEditStore.loadData(record.get('loading_goods'));
 
-		this.goodsEditStore.filterBy(function (record) {
+		this.unloadingGoodsEditStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		this.loadingGoodsEditStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
@@ -254,7 +278,8 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
 		clearStore('DroppedGoodsStore');
-		clearStore('RoutesGoodsStore');
+		clearStore('RoutesUnloadingGoodsStore');
+		clearStore('RoutesLoadingGoodsStore');
 
 		Ext.getCmp('tab2routesgrid').setTitle("Маршрутные листы");
 		Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
@@ -500,14 +525,24 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	},
 
-	getGoods: function(){
+	getUnloadingGoods: function(){
 		var title = 'Отгрузка по маршрутам.';
-		this.editDialog = null;
-		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
-		var goodsGrid = this.editDialog.down('ordergoodsgrid');
-		goodsGrid.setStore(Ext.getStore('RoutesGoodsStore'));
-		this.editDialog.show();
-		this.editDialog.focus();
+		if (!this.UnloadingGoodsDialog) this.UnloadingGoodsDialog = Ext.create('widget.goodsedit', { title: title});
+		var goodsGrid = this.UnloadingGoodsDialog.down('ordergoodsgrid');
+		goodsGrid.setStore(Ext.getStore('RoutesUnloadingGoodsStore'));
+		this.UnloadingGoodsDialog.show();
+		this.UnloadingGoodsDialog.focus();
+console.log(this.UnloadingGoodsDialog);
+	},
+
+	getLoadingGoods: function(){
+		var title = 'Погрузка по маршрутам.';
+		if (!this.LoadingGoodsDialog) this.LoadingGoodsDialog = Ext.create('widget.goodsedit', { title: title});
+		var goodsGrid = this.LoadingGoodsDialog.down('ordergoodsgrid');
+		goodsGrid.setStore(Ext.getStore('RoutesLoadingGoodsStore'));
+		this.LoadingGoodsDialog.show();
+		this.LoadingGoodsDialog.focus();
+console.log(this.LoadingGoodsDialog);
 	},
 
 	getIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle

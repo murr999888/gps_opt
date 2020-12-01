@@ -1,19 +1,29 @@
 Ext.define('Opt.view.dialog.OrderEditController', {
 	extend: 'Opt.view.dialog.BaseEditController',
 	alias: 'controller.orderedit',
-	orderGoodsStore: null,
+	orderUnloadingGoodsStore: null,
+	orderLoadingGoodsStore: null,
 	orderAllowedAutosStore: null,
 	changed: false,
 
 	init: function () {
-		this.orderGoodsStore = Ext.create('Ext.data.Store', {
+		this.orderUnloadingGoodsStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.OrderGood',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		Ext.getCmp('ordereditgoods').setStore(this.orderGoodsStore);
+		Ext.getCmp('ordereditunloadinggoods').setStore(this.orderUnloadingGoodsStore);
+
+		this.orderLoadingGoodsStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		Ext.getCmp('ordereditloadinggoods').setStore(this.orderLoadingGoodsStore);
 
 		this.orderAllowedAutosStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.AllowedAuto',
@@ -26,9 +36,13 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 	},
 
 	onShow: function(){
-		var goodsGrid = this.getView().down('ordergoodsgrid');
-		var goodsStore = goodsGrid.getStore();
-		goodsGrid.view.scrollTo(0,0);
+		var unloadingGoodsGrid = this.getView().down('orderunloadinggoodsgrid');
+		var unloadingGoodsStore = unloadingGoodsGrid.getStore();
+		unloadingGoodsGrid.view.scrollTo(0,0);
+
+		var loadingGoodsGrid = this.getView().down('orderloadinggoodsgrid');
+		var loadingGoodsStore = loadingGoodsGrid.getStore();
+		loadingGoodsGrid.view.scrollTo(0,0);
 	},
 
 	afterRender: function () {

@@ -37,15 +37,15 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 
 	        var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
 		droppedGoodsStore.on('load', function(){
-			self.setGetGoodsButton();
+			self.setGetUnloadingGoodsButton();
 		});
 
 		droppedGoodsStore.on('remove', function(){
-			self.setGetGoodsButton();
+			self.setGetUnloadingGoodsButton();
 		});
 	},
 
-	setGetGoodsButton: function(){
+	setGetUnloadingGoodsButton: function(){
 		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
 		if (droppedGoodsStore.count() > 0) {
 			Ext.getCmp('tab2getDroppedGoodsButton').setDisabled(false);
@@ -68,11 +68,19 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
 		this.orderEdit.down('form').loadRecord(record);
 
-		var orderGoodStore = this.orderEdit.down('ordergoodsgrid').store;
-		orderGoodStore.loadData(record.get("goods"));
-		orderGoodStore.sync();
+		var orderUnloadingGoodStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
+		orderUnloadingGoodStore.loadData(record.get("unloading_goods"));
+		orderUnloadingGoodStore.sync();
 
-		orderGoodStore.filterBy(function (record) {
+		orderUnloadingGoodStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var orderLoadingGoodStore = this.orderEdit.down('orderloadinggoodsgrid').store;
+		orderLoadingGoodStore.loadData(record.get("unloading_goods"));
+		orderLoadingGoodStore.sync();
+
+		orderLoadingGoodStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
@@ -181,12 +189,12 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		return val;
 	},
 
-   	getGoods: function(){
+   	getUnloadingGoods: function(){
 		var title = 'Отгрузка по отброшенным заказам.';
 		this.editDialog = null;
 		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
-		var goodsGrid = this.editDialog.down('ordergoodsgrid');
-		goodsGrid.setStore(Ext.getStore('DroppedGoodsStore'));
+		var unloadingGoodsGrid = this.editDialog.down('ordergoodsgrid');
+		unloadingGoodsGrid.setStore(Ext.getStore('DroppedGoodsStore'));
 		this.editDialog.show();
 		this.editDialog.focus();
 	},

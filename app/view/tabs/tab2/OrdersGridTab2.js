@@ -81,8 +81,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 				{
 					xtype: 'button',
 					text: 'Отгрузка',
-					handler: 'getGoods',
-					id: 'tab2getOrdersGoodsButton',
+					handler: 'getUnloadingGoods',
+					id: 'tab2getOrdersUnloadingGoodsButton',
 					disabled: true,
 					iconCls: 'fa fa-list',
 					iconClsBck: 'fa fa-list',

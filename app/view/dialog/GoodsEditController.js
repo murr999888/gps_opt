@@ -6,6 +6,6 @@ Ext.define('Opt.view.dialog.GoodsEditController', {
 	],
 
 	closeView: function () {
-		this.getView().destroy();
+		this.getView().close();
 	},
 });

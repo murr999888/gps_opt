@@ -23,22 +23,22 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		var self = this;
 		this.getView().getSelectionModel().setSelectionMode('MULTI');
 
-	        var ordersGoodsStore = Ext.getStore('OrdersGoodsStore');
-		ordersGoodsStore.on('load', function(){
-			self.setGetGoodsButton();
+	        var ordersUnloadingGoodsStore = Ext.getStore('OrdersUnloadingGoodsStore');
+		ordersUnloadingGoodsStore.on('load', function(){
+			self.setGetUnloadingGoodsButton();
 		});
 
-		ordersGoodsStore.on('remove', function(){
-			self.setGetGoodsButton();
+		ordersUnloadingGoodsStore.on('remove', function(){
+			self.setGetUnloadingGoodsButton();
 		});
 	},
 
-	setGetGoodsButton: function(){
-		var ordersGoodsStore = Ext.getStore('OrdersGoodsStore');
-		if (ordersGoodsStore.count() > 0) {
-			Ext.getCmp('tab2getOrdersGoodsButton').setDisabled(false);
+	setGetUnloadingGoodsButton: function(){
+		var ordersUnloadingGoodsStore = Ext.getStore('OrdersUnloadingGoodsStore');
+		if (ordersUnloadingGoodsStore.count() > 0) {
+			Ext.getCmp('tab2getOrdersUnloadingGoodsButton').setDisabled(false);
 		} else {
-			Ext.getCmp('tab2getOrdersGoodsButton').setDisabled(true);		
+			Ext.getCmp('tab2getOrdersUnloadingGoodsButton').setDisabled(true);		
 		}
 	},
 
@@ -143,11 +143,19 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
-		var orderGoodsStore = this.orderEdit.down('ordergoodsgrid').store;
-		orderGoodsStore.loadData(record.get("goods"));
-		orderGoodsStore.sync();
+		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
+		orderUnloadingGoodsStore.loadData(record.get("unloading_goods"));
+		orderUnloadingGoodsStore.sync();
 
-		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
+		this.orderEdit.down('orderunloadinggoodsgrid').store.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var orderLoadingGoodsStore = this.orderEdit.down('orderloadinggoodsgrid').store;
+		orderLoadingGoodsStore.loadData(record.get("loading_goods"));
+		orderLoadingGoodsStore.sync();
+
+		this.orderEdit.down('orderloadinggoodsgrid').store.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
@@ -210,22 +218,22 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		});
 	},
 
-	getGoods: function(){
-		var sumGoodsArr = []; 
+	getUnloadingGoods: function(){
+		var sumUnloadingGoodsArr = []; 
 		var store = Ext.getCmp('tab2ordersgrid').store; 
 		for (var i=0; i < store.count(); i++){
 			var order = store.getAt(i);
-			var goods = order.get('goods');
-			for (var j=0; j < goods.length; j++){
-				var good = goods[j];
-				var index = sumGoodsArr.findIndex((element)=>element.id == good.id); 
+			var unloading_goods = order.get('unloading_goods');
+			for (var j=0; j < unloading_goods.length; j++){
+				var good = unloading_goods[j];
+				var index = sumUnloadingGoodsArr.findIndex((element)=>element.id == good.id); 
 				if (index == -1) {
 					if (good.kolvo >0){
 						var goodCopy = $.extend(true, {}, good);
-						sumGoodsArr.push(goodCopy);
+						sumUnloadingGoodsArr.push(goodCopy);
 					}
 				} else {
-					sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+					sumUnloadingGoodsArr[index].kolvo = sumUnloadingGoodsArr[index].kolvo + good.kolvo;
 				};
 			}; 
 		};
@@ -233,22 +241,22 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		var title = 'Отгрузка по заказам.';
 		this.editDialog = null;
 		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
-		var goodsGrid = this.editDialog.down('ordergoodsgrid');
-		var goodsStore = Ext.create('Ext.data.Store', {
+		var goodsUnloadingGrid = this.editDialog.down('ordergoodsgrid');
+		var goodsUnloadingGridStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.OrderGood',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
-		goodsStore.loadData(sumGoodsArr);
-		goodsStore.sort([
+		goodsUnloadingGridStore.loadData(sumUnloadingGoodsArr);
+		goodsUnloadingGridStore.sort([
     			{
         			property : 'full_name',
         			direction: 'ASC'
     			},
 		]);
-		goodsGrid.setStore(goodsStore);
+		goodsUnloadingGrid.setStore(goodsUnloadingGridStore);
 		this.editDialog.show();
 		this.editDialog.focus();
 	},
