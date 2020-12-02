@@ -176,18 +176,20 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		this.routelistEdit.down('form').loadRecord(record);
 
 		this.routelistEdit.down('orderunloadinggoodsgrid').setStore(this.unloadingGoodsEditStore);
-		this.routelistEdit.down('orderloadinggoodsgrid').setStore(this.loadingGoodsEditStore);
+		//this.routelistEdit.down('orderloadinggoodsgrid').setStore(this.loadingGoodsEditStore);
 
 		this.unloadingGoodsEditStore.loadData(record.get('unloading_goods'));
-		this.loadingGoodsEditStore.loadData(record.get('loading_goods'));
+		//this.loadingGoodsEditStore.loadData(record.get('loading_goods'));
 
 		this.unloadingGoodsEditStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
+/*
 		this.loadingGoodsEditStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
+*/
 
 		this.routelistEdit.down('ordersgridpanel').setStore(this.ordersEditStore);
 
@@ -532,7 +534,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		goodsGrid.setStore(Ext.getStore('RoutesUnloadingGoodsStore'));
 		this.UnloadingGoodsDialog.show();
 		this.UnloadingGoodsDialog.focus();
-console.log(this.UnloadingGoodsDialog);
 	},
 
 	getLoadingGoods: function(){
@@ -542,7 +543,6 @@ console.log(this.UnloadingGoodsDialog);
 		goodsGrid.setStore(Ext.getStore('RoutesLoadingGoodsStore'));
 		this.LoadingGoodsDialog.show();
 		this.LoadingGoodsDialog.focus();
-console.log(this.LoadingGoodsDialog);
 	},
 
 	getIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
@@ -588,7 +588,7 @@ console.log(this.LoadingGoodsDialog);
 							'<td style="width: 50px; text-align: center;">Ед.</td>',
 							'<td style="width: 50px; text-align: center;">Кол-во</td>',
 						'</tr>',
-						'<tpl for="goods">',
+						'<tpl for="unloading_goods">',
 							'<tr>',
 	        						'<td>{full_name}</td>',
 								'<td style="text-align: right;">{ed}</td>',

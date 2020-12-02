@@ -251,7 +251,8 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			xtype: 'tab2depotgridpanel',
 			id: 'tab2depotgrid',
 			flex: 3,
-			//collapsed: true,
+			stateful: true,
+			stateId: 'tab2depotgrid',
 		},
 	],
 });

@@ -192,7 +192,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 				{
 					stateful: true,
 					stateId: 'routelistEditgoods',
-					xtype: 'ordergoodsgrid',
+					xtype: 'orderunloadinggoodsgrid',
 					title: 'Начальная загрузка',
 					id: 'routelistEditgoods',
 					width: 430,
