@@ -48,7 +48,10 @@ html, body {
 	background-color: bisque; 
 	/*font-size: 14px;*/
 	border-radius: 10px;
+}
 
+.content {
+	max-width: 1000px;
 }
 
 @media print
@@ -61,6 +64,16 @@ html, body {
   .help {
 	clear: both;
         page-break-after: always;
+	max-width: 100%;	
+  }
+
+ .content {
+	width: 1000px;
+ }
+
+  .alertdiv {
+	break-inside: avoid;
+	max-width: 95%;
   }
 
   img {

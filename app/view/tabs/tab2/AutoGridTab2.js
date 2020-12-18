@@ -80,6 +80,14 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2', {
 								xtype: 'menuseparator',
 							},
 							{
+								text: 'Установить перерыв, мин.',
+								handler: 'setBreakTime',
+								//iconCls: 'fa fa-user',
+							},
+							{
+								xtype: 'menuseparator',
+							},
+							{
 								text: 'Установить группы клиентов',
 								handler: 'setAllowedClientGroups',
 								iconCls: 'fa fa-user',

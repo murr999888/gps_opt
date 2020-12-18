@@ -88,17 +88,34 @@ Ext.define('Opt.view.dialog.OrderListAlertController', {
 
 		this.orderEdit.down('form').loadRecord(record);
 
-		this.orderEdit.down('ordergoodsgrid').store.suspendEvents();
-		this.orderEdit.down('ordergoodsgrid').store.loadData(record.get("goods"));
-		this.orderEdit.down('ordergoodsgrid').store.resumeEvents();
+		var unloadingGoodsGrid = this.orderEdit.down('orderunloadinggoodsgrid');
+		var unloadingGoodsGridStore = unloadingGoodsGrid.getStore();
 
-		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
+		var loadingGoodsGrid = this.orderEdit.down('orderloadinggoodsgrid');
+		var loadingGoodsGridStore = loadingGoodsGrid.getStore();
+
+		unloadingGoodsGridStore.suspendEvents();
+		unloadingGoodsGridStore.loadData(record.get("unloading_goods"));
+		unloadingGoodsGridStore.resumeEvents();
+
+		loadingGoodsGridStore.suspendEvents();
+		loadingGoodsGridStore.loadData(record.get("loading_goods"));
+		loadingGoodsGridStore.resumeEvents();
+
+		unloadingGoodsGridStore.filterBy(function (record) {
 			if (record.get("kolvo") > 0) return true;
 		});
 
-		this.orderEdit.down('allowedautosgrid').store.suspendEvents();
-		this.orderEdit.down('allowedautosgrid').store.loadData(record.get("allowed_autos"));
-		this.orderEdit.down('allowedautosgrid').store.resumeEvents();
+		loadingGoodsGridStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		var allowedAutosGrid = this.orderEdit.down('allowedautosgrid');
+		var allowedAutosGridStore = allowedAutosGrid.getStore();
+
+		allowedAutosGridStore.suspendEvents();
+		allowedAutosGridStore.loadData(record.get("allowed_autos"));
+		allowedAutosGridStore.resumeEvents();
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({

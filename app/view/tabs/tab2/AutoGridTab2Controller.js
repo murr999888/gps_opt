@@ -71,6 +71,18 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		this.getView().setTitle('Машины ' + checkedStr + '(' + store.count() + ') ' + filterString);
 	},
 
+	setBreakTime: function(){
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
+			return;
+		}
+		this.msgbox = null;
+		this.msgbox = Ext.create('Opt.view.dialog.SetBreakTime', {parentGrid: grid });
+		this.msgbox.show();
+	},
+
 	setFuelStationsButtonTitle: function(){
 		var store = Ext.getStore('FuelStations');
 		var storeCount = 0;
@@ -812,14 +824,14 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	},
 
 	resetFirstFuelStation: function(){
+		var grid = this.getView();
 		var store = this.getView().store;
 		store.suspendEvents();
-		store.each(function(record){
+                store.forEach(function(record){
 			record.set("fuel_first_station", '0');
 		});
 		store.save();
 		store.resumeEvents();
 		this.getView().view.refresh();
-		Ext.getCmp('formparamtab2refuelmode').setValue(0);
 	},
 });

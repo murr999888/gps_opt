@@ -530,6 +530,18 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		// проверка заправки
 		//***********************************************
 		var refuelmode = Ext.getCmp('formparamtab2refuelmode').getValue();		
+		var fuelStationStore = Ext.getStore("FuelStations");
+
+		if (refuelmode > 0 && fuelStationStore.couunt == 0) { 
+			Ext.getCmp('maintab2').unmask();
+	                Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'Список заправок пуст!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+
 		if (refuelmode == 1) {
 			var autosWithFirstFuelStation = [];
 			for (var i = 0; i < storeAutos.count(); i++) {
@@ -553,8 +565,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		}
 
 		if (refuelmode==2) {
-                	var store = Ext.getStore("FuelStations");
-			if (store.count()==0) {
+			if (fuelStationStore.count()==0) {
 				Ext.getCmp('maintab2').unmask();
 	                        Ext.Msg.alert({
 					title: 'Внимание',

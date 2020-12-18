@@ -191,7 +191,7 @@ Ext.define('Opt.view.dialog.AutoEdit', {
 							name: 'race_breaking_time',
 							fieldLabel: 'Перерыв между рейсами, мин.',
 							fieldStyle: 'text-align: right;',
-							step: 5,
+							step: 10,
 							minValue: 10,
 							maxValue: 180,
 							readOnly: false,
