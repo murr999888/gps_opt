@@ -397,10 +397,13 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				if (response.status == 400) {
 					responseJSON = Ext.JSON.decode(response.responseText);
 					Ext.Msg.alert("Ошибка!", responseJSON.code + '<br>' + responseJSON.message);
+					return;
 				} else {
 					Ext.Msg.alert("Ошибка!", "Статус запроса: " + response.status);
+					return;
 				}
 				Ext.getCmp('maintab2').unmask();
+				return;
 			}
 		});
 	},
