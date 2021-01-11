@@ -1154,8 +1154,34 @@ console.log(data);
 		logStore.sync();
 
 		var storeTempResults = Ext.getStore('TempResults');
-		var newRecord = Ext.create('Opt.model.TempResults', data);
+		data.stores = {};
+
+		// копируем данные хранилищ
+		var depotStore = Opt.app.getMainDepot();
+		data.stores.depotStoreData = Ext.clone(Opt.app.getMainDepot().data);
+
+		var storeAuto = Ext.getStore('Auto2');
+		data.stores.storeAutoData = Ext.pluck(storeAuto.data.items, 'data');
+
+		var storeOrders = this.ordersStore;
+		data.stores.storeOrdersData = Ext.pluck(storeOrders.data.items, 'data');
+
+		var storeDroppedOrders = Ext.getCmp('tab2droppedgrid').store;
+		data.stores.storeDroppedOrdersData = Ext.pluck(storeDroppedOrders.data.items, 'data');
+
+		var routesStore = Ext.getCmp('tab2routesgrid').store;
+		data.stores.routesStoreData = Ext.pluck(routesStore.data.items, 'data');
+
+		var newRecord = Ext.create('Opt.model.TempResults', {
+			user_id: calc_stat.user_id,
+			calc_time: new Date(),
+			calc_type: calc_stat.calc_type,
+			host_name: calc_stat.host_name,
+			host_addr: calc_stat.host_addr,
+			data: data,
+		});
 		storeTempResults.add(newRecord);
+		storeTempResults.save();
 
 		var sndFile = 'sfx/alert.mp3';
 		setTimeout(function () {

@@ -5,6 +5,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	routelistEdit: null,
 	requires: [
 		'Opt.view.dialog.RouteListEdit',
+		'Opt.view.dialog.TempResultViewer',
 		'Opt.view.dialog.GoodsEdit',
 		'Opt.ux.GridPrinter',
 	],
@@ -856,4 +857,10 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
        		var dateTime = new Date(); 
 		return '<span>Сформировано ' + dateTime.toLocaleString() + '</span>';
 	},
-});1
+
+	openResultDialog: function(){
+		var self = this;
+		if (!this.tempResultsEdit) this.tempResultsEdit = Ext.create('widget.tempresultviewer');
+		this.tempResultsEdit.show();
+	},
+});
