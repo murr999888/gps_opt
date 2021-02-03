@@ -5,6 +5,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		'Opt.ux.NumberPrompt',
 		'Opt.view.dialog.SetPenalty',
 		'Opt.view.dialog.SetServiceTime',
+		'Opt.view.dialog.AddServiceTime',
 	],
 
 	msgbox: null,
@@ -76,7 +77,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		this.msgbox.show();
 	},
 
-	setService: function () {
+	setServiceTime: function () {
 		var grid = this.getView();
 		var selection = grid.getSelection();
 		if (selection.length == 0) {
@@ -86,6 +87,19 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 
 		this.msgbox = null;
 		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid });
+		this.msgbox.show();
+	},
+
+	addServiceTime: function () {
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
+			return;
+		}
+
+		this.msgbox = null;
+		this.msgbox = Ext.create('widget.addservicetime', { parentGrid: grid });
 		this.msgbox.show();
 	},
 

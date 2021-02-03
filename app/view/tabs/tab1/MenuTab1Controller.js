@@ -102,6 +102,14 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		}
 	},
 
+	onChangeDontReturnToDepot: function (checkbox, newValue, oldValue, eOpts) {
+		if (this.rendered) {
+			this.resetDistanceDurationFileds();
+			this.resetData();
+			this.getRouteLists();
+		}
+	},
+
 	setTimeFields: function (record) {
 		var strTimeBegin = '08:00:00';
 		var strTimeEnd = '20:00:00';
@@ -325,6 +333,10 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 
 	loadPointsToGrid: function (data) {
 		var self = this;
+                var form = this.lookupReference('formtab1').getForm();
+		var formVal = form.getValues();
+
+		var dontReturnToDepot = formVal.dontReturnToDepot;
 
 		var depot = Ext.clone(Opt.app.getMainDepot().data);
 		delete depot.id;
@@ -340,7 +352,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		if (!self.isOpt) {
 			store.add(Ext.clone(depot));
 			store.add(data);
-			store.add(Ext.clone(depot));
+			if (!dontReturnToDepot) store.add(Ext.clone(depot));
 		} else {
 			store.removeAll();
 			store.sync();
@@ -656,6 +668,7 @@ console.log("Время окончания запроса " + Date.now());
 			slacktimevalue: 30,
 			useGLS: false,
 			maxsolvetime: 1,
+			dontReturnToDepot: false,
 		});
 
 		var record = Ext.getCmp("menutab1mlselect").getSelection();
@@ -751,6 +764,7 @@ console.log("Время окончания запроса " + Date.now());
 			increaseTimeCoeff: formVal.coeffincreasetransittime,
 			use_guided_local_search: formVal.useGLS,
 			time_limit: formVal.maxsolvetime * 60,
+			dont_return_to_depot: formVal.dontReturnToDepot,
 		};
 		task.error = "";
 
@@ -758,7 +772,9 @@ console.log("Время окончания запроса " + Date.now());
 		var autoRecord = Ext.getCmp("menutab1trackerselect").getSelection();
 		var orders = [];
 
-		for (var i = 0; i < this.routeLegsStore.count() - 1; i++) {
+		var decr = formVal.dontReturnToDepot ? 0 : 1;
+		
+		for (var i = 0; i < this.routeLegsStore.count() - decr; i++) {
 			orders.push(this.routeLegsStore.getAt(i).data);
 		}
 

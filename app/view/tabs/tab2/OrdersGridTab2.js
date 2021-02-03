@@ -107,10 +107,15 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 								iconCls: 'fa fa-ban',
 							},
 							{
-								text: 'Время разгрузки',
-								handler: 'setService',
+								text: 'Установить время разгрузки',
+								handler: 'setServiceTime',
 								iconCls: 'fa fa-clock-o',
 							},                                            
+							{
+								text: 'Изменить время разгрузки',
+								handler: 'addServiceTime',
+								iconCls: 'fa fa-clock-o',
+							},
 							{
 								xtype: 'menuseparator',
 							},

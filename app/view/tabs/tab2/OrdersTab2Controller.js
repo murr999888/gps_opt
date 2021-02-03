@@ -579,7 +579,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 
 			var inUseCount = 0;
-			store.each(function(record){
+			fuelStationStore.each(function(record){
 				if(record.get("in_use")){
 					inUseCount++;
 				}

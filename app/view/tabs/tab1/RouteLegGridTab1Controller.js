@@ -31,11 +31,22 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 	},
 
 	setGridTitle: function(){
+		var tab1dontReturnToDepot = Ext.getCmp('tab1dontReturnToDepot').getValue();
         	var store = this.getView().store;
-		if (store.count() > 2){
-			this.getView().setTitle('Пункты назначения (' + (store.count()-2) + ')');
-		} else {
-                	this.getView().setTitle('Пункты назначения');
+
+		if (!tab1dontReturnToDepot) {
+			if (store.count() > 2){
+				this.getView().setTitle('Пункты назначения (' + (store.count()-2) + ')');
+			} else {
+                		this.getView().setTitle('Пункты назначения');
+			}
+        	} else {
+			if (store.count() > 1){
+				this.getView().setTitle('Пункты назначения (' + (store.count()-1) + ')');
+			} else {
+                		this.getView().setTitle('Пункты назначения');
+			}
+
 		}
 	},
 
