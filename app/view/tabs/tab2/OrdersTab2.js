@@ -39,19 +39,19 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 			xtype: 'form',
 			reference: 'formorderstab2',
 			id: 'formorderstab2',
-			height: 260,
+			height: 293,
 			bodyPadding: 5,
 			items: [
 				{
 					xtype: 'fieldcontainer',
 					layout: 'hbox',
-					border: 0,
-					height: 195,
+					border: 1,
+					height: 225,
 					items: [
 						{
 							xtype: 'fieldset',
-							padding: '5 5',
-							height: 192,
+							padding: 5,
+							height: 222,
 							items: [
 								{
 									xtype: 'fieldcontainer',
@@ -67,7 +67,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
@@ -110,7 +110,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
@@ -153,7 +153,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
@@ -195,7 +195,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
@@ -237,7 +237,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
@@ -281,16 +281,15 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											labelWidth: 20,
 										},
 										{
-											labelWidth: 70,
+											labelWidth: 90,
 											editable: false,
 											width: 315,
 											padding: '0 0 0 10px',
-
 											value: 0,
 											xtype: 'combobox',
 											id: 'formorderstab2clientgroupselect',
 											name: 'clientgroupselect',
-											fieldLabel: 'Группа',
+											fieldLabel: 'Гр. клиентов',
 											store: 'ClientGroup',
 											queryMode: 'local',
 											displayField: 'name',
@@ -304,6 +303,51 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 													cls: 'x-form-clear-trigger',
 													handler: function (combo) {
 														combo.setValue(0);
+													},
+												},
+											},
+										},
+									],
+								},
+
+								{
+									xtype: 'fieldcontainer',
+									layout: 'hbox',
+
+									border: 0,
+									items: [
+										{
+											xtype: 'checkbox',
+											value: false,
+											id: 'not_formorderstab2deliverygroupselect',
+											name: 'not_deliverygroupselect',
+											fieldLabel: 'Не',
+											labelWidth: 20,
+										},
+										{
+											labelWidth: 90,
+											editable: false,
+											width: 315,
+											padding: '0 0 0 10px',
+											//cls: 'tworowlabelfield',
+											value: '00000000-0000-0000-0000-000000000000',
+											xtype: 'combobox',
+											id: 'formorderstab2deliverygroupselect',
+											name: 'deliverygroupselect',
+											fieldLabel: 'Гр. доставки',
+											store: 'DeliveryGroups',
+											queryMode: 'local',
+											displayField: 'displayField',
+											valueField: 'id',
+											editable: false,
+											listeners: {
+												select: 'onDeliveryGroupsSelect',
+											},
+											triggers: {
+												clearField: {
+													cls: 'x-form-clear-trigger',
+													handler: function (combo) {
+														combo.setValue('00000000-0000-0000-0000-000000000000');
 													},
 												},
 											},

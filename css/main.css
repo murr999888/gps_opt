@@ -271,7 +271,7 @@ table.clusterPopupTable td {
 }
 
 .help {
-	max-width: 1000px;	
+	max-width: 900px;	
 }
 
 .help img {
@@ -295,4 +295,7 @@ table.clusterPopupTable td {
 
 .help ol {
 	line-height: 20px;
+}
+.tworowlabelfield {
+	margin-top: -5px;
 }

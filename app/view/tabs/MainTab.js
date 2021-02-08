@@ -14,6 +14,14 @@ Ext.define('Opt.view.tabs.MainTab', {
 	border: 0,
 	header: {
 		items: [
+/*
+			{
+				xtype: 'button',
+				text: 'Группы доставки',
+				handler: 'openDeliveryGroups',
+				margin: '0 0 0 15px',
+			},
+*/
 			{
 				xtype: 'button',
 				text: 'Выход',

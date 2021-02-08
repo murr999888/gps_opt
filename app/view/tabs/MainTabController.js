@@ -2,6 +2,15 @@ Ext.define('Opt.view.tabs.MainTabController', {
 	extend: 'Ext.app.ViewController',
 	alias: 'controller.mainTabController',
 
+	requires: [
+		'Opt.view.dialog.DeliveryGroupsList',
+	],
+
+	openDeliveryGroups: function(){
+		if (!this.deliveryGroupsList)  this.deliveryGroupsList = Ext.create('widget.deliverygroupslist');
+		this.deliveryGroupsList.show().focus();
+	},
+
 	logout: function () {
 		Ext.Msg.show({
 			title: 'Внимание',

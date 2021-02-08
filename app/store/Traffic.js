@@ -1,7 +1,7 @@
 Ext.define('Opt.store.Traffic', {
     	extend: 'Ext.data.Store',
     	model: 'Opt.model.Traffic',
-	autoLoad: true,
+	//autoLoad: true,
 	//autoSync: true,
 	pageSize: undefined,
 	proxy: {

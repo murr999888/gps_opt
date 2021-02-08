@@ -6,6 +6,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		'Opt.view.dialog.SetPenalty',
 		'Opt.view.dialog.SetServiceTime',
 		'Opt.view.dialog.AddServiceTime',
+		'Opt.view.dialog.SetDeliveryGroup',
 	],
 
 	msgbox: null,
@@ -100,6 +101,19 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 
 		this.msgbox = null;
 		this.msgbox = Ext.create('widget.addservicetime', { parentGrid: grid });
+		this.msgbox.show();
+	},
+
+	setDeliveryGroup: function () {
+		var grid = this.getView();
+		var selection = grid.getSelection();
+		if (selection.length == 0) {
+			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
+			return;
+		}
+
+		this.msgbox = null;
+		this.msgbox = Ext.create('widget.setdeliverygroup', { parentGrid: grid });
 		this.msgbox.show();
 	},
 

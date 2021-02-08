@@ -217,11 +217,19 @@ Ext.define('Opt.model.RouteLegs', {
         		type: 'number',
 			defaultValue: 0,
     		},
-
 		{
         		name: 'departure_time',
         		type: 'number',
 			defaultValue: 0,
+    		},
+		{
+        		name: 'delivery_group_id',
+        		type: 'string',
+			defaultValue: '00000000-0000-0000-0000-000000000000',
+    		},
+		{
+        		name: 'delivery_group_name',
+        		type: 'string',
     		},
 	],
 });

@@ -194,6 +194,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		var selectedClientGroup = formVal.clientgroupselect;
 		var not_clientgroupselect = formVal.not_clientgroupselect;
 
+		var selectedDeliveryGroup = formVal.deliverygroupselect;
+		var not_deliverygroupselect = formVal.not_deliverygroupselect;
+
 		var clientname = formVal.clientname;
 		var not_clientname = formVal.not_clientname;
 
@@ -211,7 +214,15 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		this.clearFilter();
 
-		if (selectedProd != 0 || selectedClientGroup != 0 || clientname.trim() != '' || tochkaname.trim() != '' || city.trim() != '' || addr.trim() != '' || inuse_box || notinuse_box) {
+		if (selectedProd != 0 
+		|| selectedClientGroup != 0
+		|| selectedDeliveryGroup != '00000000-0000-0000-0000-000000000000'
+		|| clientname.trim() != '' 
+		|| tochkaname.trim() != '' 
+		|| city.trim() != '' 
+		|| addr.trim() != '' 
+		|| inuse_box 
+		|| notinuse_box) {
 			this.ordersStoreFilter = true;
 			this.ordersStore.suspendEvents();
 			this.ordersStore.filterBy(function (record) {
@@ -221,6 +232,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				var addr_name = record.get("adres").toUpperCase();
 				var goods_filter = record.get("goods_filter");
 				var klient_group_id = record.get("klient_group_id");
+				var delivery_group_id = record.get("delivery_group_id");
 				var in_use = record.get("in_use");
 
 				var kolFilters = 0;
@@ -263,6 +275,14 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					kolFilters = kolFilters + 1;
 					var found = klient_group_id == selectedClientGroup;
 					if ((found && !not_clientgroupselect) || (!found && not_clientgroupselect)) {
+						trueFilters = trueFilters + 1;
+					}
+				}
+
+				if (selectedDeliveryGroup != '00000000-0000-0000-0000-000000000000') {
+					kolFilters = kolFilters + 1;
+					var found = delivery_group_id == selectedDeliveryGroup;
+					if ((found && !not_deliverygroupselect) || (!found && not_deliverygroupselect)) {
 						trueFilters = trueFilters + 1;
 					}
 				}
@@ -318,6 +338,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			not_clientgroupselect: false,
 			productselect: 0,
 			not_productselect: false,
+			deliverygroupselect: '00000000-0000-0000-0000-000000000000',
+			not_deliverygroupselect: false,
 			in_use: false,
 			not_in_use: false,
 		});
@@ -673,6 +695,37 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
+		//***********************************************************
+
+		var deliveryGroupsStore = Ext.getStore('DeliveryGroups');
+		if (deliveryGroupsStore.count() == 0){
+	                Opt.app.showError("Ошибка!", "Группы доставки не заполнены. Операция прервана.");
+			return;			
+		}
+
+		var arrGroups = [];
+
+		for (var i = 0; i < this.ordersStore.count() - 1; i++) {
+			var order = this.ordersStore.getAt(i);
+			var orderDeliveryGroupId = order.get('delivery_group_id');
+			var deliveryGroup = deliveryGroupsStore.getById(orderDeliveryGroupId);
+
+			if (!deliveryGroup){ 
+				Opt.app.showError("Ошибка!", "Не найдена группа доставки для заказа " + order.get('klient_name') + ". Операция прервана.");
+				console.log('Не найдена группа доставки ' + orderDeliveryGroupId);
+				return;
+			}
+
+			if(orderDeliveryGroupId != '00000000-0000-0000-0000-000000000000' 
+			&& deliveryGroup.get('transit_restricted') === true) 
+			{
+				if (arrGroups.indexOf(orderDeliveryGroupId) == -1) {
+					arrGroups.push(orderDeliveryGroupId);
+				}
+			}
+		}
+
+
 		if (Ext.getCmp('formparamtab2useGLS').getValue() == true) {
 			Ext.Msg.show({
 				title: 'Внимание',
@@ -748,6 +801,16 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		};
 
 		task.error = "";
+
+		delivery_groups = [];
+
+		var deliveryGroupsStore = Ext.getStore('DeliveryGroups');
+
+		for (var i = 0; i < deliveryGroupsStore.count(); i++) {
+			delivery_groups.push(deliveryGroupsStore.getAt(i).data);
+		}
+
+		task.parameters.delivery_groups = delivery_groups;
 
 		var orders = [];
 		var autos = [];

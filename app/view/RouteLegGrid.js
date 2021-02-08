@@ -59,7 +59,6 @@ Ext.define('Opt.view.RouteLegGrid', {
 				dataIndex: 'num_in_routelist',
 				renderer: 'getNum',
 			},
-
 			{
 				text: 'Расст.',
 				align: 'right',

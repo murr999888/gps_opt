@@ -46,7 +46,6 @@ Ext.define('Opt.view.AutoGridController', {
 		}
 
 		this.autoEdit.show().focus();
-
 	},
 
 	getRouteBeginTime: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle

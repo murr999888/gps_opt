@@ -131,6 +131,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 							{
 								xtype: 'menuseparator',
 							},
+							{
+								text: 'Установить группу доставки',
+								handler: 'setDeliveryGroup',
+								iconCls: 'fa fa-object-group',
+							},
 
 							{
 								text: 'Обновить координаты',

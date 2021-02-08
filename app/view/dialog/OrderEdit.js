@@ -24,7 +24,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 		type: 'vbox',
 		align: 'stretch'
 	},
-	height: 530,
+	height: 552,
 	changed: false,
 	items: [
 		{
@@ -95,6 +95,32 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 						{
 							xtype: 'hiddenfield',
 							name: 'klient_group_id',
+						},
+						{
+							readOnly: false,
+							editable: false,
+							xtype: 'combobox',
+							name: 'delivery_group_id',
+							fieldLabel: 'Группа доставки',
+							emptyText: '< не выбрана >',
+							queryMode: 'local',
+							displayField: 'displayField',
+							valueField: 'id',
+							store: 'DeliveryGroups',
+							matchFieldWidth: true,
+							listeners: {
+								select: 'onDeliveryGroupsSelect',
+							},
+
+							listConfig: {
+								loadingText: 'Загружается..',
+								emptyText: 'Не выбран..',
+								//minWidth: 245,
+							},
+						},
+						{
+							xtype: 'hiddenfield',
+							name: 'delivery_group_name',
 						},
 						{
 							xtype: 'field',
@@ -211,7 +237,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 		},
 		{
 			xtype: 'tabpanel',
-			height: 150,
+			height: 135,
 			width: 300,
 			deferredRender: false,
 			activeTab: 0,

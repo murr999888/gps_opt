@@ -10,7 +10,6 @@ Ext.define('Opt.view.dialog.SetBreakTimeController', {
 		var store, record;
 		var form = button.up('window').down('form');
 		var formValues = form.getValues();
-console.log(formValues);
 
 		var formValid = true;
 		if (!formValid) {

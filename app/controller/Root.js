@@ -96,6 +96,7 @@ Ext.define('Opt.controller.Root', {
         		Ext.state.Manager.setProvider(serverStateProvider);
         */
         Ext.getStore('Product').load();
+	Ext.getStore('Traffic').load();
         Ext.getStore('ClientGroup').load();
 	Ext.getStore('AutosGroup').load();
 	Ext.getStore('Drivers').load();
@@ -104,6 +105,7 @@ Ext.define('Opt.controller.Root', {
         Ext.getStore('Auto').load();
 	Ext.getStore('MainDepot').load();
 	Ext.getStore('Depots').load();
+	Ext.getStore('DeliveryGroups').load();
 
 	if (Ext.getStore('MainDepot').count() == 0) {
 		this.getMainDepotFromServer();

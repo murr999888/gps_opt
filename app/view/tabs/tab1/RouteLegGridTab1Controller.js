@@ -63,7 +63,11 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 
 	// overrided
 	getSod: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
-		var str = val;
+		var ww = val;
+
+		if (record.get('delivery_group_id') != '00000000-0000-0000-0000-000000000000'){
+			ww = ww + '<br /><b>' + record.get('delivery_group_name') + '</b>';
+		}
 
 		var str = 'data-qtip="';
 		var sod = Ext.util.Format.htmlEncode(record.get('sod'));
@@ -79,7 +83,7 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 
 		var city = record.get('city');
 		if (city != mainCityName) val = val + '<br />' + city;
-		return val;
+		return ww;
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {

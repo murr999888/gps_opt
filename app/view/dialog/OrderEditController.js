@@ -113,4 +113,18 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 		allowedAutosStore.rejectChanges();
 		this.getView().close();
 	},
+
+	onDeliveryGroupsSelect: function (combo, record, eOpts) {
+		var form = this.lookupReference('form').getForm();
+		if (record.get('id') != '00000000-0000-0000-0000-000000000000') {
+			form.setValues({
+				delivery_group_name: record.get('displayField'),
+			});
+		} else {
+               		form.setValues({
+				delivery_group_name: '',
+			});
+		}
+	},
+
 });

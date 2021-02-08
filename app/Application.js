@@ -27,6 +27,7 @@ Ext.define('Opt.Application', {
 		'TrafficPoints',
 		'RoadSign',
 		'DepotGood',
+		'DeliveryGroup',
 	],
 	stores: [
 		'Auto',
@@ -52,6 +53,7 @@ Ext.define('Opt.Application', {
 		'RefuelMode',
 		'CalcAlgorithm',
 		'TempResults',
+		'DeliveryGroups',
 	],
 
 	controllers: [

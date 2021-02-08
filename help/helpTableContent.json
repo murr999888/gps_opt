@@ -33,6 +33,10 @@
             "file": "part7.html"
         },
 	{
+            "name": "Основные понятия. Группы доставки.",
+            "file": "part_deliverygroups.html"
+        },
+	{
             "name": "Основные понятия. Пробки.",
             "file": "part8.html"
         },

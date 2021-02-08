@@ -736,6 +736,43 @@ console.log("Время окончания запроса " + Date.now());
 			return;			
 		}
 
+		//***********************************************************
+
+		var deliveryGroupsStore = Ext.getStore('DeliveryGroups');
+		if (deliveryGroupsStore.count() == 0){
+	                Opt.app.showError("Ошибка!", "Группы доставки не заполнены. Операция прервана.");
+			return;			
+		}
+
+		var arrGroups = [];
+
+		for (var i = 0; i < this.routeLegsStore.count() - 1; i++) {
+			var order = this.routeLegsStore.getAt(i);
+			var orderDeliveryGroupId = order.get('delivery_group_id');
+			var deliveryGroup = deliveryGroupsStore.getById(orderDeliveryGroupId);
+
+			if (!deliveryGroup){ 
+				Opt.app.showError("Ошибка!", "Не найдена группа доставки для заказа в строке " + order.get('num_in_routelist') + ". Операция прервана.");
+				console.log('Не найдена группа доставки ' + orderDeliveryGroupId);
+				return;
+			}
+
+			if(orderDeliveryGroupId != '00000000-0000-0000-0000-000000000000' 
+			&& deliveryGroup.get('transit_restricted') === true) 
+			{
+				if (arrGroups.indexOf(orderDeliveryGroupId) == -1) {
+					arrGroups.push(orderDeliveryGroupId);
+				}
+			}
+		}
+		
+		if (arrGroups.length > 1) {
+			Opt.app.showError("Ошибка!", "В маршруте более одной группы доставки с признаком 'Транзит запрещен'. Операция прервана.");
+			return;			
+		}
+
+		//***********************************************************
+
 		self.processingMask.show();
 		self.isOpt = true;
 
@@ -767,6 +804,14 @@ console.log("Время окончания запроса " + Date.now());
 			dont_return_to_depot: formVal.dontReturnToDepot,
 		};
 		task.error = "";
+
+		delivery_groups = [];
+
+		for (var i = 0; i < deliveryGroupsStore.count(); i++) {
+			delivery_groups.push(deliveryGroupsStore.getAt(i).data);
+		}
+
+		task.parameters.delivery_groups = delivery_groups;
 
 		var routeListRecord = Ext.getCmp("menutab1mlselect").getSelection();
 		var autoRecord = Ext.getCmp("menutab1trackerselect").getSelection();
