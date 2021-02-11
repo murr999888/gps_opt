@@ -8,14 +8,14 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 	init: function () {
 		var self = this;
 		this.storeIn = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.Depot',
+			model: 'Opt.model.DepotGood',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
 		this.storeOut = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.Depot',
+			model: 'Opt.model.DepotGood',
 			proxy: {
 				type: 'memory',
 			},
@@ -30,11 +30,11 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 		var dialog = this.getView().down('form');
 		var record = dialog.getRecord();
 
-		var dataIn = record.get("goods_capacity_in");
-		if (dataIn.length > 0) this.storeIn.loadData(dataIn);
+		var dataIn = record.get("depot_goods_capacity_in");
+		if (dataIn && dataIn.length > 0) this.storeIn.loadData(dataIn);
 
-		var dataOut = record.get("goods_capacity_out");
-		if (dataOut.length > 0) this.storeOut.loadData(dataOut);
+		var dataOut = record.get("depot_goods_capacity_out");
+		if (dataOut && dataOut.length > 0) this.storeOut.loadData(dataOut);
 	},
 
 	afterRender: function () {
@@ -86,8 +86,8 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 		}
 
 		record.set('timewindow_string', timewindow_string);
-		record.set('goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
-		record.set('goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
+		record.set('depot_goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
+		record.set('depot_goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
 
 		//record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
 		store = record.store;
@@ -137,5 +137,18 @@ Ext.define('Opt.view.dialog.DepotEditController', {
 		form.setValues({
 			timewindow_end: seconds
 		});
+	},
+
+	onDeliveryGroupsSelect: function (combo, record, eOpts) {
+		var form = this.lookupReference('form').getForm();
+		if (record.get('id') != '00000000-0000-0000-0000-000000000000') {
+			form.setValues({
+				delivery_group_name: record.get('displayField'),
+			});
+		} else {
+               		form.setValues({
+				delivery_group_name: '',
+			});
+		}
 	},
 });

@@ -163,6 +163,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											name: 'addr',
 											fieldLabel: 'Адрес',
 											editable: true,
+											autocomplete: 'new-addr',
 											triggers: {
 												clearField: {
 													cls: 'x-form-clear-trigger',
@@ -204,7 +205,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											id: 'formorderstab2city',
 											name: 'city',
 											fieldLabel: 'Город',
-											editable: true,
+											editable: true,     
+											autocomplete: 'new-city',
 											triggers: {
 												clearField: {
 													cls: 'x-form-clear-trigger',

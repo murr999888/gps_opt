@@ -97,21 +97,25 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 			items: [
 				{
 					xtype: 'button',
-					text: 'Отгрузка',
-					handler: 'getUnloadingGoods',
-					id: 'tab2getRoutesUnloadingGoodsButton',
-					disabled: true,
+					text: 'Груз',
 					iconCls: 'fa fa-list',
 					iconClsBck: 'fa fa-list',
-				},
-				{
-					xtype: 'button',
-					text: 'Погрузка',
-					handler: 'getLoadingGoods',
-					id: 'tab2getRoutesLoadingGoodsButton',
-					disabled: true,
-					iconCls: 'fa fa-list',
-					iconClsBck: 'fa fa-list',
+					menu: {
+						items: [
+							{
+								text: 'Отгрузка',
+								handler: 'getUnloadingGoods',
+								id: 'tab2getRoutesUnloadingGoodsButton',
+								disabled: true,
+							},
+							{
+								text: 'Погрузка',
+								handler: 'getLoadingGoods',
+								id: 'tab2getRoutesLoadingGoodsButton',
+								disabled: true,
+							},
+						],
+					},					
 				},
 				{
 					xtype: 'button',

@@ -24,10 +24,27 @@ Ext.define('Opt.view.DepotGrid', {
 		},
 		items: [
 		{
+			sortable: false,
+			hideable: false,
+			resizable: false,
+			xtype: 'checkcolumn',
+			text: '',
+			dataIndex: 'in_use',
+			menuDisabled: true,
+			tooltip: 'Используется при расчете',
+			headerCheckbox: true,
+			width: 25,
+			listeners: {
+				checkchange: 'onChangeInUse',
+				headercheckchange: 'onHeaderCheckChange',
+			}
+		},
+		{
 			text: 'Название',
 			cellWrap: true,
 			flex: 5,
 			dataIndex: 'full_name',
+			renderer: 'getSod',
 		},
 		{
 			text: 'Город',

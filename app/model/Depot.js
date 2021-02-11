@@ -12,10 +12,10 @@ Ext.define('Opt.model.Depot', {
 			defaultValue: false,
 		},
 		{
-        		name: 'goods_capacity_in',
+        		name: 'depot_goods_capacity_in',
 		},
 		{
-        		name: 'goods_capacity_out',
+        		name: 'depot_goods_capacity_out',
 		},
 	],
 });

@@ -8,6 +8,7 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 	init: function () {
 		var self = this;
 		var grid = this.getView();
+/*
 		var store = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.DepotGood',
 			proxy: {
@@ -17,6 +18,8 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 		
 		grid.setStore(store);
 		store.load();
+*/
+
 		this.getView().getSelectionModel().setSelectionMode('MULTI');
 
 		grid.on('edit', function(editor, e) {
@@ -65,7 +68,7 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 					return;
         			}
 
-				//store.suspendEvents();
+				store.suspendEvents();
 				store.loadData(respObj.data);
 				store.each(function(record){
 					record.set("in_use", true);
@@ -73,8 +76,8 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 				});
 
 				store.sync();
-	
-				//store.resumeEvents();
+				store.resumeEvents();
+				grid.view.refresh();
 			},
 
 			failure: function (response) {

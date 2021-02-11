@@ -81,8 +81,8 @@ Ext.define('Opt.Application', {
 		record.set("node_type", 0);
 		record.set("goods", []);
 		record.set("strings", []);
-      		record.set("goods_capacity_in",[]);
-       		record.set("goods_capacity_out",[]);
+      		record.set("depot_goods_capacity_in",[]);
+       		record.set("depot_goods_capacity_out",[]);
 
 		store.insert(0, record);
 		store.sync();

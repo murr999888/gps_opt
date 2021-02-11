@@ -69,6 +69,12 @@ Ext.define('Opt.view.DepotGoodsGrid', {
 				cellWrap: true,
 			},
 			{
+				text: 'Ед.',
+				flex: 1,
+				dataIndex: 'ed',
+				//cellWrap: true,
+			},
+			{
 				text: 'Кол.',
 				align: 'right',
 				flex: 1,

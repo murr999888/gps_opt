@@ -37,20 +37,31 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 
 	        var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
 		droppedGoodsStore.on('load', function(){
-			self.setGetUnloadingGoodsButton();
+			self.setUnloadingGoodsButton();
+			self.setLoadingGoodsButton();
 		});
 
 		droppedGoodsStore.on('remove', function(){
-			self.setGetUnloadingGoodsButton();
+			self.setUnloadingGoodsButton();
+			self.setLoadingGoodsButton();
 		});
 	},
 
-	setGetUnloadingGoodsButton: function(){
+	setUnloadingGoodsButton: function(){
 		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
 		if (droppedGoodsStore.count() > 0) {
-			Ext.getCmp('tab2getDroppedGoodsButton').setDisabled(false);
+			Ext.getCmp('tab2DroppedUnloadingGoodsButton').setDisabled(false);
 		} else {
-			Ext.getCmp('tab2getDroppedGoodsButton').setDisabled(true);		
+			Ext.getCmp('tab2DroppedUnloadingGoodsButton').setDisabled(true);		
+		}
+	},
+
+	setLoadingGoodsButton: function(){
+		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
+		if (droppedGoodsStore.count() > 0) {
+			Ext.getCmp('tab2DroppedLoadingGoodsButton').setDisabled(false);
+		} else {
+			Ext.getCmp('tab2DroppedLoadingGoodsButton').setDisabled(true);		
 		}
 	},
 
@@ -175,6 +186,12 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 	},
 
 	getSod: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
+		var ww = val;
+
+		if (record.get('delivery_group_id') != '00000000-0000-0000-0000-000000000000'){
+			ww = ww + '<br /><b>' + record.get('delivery_group_name') + '</b>';
+		}
+
 		var str = 'data-qtip="';
 		var sod = Ext.util.Format.htmlEncode(record.get('sod'));
 		var dop = Ext.util.Format.htmlEncode(record.get('dop'));
@@ -186,7 +203,7 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		}
 
 		metadata.tdAttr = str + '"';
-		return val;
+		return ww;
 	},
 
    	getUnloadingGoods: function(){

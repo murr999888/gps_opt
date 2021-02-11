@@ -6,14 +6,14 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 	init: function () {
 		var self = this;
 		this.storeIn = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.Depot',
+			model: 'Opt.model.DepotGood',
 			proxy: {
 				type: 'memory',
 			},
 		});
 
 		this.storeOut = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.Depot',
+			model: 'Opt.model.DepotGood',
 			proxy: {
 				type: 'memory',
 			},
@@ -28,11 +28,11 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		var dialog = this.getView().down('form');
 		var record = dialog.getRecord();
 
-		var dataIn = record.get("goods_capacity_in");
-		if (dataIn.length > 0) this.storeIn.loadData(dataIn);
+		var dataIn = record.get("depot_goods_capacity_in");
+		if (dataIn && dataIn.length > 0) this.storeIn.loadData(dataIn);
 
-		var dataOut = record.get("goods_capacity_out");
-		if (dataOut.length > 0) this.storeOut.loadData(dataOut);
+		var dataOut = record.get("depot_goods_capacity_out");
+		if (dataOut && dataOut.length > 0) this.storeOut.loadData(dataOut);
 	},
 
 	afterRender: function () {
@@ -58,8 +58,8 @@ Ext.define('Opt.view.dialog.MainDepotEditController', {
 		dialog.updateRecord();
 
 		record = dialog.getRecord();
-		record.set('goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
-		record.set('goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
+		record.set('depot_goods_capacity_in', Ext.pluck(this.storeIn.data.items, 'data'));
+		record.set('depot_goods_capacity_out', Ext.pluck(this.storeOut.data.items, 'data'));
 
 		store = record.store;
 		if (store) {

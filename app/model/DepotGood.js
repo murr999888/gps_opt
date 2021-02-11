@@ -19,6 +19,10 @@ Ext.define('Opt.model.DepotGood', {
         			type: 'string',
 			},
 			{
+       		 		name: 'ed',
+        			type: 'string',
+			},
+			{
         			name: 'isPack',
         			type: 'boolean',
 			},

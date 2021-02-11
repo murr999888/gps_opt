@@ -35,12 +35,25 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2', {
 			items: [
 				{
 					xtype: 'button',
-					text: 'Отгрузка',
-					handler: 'getUnloadingGoods',
-					id: 'tab2getDroppedGoodsButton',
-					disabled: true,
+					text: 'Груз',
 					iconCls: 'fa fa-list',
 					iconClsBck: 'fa fa-list',
+					menu: {
+						items: [
+							{
+								text: 'Отгрузка',
+								handler: 'getUnloadingGoods',
+								id: 'tab2DroppedUnloadingGoodsButton',
+								disabled: true,
+							},
+							{
+								text: 'Погрузка',
+								handler: 'getLoadingGoods',
+								id: 'tab2DroppedLoadingGoodsButton',
+								disabled: true,
+							},
+						],
+					},
 				},
 
 				{

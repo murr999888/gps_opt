@@ -467,7 +467,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		if(depot.goods_capacity_in.length == 0 || depot.goods_capacity_in.length == 0) {
+		if(depot.depot_goods_capacity_in.length == 0 || depot.depot_goods_capacity_in.length == 0) {
 			Ext.getCmp('maintab2').unmask();
                  	Ext.Msg.alert({
 				title: 'Внимание',
@@ -478,8 +478,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		}
 
 		var uses = 0;
-		for(var i=1; i < depot.goods_capacity_out.length; i++){
-			if (depot.goods_capacity_out[i].in_use){
+		for(var i=1; i < depot.depot_goods_capacity_out.length; i++){
+			if (depot.depot_goods_capacity_out[i].in_use){
 				uses++;
 			}
 		}
@@ -496,8 +496,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		uses = 0;
 
-		for(var i=1; i < depot.goods_capacity_in.length; i++){
-			if (depot.goods_capacity_in[i].in_use){
+		for(var i=1; i < depot.depot_goods_capacity_in.length; i++){
+			if (depot.depot_goods_capacity_in[i].in_use){
 				uses++;
 			}
 		}
@@ -1208,6 +1208,10 @@ console.log(data);
 		var calc_stat = data.calc_stat;
 		var calc_params = data.calc_params;
 		var user = Opt.app.getUser();
+
+		delete calc_stat.delivery_groups;
+		delete calc_params.delivery_groups;
+
 		calc_stat.user_id = user.id; 
 		calc_stat.calc_type = data.solve;
 		calc_stat.host_name = Opt.app.user.data.host_name;

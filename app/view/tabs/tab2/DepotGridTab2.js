@@ -7,6 +7,8 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2', {
 		'Opt.view.tabs.tab2.DepotGridTab2Controller',
 	],
 
+	store: 'Depots',
+
 	viewConfig: {
 		preserveScrollOnRefresh: false,
 		getRowClass: function (record, rowIndex, rowParams, store) {

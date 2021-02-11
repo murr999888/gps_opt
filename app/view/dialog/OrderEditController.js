@@ -126,5 +126,4 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 			});
 		}
 	},
-
 });

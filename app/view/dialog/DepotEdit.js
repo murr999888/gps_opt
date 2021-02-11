@@ -130,6 +130,32 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 							]
 						},
 						{
+							readOnly: false,
+							editable: false,
+							xtype: 'combobox',
+							name: 'delivery_group_id',
+							fieldLabel: 'Группа доставки',
+							emptyText: '< не выбрана >',
+							queryMode: 'local',
+							displayField: 'displayField',
+							valueField: 'id',
+							store: 'DeliveryGroups',
+							matchFieldWidth: true,
+							listeners: {
+								select: 'onDeliveryGroupsSelect',
+							},
+
+							listConfig: {
+								loadingText: 'Загружается..',
+								emptyText: 'Не выбран..',
+								//minWidth: 245,
+							},
+						},
+						{
+							xtype: 'hiddenfield',
+							name: 'delivery_group_name',
+						},
+						{
 							xtype: 'numberfield',
 							name: 'service_time_min',
 							editable: false,			
@@ -172,7 +198,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 		},
 		{
 			xtype: 'tabpanel',
-			height: 270,
+			height: 236,
 			width: 400,
 			deferredRender: false,
 			activeTab: 0,
@@ -190,7 +216,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 					items: [
 						{
 							xtype: 'depotgoodsgrid_out',
-							id: 'mainDepotEditLoadGoods_out',
+							id: 'depotEditLoadGoods_out',
 							printTitle: 'Емкость отгрузки',
 						},
 					]
@@ -202,7 +228,7 @@ Ext.define('Opt.view.dialog.DepotEdit', {
 					items: [
 						{
 							xtype: 'depotgoodsgrid_in',
-							id: 'mainDepotEditUnLoadGoods_in',
+							id: 'depotEditUnLoadGoods_in',
 							printTitle: 'Емкость возврата',
 						},
 					]
