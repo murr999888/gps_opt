@@ -106,13 +106,13 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 								text: 'Отгрузка',
 								handler: 'getUnloadingGoods',
 								id: 'tab2getRoutesUnloadingGoodsButton',
-								disabled: true,
+								//disabled: true,
 							},
 							{
 								text: 'Погрузка',
 								handler: 'getLoadingGoods',
 								id: 'tab2getRoutesLoadingGoodsButton',
-								disabled: true,
+								//disabled: true,
 							},
 						],
 					},					
@@ -121,7 +121,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 					xtype: 'button',
 					text: 'Печать',
 					id: 'tab2getRoutesPrintButton',
-					disabled: true,
+					//disabled: true,
 					iconCls: 'fa fa-print',
 					iconClsBck: 'fa fa-print',
 					menu: {
@@ -155,7 +155,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 				{
 					xtype: 'button',
 					text: 'Карта',
-					disabled: true,
+					//disabled: true,
 					id: 'tab2mapbutton',
 					handler: 'openViewer',
 					iconCls: 'fa fa-globe',

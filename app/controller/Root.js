@@ -96,6 +96,7 @@ Ext.define('Opt.controller.Root', {
         		Ext.state.Manager.setProvider(serverStateProvider);
         */
         Ext.getStore('Product').load();
+	Ext.getStore('Goods').load();
 	Ext.getStore('Traffic').load();
         Ext.getStore('ClientGroup').load();
 	Ext.getStore('AutosGroup').load();
@@ -106,9 +107,10 @@ Ext.define('Opt.controller.Root', {
 	Ext.getStore('MainDepot').load();
 	Ext.getStore('Depots').load();
 	Ext.getStore('DeliveryGroups').load();
+	Ext.getStore('TempResults').load();
 
 	if (Ext.getStore('MainDepot').count() == 0) {
-		this.getMainDepotFromServer();
+		Opt.app.getMainDepotFromServer();
 	}
 
         Ext.create('widget.main');
@@ -205,33 +207,4 @@ Ext.define('Opt.controller.Root', {
         };
     },
 
-	getMainDepotFromServer: function(){
-		var self = this;
-		var store = Ext.getStore("MainDepot");
-
-		var params = {
-			param: 'Depot',
-		};
-
-		Ext.Ajax.request({
-			url: 'api/db/db_1cbase',
-			method: 'GET',
-			params: params,
-		        async: true,
-			success: function (response) {
- 				try {
-					respObj = Ext.JSON.decode(response.responseText);
-			        } catch(error) {
-					Opt.app.showError("Ошибка!", error.message);
-					return;
-        			}
-
-				Opt.app.setMainDepot(respObj.data);
-			},
-
-			failure: function (response) {
-				Opt.app.showError('Ошибка запроса Основного депо', response.responseText);
-			}
-		});
-	},
 });

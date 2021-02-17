@@ -3,7 +3,8 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 	alias: 'widget.routelistedit',
 	requires: [
 		'Opt.view.dialog.RouteListEditController',
-		'Opt.view.OrderGoodsGrid',
+		'Opt.view.RoutelistBeginGoodsGrid',
+		'Opt.view.RoutelistEndGoodsGrid',
 		'Opt.view.OrdersGrid',
 		'Opt.ux.TimePickerUI'
 	],
@@ -190,15 +191,26 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 					]
 				},
 				{
-					stateful: true,
-					stateId: 'routelistEditgoods',
-					xtype: 'orderunloadinggoodsgrid',
-					title: 'Начальная загрузка',
-					id: 'routelistEditgoods',
+					xtype: 'tabpanel',
 					width: 430,
 					height: 163,
+					items: [
+						{
+							stateful: true,
+							stateId: 'routelistEditbegingoods',
+							xtype: 'routelistbegingoodsgrid',
+							title: 'В начале',
+							id: 'routelistEditbegingoods',
+						},
+						{
+							stateful: true,
+							stateId: 'routelistEditendgoods',
+							xtype: 'routelistendgoodsgrid',
+							title: 'В конце',
+							id: 'routelistEditendgoods',
+						},
+					],
 				},
-
 			]
 		},
 		{

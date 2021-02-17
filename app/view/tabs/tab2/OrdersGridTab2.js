@@ -32,15 +32,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 				cl = cl + ' row-bk-grey';
 			}
 
-//			if (record.get('timewindow_begin') > record.get('timewindow_end')) {
-//				cl = cl + ' bkRed row-bk-white';
-//			}
-
-
-			//if (record.get('isOtherCity')) {
-			//	cl = cl + ' fontbold fontitalic';
-			//}
-
 			return cl;
 		},
 	},
@@ -89,13 +80,11 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2', {
 								text: 'Отгрузка',
 								handler: 'getUnloadingGoods',
 								id: 'tab2getOrdersUnloadingGoodsButton',
-								disabled: true,
 							},
 							{
 								text: 'Погрузка',
 								handler: 'getLoadingGoods',
 								id: 'tab2getOrdersLoadingGoodsButton',
-								disabled: true,
 							}
 
 						],

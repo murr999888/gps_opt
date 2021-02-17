@@ -85,7 +85,7 @@ Ext.define('Opt.view.DepotGoodsGrid', {
 			                    xtype: 'numberfield',
                 			    allowBlank: false
 		        	        }
-	            		}
+	            		},
 			},
 		]
 	},

@@ -37,16 +37,15 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 
 	onShow: function(){
 		var unloadingGoodsGrid = this.getView().down('orderunloadinggoodsgrid');
-		var unloadingGoodsStore = unloadingGoodsGrid.getStore();
 		unloadingGoodsGrid.view.scrollTo(0,0);
 
 		var loadingGoodsGrid = this.getView().down('orderloadinggoodsgrid');
-		var loadingGoodsStore = loadingGoodsGrid.getStore();
 		loadingGoodsGrid.view.scrollTo(0,0);
 	},
 
 	afterRender: function () {
 		this.changed = false;
+
 		if (this.getView().readOnly) {
 			this.getView().down('form').getForm().getFields().each(function (field) {
 				field.setReadOnly(true);
@@ -82,6 +81,10 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 		dialog.updateRecord();
 
 		record = dialog.getRecord();
+
+		record.set('unloading_goods', Ext.pluck(this.orderUnloadingGoodsStore.data.items, 'data'));
+		record.set('loading_goods', Ext.pluck(this.orderLoadingGoodsStore.data.items, 'data'));
+
 		record.set('allowed_autos', Ext.pluck(this.orderAllowedAutosStore.data.items, 'data'));
 		store = record.store;
 		if (store) {

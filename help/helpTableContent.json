@@ -21,6 +21,14 @@
             "file": "part4.html"
         },
 	{
+            "name": "Основные понятия. Главное депо.",
+            "file": "part_maindepot.html"
+        },
+	{
+            "name": "Основные понятия. Пункты загрузки.",
+            "file": "part_add_depot.html"
+        },
+	{
             "name": "Основные понятия. Груз.",
             "file": "part5.html"
         },

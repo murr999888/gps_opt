@@ -43,11 +43,13 @@ Ext.define('Opt.view.DepotGridController', {
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
+		record.save();
 	},
 
 	onHeaderCheckChange: function (column, checked, e, eOpts) {
 		var store = this.getView().store;
-		store.commitChanges();
+		store.suspendEvents();
+		store.save();
 		store.resumeEvents();
 		this.getView().view.refresh();
 	},

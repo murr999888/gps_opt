@@ -34,35 +34,6 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 				column.setHidden(true);
 			}
 		});
-
-	        var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
-		droppedGoodsStore.on('load', function(){
-			self.setUnloadingGoodsButton();
-			self.setLoadingGoodsButton();
-		});
-
-		droppedGoodsStore.on('remove', function(){
-			self.setUnloadingGoodsButton();
-			self.setLoadingGoodsButton();
-		});
-	},
-
-	setUnloadingGoodsButton: function(){
-		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
-		if (droppedGoodsStore.count() > 0) {
-			Ext.getCmp('tab2DroppedUnloadingGoodsButton').setDisabled(false);
-		} else {
-			Ext.getCmp('tab2DroppedUnloadingGoodsButton').setDisabled(true);		
-		}
-	},
-
-	setLoadingGoodsButton: function(){
-		var droppedGoodsStore = Ext.getStore('DroppedGoodsStore');
-		if (droppedGoodsStore.count() > 0) {
-			Ext.getCmp('tab2DroppedLoadingGoodsButton').setDisabled(false);
-		} else {
-			Ext.getCmp('tab2DroppedLoadingGoodsButton').setDisabled(true);		
-		}
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
@@ -193,7 +164,26 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		}
 
 		var str = 'data-qtip="';
-		var sod = Ext.util.Format.htmlEncode(record.get('sod'));
+		var sod = "";
+		var goods = record.get('unloading_goods');
+		if (goods.length > 0) {
+			sod = sod + "Отгрузка:<br />";
+			for (var i=0; i < goods.length; i++) {
+				var good = goods[i];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+		var goods = record.get('loading_goods');
+		if (goods.length > 0) {
+			sod = sod + "Погрузка:<br />";
+			for (var i=0; i < goods.length; i++) {
+				var good = goods[i];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+
 		var dop = Ext.util.Format.htmlEncode(record.get('dop'));
 
 		if (sod != '' && dop != '') {
@@ -206,13 +196,59 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		return ww;
 	},
 
-   	getUnloadingGoods: function(){
-		var title = 'Отгрузка по отброшенным заказам.';
-		this.editDialog = null;
-		this.editDialog = Ext.create('Opt.view.dialog.GoodsEdit', { title: title});
-		var unloadingGoodsGrid = this.editDialog.down('ordergoodsgrid');
-		unloadingGoodsGrid.setStore(Ext.getStore('DroppedGoodsStore'));
-		this.editDialog.show();
-		this.editDialog.focus();
+   	getGoods: function(title, goodstable){
+	        var sumGoodsArr = []; 
+		var store = this.getView().getStore(); 
+
+		if (!this.goodsDialog) this.goodsDialog = Ext.create('widget.goodsedit', { title: title});
+
+		var goodsGrid = this.goodsDialog.down('ordergoodsgrid');
+		var goodsGridStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		goodsGridStore.sort([
+    			{
+        			property : 'name',
+        			direction: 'ASC'
+    			},
+		]);
+
+		goodsGrid.setStore(goodsGridStore);
+		this.goodsDialog.show();
+		this.goodsDialog.focus();
+
+		setTimeout(function(){
+			for (var i=0; i < store.count(); i++){
+				var order = store.getAt(i);
+				var goods = order.get(goodstable);
+				for (var j=0; j < goods.length; j++){
+					var good = goods[j];
+					var index = sumGoodsArr.findIndex((element)=>element.id == good.id); 
+					if (index == -1) {
+						if (good.kolvo > 0){
+							var goodCopy = $.extend(true, {}, good);
+							sumGoodsArr.push(goodCopy);
+						}
+					} else {
+						sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+					};
+				}; 
+			};
+			
+			goodsGridStore.loadData(sumGoodsArr);
+		},0);
+	},
+	
+
+	getUnloadingGoods: function(){
+		this.getGoods('Отгрузка по заказам.', 'unloading_goods');
+	},
+
+	getLoadingGoods: function(){
+		this.getGoods('Погрузка по заказам.', 'loading_goods');
 	},
 });

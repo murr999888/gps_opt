@@ -12,19 +12,18 @@ Ext.define('Opt.view.OrderGoodsGrid', {
 	}],
 
 	controller: 'ordergoodsgrid',
-
 	columns: {
 		defaults: {
-			menuDisabled: true,
-			sortable: false,
-			hideable: false
+			hideable: false,
+			menuDisabled: false,
+			sortable: true,
 		},
 
 		items: [
 		{
 			text: 'Наименование',
 			flex: 5,
-			dataIndex: 'full_name',
+			dataIndex: 'name',
 			cellWrap: true,
 		},
 		{
@@ -40,4 +39,5 @@ Ext.define('Opt.view.OrderGoodsGrid', {
 		},
 		]
 	},
+
 });

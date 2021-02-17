@@ -136,24 +136,37 @@ Ext.define('Opt.view.OrdersGridController', {
 	},
 
 	openEditDialog: function (record, editable) {
-		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'routeOrderEdit' });
-		this.orderEdit.readOnly = true;
+		var self = this;
 
+		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
-		this.orderEdit.down('ordergoodsgrid').store.loadData(record.get("goods"));
+		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').getStore();
+		var unfiltered_goods = record.get("unloading_goods")
 
-		this.orderEdit.down('ordergoodsgrid').store.filterBy(function (record) {
-			if (record.get("kolvo") > 0) return true;
-		});
+		orderUnloadingGoodsStore.loadData(unfiltered_goods);
+		orderUnloadingGoodsStore.sync();
 
-		this.orderEdit.down('allowedautosgrid').store.loadData(record.get("allowed_autos"));
+		var unfiltered_goods = record.get("loading_goods")
+
+		var orderLoadingGoodsStore = this.orderEdit.down('orderloadinggoodsgrid').getStore();
+		orderLoadingGoodsStore.loadData(unfiltered_goods);
+		orderLoadingGoodsStore.sync();
+
+		var allowedAutosStore = this.orderEdit.down('allowedautosgrid').getStore();
+		allowedAutosStore.loadData(record.get("allowed_autos"));
+		allowedAutosStore.sync();
 
 		var form = this.orderEdit.down('form').getForm();
 		form.setValues({
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
 
+		this.orderEdit.on('close', function (panel) {
+			self.onCloseEditOrderDialog(panel);
+		});
+
+		Ext.resumeLayouts();
 		this.orderEdit.show().focus();
 	},
 

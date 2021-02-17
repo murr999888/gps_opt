@@ -20,6 +20,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				adding_orders_error: 'adding_orders_error',
 				serverDisconnect: 'serverDisconnect',
 				breakCalcCommand: 'breakCalcCommand',
+				tab2getOrdersFromServer: 'getOrdersFromServer',
+				tab2clearData: 'clearData',
+				tab2sendData: 'sendData',
 			}
 		}
 	},
@@ -167,13 +170,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				self.fireEvent('tab2ordergridsettitle');
 
 				Ext.getCmp('tab2ordersgrid').view.refresh()
-
-				var storeUnloadingGoodsTotals = Ext.getStore('OrdersUnloadingGoodsStore');
-				storeUnloadingGoodsTotals.suspendEvents();
-				storeUnloadingGoodsTotals.loadData(respObj.data.goods);
-				storeUnloadingGoodsTotals.sync();
-				storeUnloadingGoodsTotals.resumeEvents();
-				storeUnloadingGoodsTotals.fireEvent('load');
 				Ext.getCmp('tab2ordersgrid').unmask();
 			},
 
@@ -440,7 +436,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		Ext.getCmp('maintab2').mask('Проверка данных ...');
 		var mode = Ext.getCmp('distordersmode').getValue();
-
+		//*************************************************************************
+		// ПРОВЕРКА ГЛАВНОГО ДЕПО
+		//*************************************************************************
 
 		var mainDepotStore = Ext.getStore('MainDepot');
 
@@ -467,7 +465,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		if(depot.depot_goods_capacity_in.length == 0 || depot.depot_goods_capacity_in.length == 0) {
+		if(depot.depot_goods_capacity_in.length == 0 || depot.depot_goods_capacity_out.length == 0) {
 			Ext.getCmp('maintab2').unmask();
                  	Ext.Msg.alert({
 				title: 'Внимание',
@@ -477,6 +475,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
+/*
 		var uses = 0;
 		for(var i=1; i < depot.depot_goods_capacity_out.length; i++){
 			if (depot.depot_goods_capacity_out[i].in_use){
@@ -507,6 +506,37 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
                  	Ext.Msg.alert({
 				title: 'Внимание',
 				message: 'Не отмечены для использования строки по емкости товаров (возврат) главного депо!',
+				buttons: Ext.Msg.OK,
+			});
+			return;
+		}
+*/
+
+		//*************************************************************************
+		// ПРОВЕРКА ДОПОЛНИТЕЛЬНЫХ ДЕПО
+		//*************************************************************************
+
+		var depotStore = Ext.getStore('Depots');
+
+		var empty_capacities = false;
+
+		if (depotStore.count() > 0) {
+			depotStore.each(function(depot){
+				if (depot.get('in_use')){
+					var depot_goods_capacity_in = depot.get('depot_goods_capacity_in');
+					var depot_goods_capacity_out = depot.get('depot_goods_capacity_out');
+					if(!depot_goods_capacity_in || depot_goods_capacity_in.length == 0 || !depot_goods_capacity_out || depot_goods_capacity_out.length == 0) {
+						empty_capacities = true;
+					}
+				}
+			});
+		}
+
+		if(empty_capacities) {
+			Ext.getCmp('maintab2').unmask();
+                 	Ext.Msg.alert({
+				title: 'Внимание',
+				message: 'По одному или нескольким пунктам доставки,<br />которые отмечены к участию в расчете,<br />не заполнены данные по емкости товаров!',
 				buttons: Ext.Msg.OK,
 			});
 			return;
@@ -802,18 +832,23 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 		task.error = "";
 
-		delivery_groups = [];
-
+		var delivery_groups = [];
 		var deliveryGroupsStore = Ext.getStore('DeliveryGroups');
-
 		for (var i = 0; i < deliveryGroupsStore.count(); i++) {
 			delivery_groups.push(deliveryGroupsStore.getAt(i).data);
 		}
-
 		task.parameters.delivery_groups = delivery_groups;
+
+		var depots = [];
+               	var depotsStore = Ext.getStore('Depots');
+		for (var i = 0; i < depotsStore.count(); i++) {
+			depots.push(depotsStore.getAt(i).data);
+		}
+		task.parameters.depots = depots;
 
 		var orders = [];
 		var autos = [];
+		var depots = [];
 		var unloading_goods = [];
 		var loading_goods = [];
 		var data = {};
@@ -947,7 +982,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					var deepCopy = $.extend(true, {}, depot);				 	
 					deepCopy.node_type = 4;
 					deepCopy.order_date = orders_date;
-					deepCopy.order_id = '';
+					//deepCopy.order_id = '';
 					deepCopy.order_number = '';
 					deepCopy.tanks_replace_needed = false;
 	 				deepCopy.tanks_replace_count = 0;
@@ -971,26 +1006,95 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			}
 		}
 
+		//***************************************************************
+		// Добавление мест загрузки
+		//***************************************************************
+		var storeDepots = Ext.getStore('Depots');
+		var max_races = 3;
+		
+		for (var j = 0; j < storeDepots.count(); j++) {
+			var recordDepot = storeDepots.getAt(j);
+			if (recordDepot.get("in_use")) {
+				for (var i = 0; i < storeAutos.count(); i++) {
+					var recordAuto = storeAutos.getAt(i);
+					if (recordAuto.get("in_use") && recordAuto.get("maxraces") > 1) {
+						var uu = 0;
+						for (var k = 1; k < recordAuto.get("maxraces"); k++) {
+							var deepCopy = $.extend(true, {}, recordDepot.data);				 	
+							deepCopy.node_type = 2;
+							deepCopy.order_date = orders_date;
+							deepCopy.order_number = '';
+							deepCopy.tanks_replace_needed = false;
+							deepCopy.tanks_replace_count = 0;
+							deepCopy.service_time = recordDepot.get('service_time');
+							deepCopy.penalty = 0; // в минутах!
+							deepCopy.strings = [];
+							deepCopy.unloading_goods = [];
+							deepCopy.loading_goods = [];
+							var allowedAutos = 
+							{
+								in_use: true,
+								id: recordAuto.get("id"),
+								name: recordAuto.get("name"),
+							};
+							deepCopy.allowed_autos = [allowedAutos];						
+							deepCopy.allowed_autos_backup = [allowedAutos];
+							orders.push(deepCopy);
+							uu++;
+						}
+					}
+				}
+			}
+		}
+
 		//********************************************
 		// ТОВАРЫ
 		//********************************************
-		var storeUnloadingGoods = Ext.getStore('OrdersUnloadingGoodsStore');
-		for (var i = 0; i < storeUnloadingGoods.count(); i++) {
-			var recordUnloadingGoods = storeUnloadingGoods.getAt(i);
-			var deepCopy = $.extend(true, {}, recordUnloadingGoods.data);
-			deepCopy.kolvo = 0;
-			unloading_goods.push(deepCopy);
-		}
+		var sumGoodsArr = []; 
+		var store = Ext.getCmp('tab2ordersgrid').getStore(); 
+		for (var i=0; i < store.count(); i++){
+			var order = store.getAt(i);
+			if (order.get('in_use')) {
+				var goods = order.get('unloading_goods');
+				for (var j=0; j < goods.length; j++){
+					var good = goods[j];
+					var index = sumGoodsArr.findIndex((element) => element.id == good.id); 
+					if (index == -1) {
+						if (good.kolvo > 0){
+							var goodCopy = $.extend(true, {}, good);
+							sumGoodsArr.push(goodCopy);
+						}
+					} else {
+						sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+					};
+				}; 
+       	
+				var goods = order.get('loading_goods');
+				for (var j=0; j < goods.length; j++){
+					var good = goods[j];
+					var index = sumGoodsArr.findIndex((element) => element.id == good.id); 
+					if (index == -1) {
+						if (good.kolvo > 0){
+							var goodCopy = $.extend(true, {}, good);
+							sumGoodsArr.push(goodCopy);
+						}
+					} else {
+						sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+					};
+				}; 
+			}
+		};
 
 		data.autos = autos;
 		data.orders = orders;
-		data.goods = unloading_goods;
+		data.goods = sumGoodsArr;
 
 		task.data = data;
 
+		console.log(task);
+
 		this.startTimerMask();
 
-		console.log(task);
 		if (Opt.app.socket.readyState && Opt.app.socket.readyState == 1) {
 			Opt.app.socket.send(JSON.stringify(task));
 		} else {
@@ -1153,57 +1257,6 @@ console.log(data);
 			this.fireEvent('tab2droppedgridsettitle');
 		}
 
-		if (data.unloading_goods.length > 0) {
-			var unloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
-
-			var unloadingGoodsData = [];
-			for (var i = 0; i < data.unloading_goods.length; i++){
-				var record = data.unloading_goods[i];
-				if (record.kolvo > 0) {
-					unloadingGoodsData.push(record);
-				}
-			}
-			unloadingGoodsStore.suspendEvents();
-			unloadingGoodsStore.loadData(unloadingGoodsData);
-			unloadingGoodsStore.sync();
-			unloadingGoodsStore.resumeEvents();
-			unloadingGoodsStore.fireEvent('load');
-		}
-
-		if (data.loading_goods.length > 0) {
-			var loadingGoodsStore = Ext.getStore('RoutesLoadingGoodsStore');
-
-			var loadingGoodsData = [];
-			for (var i = 0; i < data.loading_goods.length; i++){
-				var record = data.loading_goods[i];
-				if (record.kolvo > 0) {
-					loadingGoodsData.push(record);
-				}
-			}
-			loadingGoodsStore.suspendEvents();
-			loadingGoodsStore.loadData(loadingGoodsData);
-			loadingGoodsStore.sync();
-			loadingGoodsStore.resumeEvents();
-			loadingGoodsStore.fireEvent('load');
-		}
-
-		if (data.dropped_goods.length > 0) {
-			var goodsStore = Ext.getStore('DroppedGoodsStore');
-
-			var goodsData = [];
-			for (var i = 0; i < data.dropped_goods.length; i++){
-				var record = data.dropped_goods[i];
-				if (record.kolvo > 0) {
-					goodsData.push(record);
-				}
-			}
-			goodsStore.suspendEvents();
-			goodsStore.loadData(goodsData);
-			goodsStore.sync();
-			goodsStore.resumeEvents();
-			goodsStore.fireEvent('load');
-		}
-
 		var logStore = Ext.getStore('CalcLog'); 
 		var calc_stat = data.calc_stat;
 		var calc_params = data.calc_params;
@@ -1211,6 +1264,9 @@ console.log(data);
 
 		delete calc_stat.delivery_groups;
 		delete calc_params.delivery_groups;
+
+		delete calc_stat.depots;
+		delete calc_params.depots;
 
 		calc_stat.user_id = user.id; 
 		calc_stat.calc_type = data.solve;
@@ -1247,6 +1303,7 @@ console.log(data);
 			host_addr: calc_stat.host_addr,
 			data: data,
 		});
+
 		storeTempResults.add(newRecord);
 		storeTempResults.save();
 
@@ -1289,12 +1346,6 @@ console.log(data);
 		clearStore('tab2ordersgrid');
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
-
-		clearStore('DroppedGoodsStore');
-		clearStore('OrdersUnloadingGoodsStore');
-		clearStore('OrdersLoadingGoodsStore');
-		clearStore('RoutesUnloadingGoodsStore');
-		clearStore('RoutesLoadingGoodsStore');
 
 		this.fireEvent('tab2routesgridsetstat', null);
 		this.fireEvent('tab2routesgridsetparams', null);

@@ -1,6 +1,6 @@
 Ext.define('Opt.model.RouteLegs', {
     	extend: 'Ext.data.Model',
-    	identifier: 'negative',
+    	//identifier: 'negative',
 // node_type
 // 0 - депо
 // 1 - обычный заказ
@@ -16,6 +16,7 @@ Ext.define('Opt.model.RouteLegs', {
 
 		{
         		name: 'id',
+			type: 'string',
     		},
 		{
         		name: 'node_type',
@@ -136,12 +137,6 @@ Ext.define('Opt.model.RouteLegs', {
 		{
         		name: 'order_date',
         		type: 'string',
-    		},
-
-		{
-        		name: 'sod',
-        		type: 'string',
-			defaultValue: '',
     		},
 
 		{

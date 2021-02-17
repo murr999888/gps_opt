@@ -34,16 +34,12 @@ Ext.define('Opt.Application', {
 		'Auto2',
 		'ClientGroup',
 		'Product',
+		'Goods',
 		'AutosGroup',
 		'SettingsGlobal',
 		'SettingsUser',
 		'Drivers',
 		'HelpTableContent',
-		'DroppedGoodsStore',
-		'OrdersUnloadingGoodsStore',
-		'OrdersLoadingGoodsStore',
-		'RoutesUnloadingGoodsStore',
-		'RoutesLoadingGoodsStore',
 		'CalcLog',
 		'FuelStations',
 		'MainDepot',
@@ -83,7 +79,7 @@ Ext.define('Opt.Application', {
 		record.set("strings", []);
       		record.set("depot_goods_capacity_in",[]);
        		record.set("depot_goods_capacity_out",[]);
-
+		store.removeAll();
 		store.insert(0, record);
 		store.sync();
 	},
@@ -172,5 +168,35 @@ Ext.define('Opt.Application', {
 				}
 			}
 		);
+	},
+
+	getMainDepotFromServer: function(){
+		var self = this;
+		var store = Ext.getStore("MainDepot");
+
+		var params = {
+			param: 'Depot',
+		};
+
+		Ext.Ajax.request({
+			url: 'api/db/db_1cbase',
+			method: 'GET',
+			params: params,
+		        async: true,
+			success: function (response) {
+ 				try {
+					respObj = Ext.JSON.decode(response.responseText);
+			        } catch(error) {
+					Opt.app.showError("Ошибка!", error.message);
+					return;
+        			}
+
+				Opt.app.setMainDepot(respObj.data);
+			},
+
+			failure: function (response) {
+				Opt.app.showError('Ошибка запроса Основного депо', response.responseText);
+			}
+		});
 	},
 });

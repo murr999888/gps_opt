@@ -70,7 +70,26 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 		}
 
 		var str = 'data-qtip="';
-		var sod = Ext.util.Format.htmlEncode(record.get('sod'));
+		var sod = "";
+		var goods = record.get('unloading_goods');
+		if (goods.length > 0) {
+			sod = sod + "Отгрузка:<br />";
+			for (var i=0; i < goods.length; i++) {
+				var good = goods[i];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+		var goods = record.get('loading_goods');
+		if (goods.length > 0) {
+			sod = sod + "Погрузка:<br />";
+			for (var i=0; i < goods.length; i++) {
+				var good = goods[i];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+
 		var dop = Ext.util.Format.htmlEncode(record.get('dop'));
 
 		if (sod != '' && dop != '') {

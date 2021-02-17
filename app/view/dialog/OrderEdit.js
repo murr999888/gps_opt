@@ -132,16 +132,26 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 							name: 'tochka_name',
 							fieldLabel: 'Точка',
 						},
-
 						{
-							xtype: 'field',
-							name: 'city',
-							fieldLabel: 'Город',
-						},
-						{
-							xtype: 'field',
-							name: 'adres',
-							fieldLabel: 'Адрес',
+							xtype: 'fieldcontainer',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'field',
+									name: 'city',
+									fieldLabel: 'Адрес',
+									labelWidth: 70,
+									width: 160,
+								},
+								{
+									xtype: 'field',
+									name: 'adres',
+									//fieldLabel: 'Адрес',
+									//labelWidth: 40,
+									width: 190,
+									//padding: '0 0 0 10px',
+								},
+							],
 						},
 						{
 							xtype: 'field',
@@ -237,7 +247,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 		},
 		{
 			xtype: 'tabpanel',
-			height: 135,
+			height: 160,
 			width: 300,
 			deferredRender: false,
 			activeTab: 0,
@@ -253,7 +263,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 					layout: 'fit',
 					items: [
 						{
-							tools: null,
+							//tools: null,
 							xtype: 'orderunloadinggoodsgrid',
 							id: 'ordereditunloadinggoods',
 						},
@@ -265,7 +275,7 @@ Ext.define('Opt.view.dialog.OrderEdit', {
 					layout: 'fit',
 					items: [
 						{
-							tools: null,
+							//tools: null,
 							xtype: 'orderloadinggoodsgrid',
 							id: 'ordereditloadinggoods',
 						},

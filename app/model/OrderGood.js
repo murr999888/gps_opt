@@ -7,13 +7,21 @@ Ext.define('Opt.model.OrderGood', {
         			type: 'string',
 			},
 			{
-        			name: 'full_name',
+        			name: 'name',
         			type: 'string',
 			},
-
+			{
+        			name: 'name_short',
+        			type: 'string',
+			},
 			{
         			name: 'ed',
         			type: 'string'
+			},
+			{
+        			name: 'isPack',
+        			type: 'boolean',
+				defaultValue: false,
 			},
 			{
 				name: 'kolvo',

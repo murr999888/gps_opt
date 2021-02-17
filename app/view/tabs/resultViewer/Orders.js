@@ -29,12 +29,24 @@ Ext.define('Opt.view.tabs.resultViewer.Orders', {
 			items: [
 				{
 					xtype: 'button',
-					text: 'Отгрузка',
-					handler: 'getGoods',
-					id: 'resultviewerGoodsButton',
-					//disabled: true,
+					text: 'Груз',
 					iconCls: 'fa fa-list',
 					iconClsBck: 'fa fa-list',
+					menu: {
+						items: [
+							{
+								text: 'Отгрузка',
+								handler: 'getUnloadingGoods',
+								id: 'resultviewergetOrdersUnloadingGoodsButton',
+							},
+							{
+								text: 'Погрузка',
+								handler: 'getLoadingGoods',
+								id: 'resultviewergetOrdersLoadingGoodsButton',
+							}
+
+						],
+					},
 				},
 			]
 		},

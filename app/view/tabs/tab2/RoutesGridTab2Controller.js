@@ -26,34 +26,11 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	init: function () {
 		var self = this;
-		this.unloadingGoodsEditStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.OrderGood',
-			proxy: {
-				type: 'memory',
-			},
-		});
-
-		this.loadingGoodsEditStore = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.OrderGood',
-			proxy: {
-				type: 'memory',
-			},
-		});
-
 		this.ordersEditStore = Ext.create('Ext.data.Store', {
 			model: 'Opt.model.RouteLegs',
 			proxy: {
 				type: 'memory',
 			},
-		});
-
-	        var routeUnloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
-		routeUnloadingGoodsStore.on('load', function(){
-			self.setGetUnloadingGoodsButton();
-		});
-
-		routeUnloadingGoodsStore.on('remove', function(){
-			self.setGetUnloadingGoodsButton();
 		});
 
 		var store = this.getView().getStore();
@@ -123,24 +100,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		Ext.getCmp('tab2mapbutton').setDisabled(disabled);
 	},
 
-	setGetUnloadingGoodsButton: function(){
-		var routeUnloadingGoodsStore = Ext.getStore('RoutesUnloadingGoodsStore');
-		if (routeUnloadingGoodsStore.count() > 0) {
-			this.setButtonsDisabled(false);
-		} else {
-			this.setButtonsDisabled(true);		
-		}
-	},
-
-	setGetLoadingGoodsButton: function(){
-		var routeLoadingGoodsStore = Ext.getStore('RoutesLoadingGoodsStore');
-		if (routeLoadingGoodsStore.count() > 0) {
-			this.setButtonsDisabled(false);
-		} else {
-			this.setButtonsDisabled(true);		
-		}
-	},
-	
 	afterRender: function(){
 		this.setColumnsDefault(0);
 	},
@@ -153,7 +112,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		var grid = this.getView();
 		Opt.ux.GridPrinter.print(grid);
 	},
-
 
 	onChangeInUse: function (checkbox, rowIndex, checked, record, e, eOpts) {
 		record.commit();
@@ -171,29 +129,61 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		var self = this;
+		var beginGoodsEditStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		var endGoodsEditStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		beginGoodsEditStore.sort([
+    			{
+        			property : 'isPack',
+        			direction: 'DESC'
+    			},
+    			{
+        			property : 'name',
+        			direction: 'ASC'
+    			}
+		]);		
+
+		endGoodsEditStore.sort([
+    			{
+        			property : 'isPack',
+        			direction: 'DESC'
+    			},
+    			{
+        			property : 'name',
+        			direction: 'ASC'
+    			}
+		]);
+
+		beginGoodsEditStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
+
+		endGoodsEditStore.filterBy(function (record) {
+			if (record.get("kolvo") > 0) return true;
+		});
 
 		if (!this.routelistEdit) this.routelistEdit = Ext.create('widget.routelistedit');
 
 		this.routelistEdit.down('form').loadRecord(record);
 
-		this.routelistEdit.down('orderunloadinggoodsgrid').setStore(this.unloadingGoodsEditStore);
-		//this.routelistEdit.down('orderloadinggoodsgrid').setStore(this.loadingGoodsEditStore);
+		this.routelistEdit.down('routelistbegingoodsgrid').setStore(beginGoodsEditStore);
+		this.routelistEdit.down('routelistendgoodsgrid').setStore(endGoodsEditStore);
 
-		this.unloadingGoodsEditStore.loadData(record.get('unloading_goods'));
-		//this.loadingGoodsEditStore.loadData(record.get('loading_goods'));
-
-		this.unloadingGoodsEditStore.filterBy(function (record) {
-			if (record.get("kolvo") > 0) return true;
-		});
-
-/*
-		this.loadingGoodsEditStore.filterBy(function (record) {
-			if (record.get("kolvo") > 0) return true;
-		});
-*/
+		beginGoodsEditStore.loadData(record.get('begin_goods'));
+		endGoodsEditStore.loadData(record.get('end_goods'));
 
 		this.routelistEdit.down('ordersgridpanel').setStore(this.ordersEditStore);
-
 		this.ordersEditStore.loadData(record.get('orders'));
 
 		var form = this.routelistEdit.lookupReference('form').getForm();
@@ -280,10 +270,6 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	clearRoutes: function () {
 		clearStore('tab2routesgrid');
 		clearStore('tab2droppedgrid');
-		clearStore('DroppedGoodsStore');
-		clearStore('RoutesUnloadingGoodsStore');
-		clearStore('RoutesLoadingGoodsStore');
-
 		Ext.getCmp('tab2routesgrid').setTitle("Маршрутные листы");
 		Ext.getCmp('tab2droppedgrid').setTitle("Отброшенные заказы");
 	},
@@ -528,22 +514,64 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	},
 
+	getGoods: function(title, goodstable){
+	        var sumGoodsArr = []; 
+		var store = this.getView().getStore();
+
+		if (!this.goodsDialog) this.goodsDialog = Ext.create('widget.goodsedit', {title: title});
+
+		var goodsGrid = this.goodsDialog.down('ordergoodsgrid');
+		var goodsGridStore = Ext.create('Ext.data.Store', {
+			model: 'Opt.model.OrderGood',
+			proxy: {
+				type: 'memory',
+			},
+		});
+
+		goodsGridStore.sort([
+    			{
+        			property : 'name',
+        			direction: 'ASC'
+    			},
+		]);
+
+		goodsGrid.setStore(goodsGridStore);
+		this.goodsDialog.show();
+		this.goodsDialog.focus();
+
+		setTimeout(function(){
+			for (var i=0; i < store.count(); i++){
+				var routelist = store.getAt(i);
+				var orders = routelist.get('orders');
+				for (var j=0; j < orders.length; j++){
+					var order = orders[j];
+					if (order.node_type == 1) {
+						var goods = order[goodstable];
+						for (var k=0; k < goods.length; k++){
+							var good = goods[k];
+							var index = sumGoodsArr.findIndex((element)=>element.id == good.id); 
+							if (index == -1) {
+								if (good.kolvo > 0){
+									var goodCopy = $.extend(true, {}, good);
+									sumGoodsArr.push(goodCopy);
+								}
+							} else {
+								sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+							};
+						}
+					}; 
+				}
+			};
+			goodsGridStore.loadData(sumGoodsArr);
+		},0);
+	},
+
 	getUnloadingGoods: function(){
-		var title = 'Отгрузка по маршрутам.';
-		if (!this.UnloadingGoodsDialog) this.UnloadingGoodsDialog = Ext.create('widget.goodsedit', { title: title});
-		var goodsGrid = this.UnloadingGoodsDialog.down('ordergoodsgrid');
-		goodsGrid.setStore(Ext.getStore('RoutesUnloadingGoodsStore'));
-		this.UnloadingGoodsDialog.show();
-		this.UnloadingGoodsDialog.focus();
+		this.getGoods('Отгрузка по маршрутам.', 'unloading_goods');
 	},
 
 	getLoadingGoods: function(){
-		var title = 'Погрузка по маршрутам.';
-		if (!this.LoadingGoodsDialog) this.LoadingGoodsDialog = Ext.create('widget.goodsedit', { title: title});
-		var goodsGrid = this.LoadingGoodsDialog.down('ordergoodsgrid');
-		goodsGrid.setStore(Ext.getStore('RoutesLoadingGoodsStore'));
-		this.LoadingGoodsDialog.show();
-		this.LoadingGoodsDialog.focus();
+		this.getGoods('Погрузка по маршрутам.', 'loading_goods');
 	},
 
 	getIcon: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
@@ -591,7 +619,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 						'</tr>',
 						'<tpl for="unloading_goods">',
 							'<tr>',
-	        						'<td>{full_name}</td>',
+	        						'<td>{name}</td>',
 								'<td style="text-align: right;">{ed}</td>',
 								'<td style="text-align: right;">{kolvo}</td>',
 							'</tr>',

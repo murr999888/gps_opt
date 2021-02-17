@@ -3,7 +3,9 @@ Ext.define('Opt.view.OrderGoodsGridController', {
 	alias: 'controller.ordergoodsgrid',
 	requires: [
 		'Opt.ux.GridPrinter',
+		'Opt.view.dialog.GoodsSelect',
 	],
+
 
 	init: function(){
 		var store = Ext.create('Ext.data.Store', {
