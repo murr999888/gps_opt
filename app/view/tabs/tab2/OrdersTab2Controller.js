@@ -21,7 +21,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				serverDisconnect: 'serverDisconnect',
 				breakCalcCommand: 'breakCalcCommand',
 				tab2getOrdersFromServer: 'getOrdersFromServer',
-				tab2clearData: 'clearData',
+				tab2clearData: 'clearStores',
 				tab2sendData: 'sendData',
 			}
 		}
@@ -1084,6 +1084,16 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				}; 
 			}
 		};
+
+		sumGoodsArr.sort(function (a, b) {
+  			if (a.isPack > b.isPack) return 1;
+  			if (a.isPack < b.isPack) return -1;
+  			if (a.name > b.name) return 1;
+  			if (a.name < b.name) return -1;
+  			
+			// a должно быть равным b
+  			return 0;
+		});	
 
 		data.autos = autos;
 		data.orders = orders;

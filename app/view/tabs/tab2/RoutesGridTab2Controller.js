@@ -583,6 +583,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	},
 
 	printLoadList: function(){
+		var self = this;
 		var grid = this.getView();
 		var store = this.getView().getStore();
 		var data = Ext.pluck(store.data.items, 'data');
@@ -599,25 +600,46 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 	  		'<link type="text/css" rel="stylesheet" href="css/font-awesome/font-awesome-all.css" />',
 	  		'<link type="text/css" rel="stylesheet" href="css/main.css" />',
           		'<link type="text/css" rel="stylesheet" href="css/print.css?' + Date.now() + '" />',
-          		'<title>Начальная загрузка по маршрутным листам</title>',
+          		'<title>Загрузка по маршрутным листам</title>',
         		'</head>',
         		'<body>',
 				this.getTimeStamp(),
 				'<br />',
 				grid.getTitle().replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ""), 
-		  		'<h3>Начальная загрузка по маршрутным листам</h3>',
+		  		'<h3>Загрузка по маршрутным листам</h3>',
 	      	    		'<tpl for=".">',
 					'<div class="dontbreak">',
+					'<div class="route">',
 					'<span style="margin-bottom: 10px;"><b>Машина: {auto_name}, водитель: {driver_name}</b></span><br>',
 					'<span style="margin-bottom: 10px;"><b>Вода: {water}, баллонов: {bottle}, емкостей: {tank}</b></span><br>',
-					'<span style="margin-bottom: 10px;">Рейс: <b>{race_number}</b>, выезд: <b>{[secToHHMMSS(values.route_begin_calc)]}</b>, возврат: <b>{[secToHHMMSS(values.route_end_calc)]}</b>, длина: <b>{distance}</b>, длительность: <b>{[secToHHMMSS(values.durationFull)]}</b></span>',
+					'<span style="margin-bottom: 10px;">Рейс: <b>{race_number}</b>, выезд: <b>{[secToHHMMSS(values.route_begin_calc)]}</b>, возврат: <b>{[secToHHMMSS(values.route_end_calc)]}</b>, длина: <b>{distance}</b>, длительность: <b>{[secToHHMMSS(values.durationFull)]}</b></span><br>',
+					'<br>',
+					'<span>В начале:</span><br>',
 					'<table class="print">',
 						'<tr style="background-color: #eee;">',
         						'<td style="width: 300px; text-align: center;">Наименование</td>',
 							'<td style="width: 50px; text-align: center;">Ед.</td>',
 							'<td style="width: 50px; text-align: center;">Кол-во</td>',
 						'</tr>',
-						'<tpl for="unloading_goods">',
+						'<tpl for="begin_goods">',
+							'<tr>',
+	        						'<td>{name}</td>',
+								'<td style="text-align: right;">{ed}</td>',
+								'<td style="text-align: right;">{kolvo}</td>',
+							'</tr>',
+      						'</tpl>',
+					'</table>',          
+					'{[this.getRoutelistOrdersUnloadingGoodsTmpl(values)]}',
+					'{[this.getRoutelistOrdersLoadingGoodsTmpl(values)]}',
+					'<tpl if="end_goods.length &gt; 0">',
+					'<span>В конце:</span><br>',
+					'<table class="print">',
+						'<tr style="background-color: #eee;">',
+        						'<td style="width: 300px; text-align: center;">Наименование</td>',
+							'<td style="width: 50px; text-align: center;">Ед.</td>',
+							'<td style="width: 50px; text-align: center;">Кол-во</td>',
+						'</tr>',
+						'<tpl for="end_goods">',
 							'<tr>',
 	        						'<td>{name}</td>',
 								'<td style="text-align: right;">{ed}</td>',
@@ -625,13 +647,23 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 							'</tr>',
       						'</tpl>',
 					'</table>',
+					'</tpl>',
+					'</div>',
 					'</div>',
        	    			'</tpl>',
 				'<br />',
 				'<br />',
         		'</body>',
-      		'</html>'
-    		);
+      		'</html>',
+		{
+			getRoutelistOrdersUnloadingGoodsTmpl: function(routelist){
+				return self.getRoutelistOrdersGoodsTmpl(routelist, "unloading_goods");
+			},
+
+			getRoutelistOrdersLoadingGoodsTmpl: function(routelist){
+				return self.getRoutelistOrdersGoodsTmpl(routelist, "loading_goods");
+			},
+		});
 
 		var html = template.apply(routelists);
     
@@ -640,6 +672,72 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
     
     		win.document.write(html);
 		win.document.close();
+	},
+
+        getRoutelistOrdersGoodsTmpl: function(routelist, goodstable){
+		var sumGoodsArr = []; 
+		var orders = routelist.orders;
+		for (var j=0; j < orders.length; j++){
+			var order = orders[j];
+			if (order.node_type == 1) {
+				var goods = order[goodstable];
+				for (var k=0; k < goods.length; k++){
+					var good = goods[k];
+					var index = sumGoodsArr.findIndex((element)=>element.id == good.id); 
+					if (index == -1) {
+						if (good.kolvo > 0){
+							var goodCopy = $.extend(true, {}, good);
+							sumGoodsArr.push(goodCopy);
+						}
+					} else {
+						sumGoodsArr[index].kolvo = sumGoodsArr[index].kolvo + good.kolvo;
+					};
+				}
+			}; 
+		}
+
+		sumGoodsArr.sort(function (a, b) {
+			if (a.isPack > b.isPack) return 1;
+  			if (a.isPack < b.isPack) return -1;
+  			if (a.name > b.name) return 1;
+  			if (a.name < b.name) return -1;
+
+  			return 0;
+		});
+
+		var template = new Ext.XTemplate(
+       		        '<table class="print">',
+				'<tr style="background-color: #eee;">',
+        				'<td style="width: 300px; text-align: center;">Наименование</td>',
+					'<td style="width: 50px; text-align: center;">Ед.</td>',
+					'<td style="width: 50px; text-align: center;">Кол-во</td>',
+				'</tr>',
+				'<tpl for=".">',
+					'<tr>',
+						'<td>{name}</td>',
+						'<td style="text-align: right;">{ed}</td>',
+						'<td style="text-align: right;">{kolvo}</td>',
+					'</tr>',
+      				'</tpl>',
+			'</table>',
+		);
+
+		var title = '';
+		if (goodstable == "unloading_goods") {
+	                title = "Отгрузка по заказам:<br>";
+		}
+
+		if (goodstable == "loading_goods") {
+	                title = "Погрузка по заказам:<br>";
+		}
+       	
+		if (sumGoodsArr.length > 0){
+			return title + template.apply(sumGoodsArr);
+		} else {
+		  	return '';
+		}
+
+		return template.apply(sumGoodsArr);
 	},
 
 	printAutosList: function(){

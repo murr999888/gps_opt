@@ -674,27 +674,29 @@ function intersect(arr1, arr2) {
 }
 
 	function clearStore (str) {
-		var genStore = Ext.getStore(str);
-		if (genStore) {
-			genStore.suspendEvents();
-			genStore.removeAll();
-			genStore.sync();
-			genStore.resumeEvents();
-			genStore.fireEvent('remove');
-		} else {
-			if (str != 'tab2droppedgrid'){
-				var cmp = Ext.getCmp(str);
-				var store = cmp.getView().store;
-				store.suspendEvents();
-				store.removeAll();
-				store.sync();
-				store.resumeEvents();
-				cmp.view.refresh();
+		//setTimeout(function(){
+			var genStore = Ext.getStore(str);
+			if (genStore) {
+				genStore.suspendEvents();
+				genStore.removeAll();
+				//genStore.sync();
+				genStore.resumeEvents();
+				genStore.fireEvent('remove');
 			} else {
-       				var cmp = Ext.getCmp('tab2droppedgrid');
-				var store = cmp.getView().store;
-				store.reload();
+				if (str != 'tab2droppedgrid'){
+					var cmp = Ext.getCmp(str);
+					var store = cmp.getView().store;
+					store.suspendEvents();
+					store.removeAll();
+					//store.sync();
+					store.resumeEvents();
+					cmp.view.refresh();
+				} else {
+       					var cmp = Ext.getCmp('tab2droppedgrid');
+					var store = cmp.getView().store;
+					store.reload();
+				}
 			}
-		}
+		//}, 0);
 	}
 

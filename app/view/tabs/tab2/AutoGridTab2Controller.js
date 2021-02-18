@@ -10,6 +10,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 		controller: {
 			'*': {
 				tab2refuelmodeselected: 'refreshGrid',
+				distributed_orders_change_date: 'markWorkingAutos',
 			}
 		}
 	},
