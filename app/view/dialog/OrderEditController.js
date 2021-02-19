@@ -41,6 +41,9 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 
 		var loadingGoodsGrid = this.getView().down('orderloadinggoodsgrid');
 		loadingGoodsGrid.view.scrollTo(0,0);
+
+		var tabpanel = this.getView().down('tabpanel');
+		tabpanel.setActiveTab(0);
 	},
 
 	afterRender: function () {

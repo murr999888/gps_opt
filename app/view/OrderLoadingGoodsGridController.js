@@ -18,7 +18,7 @@ Ext.define('Opt.view.OrderLoadingGoodsGridController', {
 
 	addOrderString: function (button) {
 		var parent = this.getView();
-		if (!this.editSelectGoods) {
+		if (!this.editSelectGoods || this.editSelectGoods.destroyed) {
 			this.editSelectGoods = Ext.create('widget.goodsselect', {
 				parent_grid: this.getView(),
 				parent_record: null,
@@ -30,8 +30,9 @@ Ext.define('Opt.view.OrderLoadingGoodsGridController', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+		if(cellIndex !=0) return;
 		var parent = this.getView();
-		if (!this.editSelectGoods) {
+		if (!this.editSelectGoods || this.editSelectGoods.destroyed) {
 			this.editSelectGoods = Ext.create('widget.goodsselect', {
 				parent_grid: this.getView(),
 				parent_record: record,

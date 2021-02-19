@@ -59,7 +59,7 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		});
 
 		var orderLoadingGoodStore = this.orderEdit.down('orderloadinggoodsgrid').store;
-		orderLoadingGoodStore.loadData(record.get("unloading_goods"));
+		orderLoadingGoodStore.loadData(record.get("loading_goods"));
 		orderLoadingGoodStore.sync();
 
 		orderLoadingGoodStore.filterBy(function (record) {
