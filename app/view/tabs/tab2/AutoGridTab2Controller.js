@@ -4,6 +4,10 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	requires: [
 		'Opt.ux.GridPrinter',
 		'Opt.view.tabs.fuelStationsViewer.Main',
+		'Opt.view.dialog.SetBreakTime',
+		'Opt.view.dialog.SetTime',
+		'Opt.view.dialog.SetMaxRaces',
+		'Opt.view.dialog.SetAllowedClientGroups',
 	],
 
 	listen: {
@@ -79,9 +83,9 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
 			return;
 		}
-		this.msgbox = null;
-		this.msgbox = Ext.create('Opt.view.dialog.SetBreakTime', {parentGrid: grid });
-		this.msgbox.show();
+		
+		if (!this.SetBreakTimeDialog || this.SetBreakTimeDialog.destroyed) this.SetBreakTimeDialog = Ext.create('widget.setbreaktime', {parentGrid: grid });
+		this.SetBreakTimeDialog.show();
 	},
 
 	setFuelStationsButtonTitle: function(){
@@ -429,7 +433,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			return;
 		}
 
-		var setTimeDialog = Ext.create('Opt.view.dialog.SetTime', {
+		if (!this.setTimeDialog || this.setTimeDialog.destroyed) this.setTimeDialog = Ext.create('widget.settime', {
 			tab: 'tab1',
 			text: item.text,
 		});
@@ -451,7 +455,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			return;
 		}
 
-		var setTimeDialog = Ext.create('Opt.view.dialog.SetTime', {
+		if (!this.setTimeDialog || this.setTimeDialog.destroyed) this.setTimeDialog = Ext.create('widget.settime', {
 			tab: 'tab1',
 			text: item.text,
 		});
@@ -473,7 +477,7 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			return;
 		}
 
-		var setTimeDialog = Ext.create('Opt.view.dialog.SetTime', {
+		if (!this.setTimeDialog || this.setTimeDialog.destroyed) this.setTimeDialog = Ext.create('widget.settime', {
 			tab: 'tab1',
 			text: item.text,
 		});
@@ -581,9 +585,8 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
 			return;
 		}
-		this.msgbox = null;
-		this.msgbox = Ext.create('Opt.view.dialog.SetMaxRaces', {parentGrid: grid });
-		this.msgbox.show();
+		if (!this.SetMaxRacesDialog || this.SetMaxRacesDialog.destroyed) this.SetMaxRacesDialog = Ext.create('Opt.view.dialog.SetMaxRaces', {parentGrid: grid });
+		this.SetMaxRacesDialog.show();
 	},
 
 	saveDefaultMaxRaces: function(){
@@ -631,9 +634,9 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 			Ext.Msg.alert('Внимание!', 'Выделите строки для изменения!');
 			return;
 		}
-		this.msgbox = null;
-		this.msgbox = Ext.create('Opt.view.dialog.SetAllowedClientGroups', {parentGrid: grid });
-		this.msgbox.show();
+
+		if (!this.setAllowedClientGroupsDialog || this.setAllowedClientGroupsDialog.destroyed) this.setAllowedClientGroupsDialog = Ext.create('widget.setallowedclientgroups', {parentGrid: grid });
+		this.setAllowedClientGroupsDialog.show();
 	},
 
 	resetAllowedClientGroups: function(){
@@ -818,10 +821,10 @@ Ext.define('Opt.view.tabs.tab2.AutoGridTab2Controller', {
 	},
 
 	fuelStations: function () {
-		if (!this.viewer) this.viewer = Ext.create('widget.fuelstationsviewer', { closable: true });
-		this.viewer.show();
-		this.viewer.focus();
-		if (this.viewer.mapRendered) this.fireEvent("fuelstationsviewermapRender");
+		if (!this.fuelStationsViewer || this.fuelStationsViewer.destroyed) this.fuelStationsViewer = Ext.create('widget.fuelstationsviewer', { closable: true });
+		this.fuelStationsViewer.show();
+		this.fuelStationsViewer.focus();
+		if (this.fuelStationsViewer.mapRendered) this.fireEvent("fuelstationsviewermapRender");
 	},
 
 	resetFirstFuelStation: function(){

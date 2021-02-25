@@ -8,17 +8,6 @@ Ext.define('Opt.view.DepotGoodsGridController', {
 	init: function () {
 		var self = this;
 		var grid = this.getView();
-/*
-		var store = Ext.create('Ext.data.Store', {
-			model: 'Opt.model.DepotGood',
-			proxy: {
-				type: 'memory',
-			},
-		});
-		
-		grid.setStore(store);
-		store.load();
-*/
 
 		this.getView().getSelectionModel().setSelectionMode('MULTI');
 

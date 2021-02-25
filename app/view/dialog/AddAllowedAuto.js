@@ -11,7 +11,7 @@ Ext.define('Opt.view.dialog.AddAllowedAuto', {
 	controller: 'addallowedauto',
 	constrain: true,
 	modal: true,
-	closeAction: 'destroy',
+	closeAction: 'hide',
 	closable: true,
 	resizable: true,
 	style: 'background-color: #fff;',

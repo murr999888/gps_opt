@@ -4,13 +4,6 @@ Ext.define('Opt.view.OrderGoodsGrid', {
 	requires: [
 		'Opt.view.OrderGoodsGridController',
 	],
-
-	tools: [{
-		type: 'print',
-		handler: 'printTable',
-		tooltip: 'Печать'
-	}],
-
 	controller: 'ordergoodsgrid',
 	columns: {
 		defaults: {

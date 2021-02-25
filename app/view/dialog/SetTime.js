@@ -9,6 +9,7 @@ Ext.define('Opt.view.dialog.SetTime', {
 	controller: 'settime',
 	modal: true,
 	closable: true,
+	closeAction: 'hide',
 	stateful: true,
 	stateId: 'settime',
 	width: 230,

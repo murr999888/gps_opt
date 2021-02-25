@@ -173,7 +173,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 			if (record.get("kolvo") > 0) return true;
 		});
 
-		if (!this.routelistEdit) this.routelistEdit = Ext.create('widget.routelistedit');
+		if (!this.routelistEdit || this.routelistEdit.destroyed) this.routelistEdit = Ext.create('widget.routelistedit');
 
 		this.routelistEdit.down('form').loadRecord(record);
 
@@ -237,7 +237,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 		var droppedOrderStore = Ext.getCmp('tab2droppedgrid').store;
 
-		if (!this.viewer) this.viewer = Ext.create('widget.resultviewermain', { closable: true });
+		if (!this.viewer || this.viewer.destroyed) this.viewer = Ext.create('widget.resultviewermain', { closable: true });
 
 		Ext.getCmp('resultviewerroutesgrid').setStore(routeListStore);
 		Ext.getCmp('resultviewerdroppedgrid').setStore(droppedOrderStore);
@@ -510,15 +510,11 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		}
 	},
 
-	onAllowSwapOrders: function (checkbox, newValue, oldValue, eOpts) {
-
-	},
-
 	getGoods: function(title, goodstable){
 	        var sumGoodsArr = []; 
 		var store = this.getView().getStore();
 
-		if (!this.goodsDialog) this.goodsDialog = Ext.create('widget.goodsedit', {title: title});
+		if (!this.goodsDialog || this.goodsDialog.destroyed) this.goodsDialog = Ext.create('widget.goodsedit', {title: title});
 
 		var goodsGrid = this.goodsDialog.down('ordergoodsgrid');
 		var goodsGridStore = Ext.create('Ext.data.Store', {
@@ -986,7 +982,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 
 	openResultDialog: function(){
 		var self = this;
-		if (!this.tempResultsEdit) this.tempResultsEdit = Ext.create('widget.tempresultviewer');
+		if (!this.tempResultsEdit || this.tempResultsEdit.destroyed) this.tempResultsEdit = Ext.create('widget.tempresultviewer');
 		this.tempResultsEdit.show();
 	},
 });

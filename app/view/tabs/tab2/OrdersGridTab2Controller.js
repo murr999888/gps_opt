@@ -7,10 +7,9 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 		'Opt.view.dialog.SetServiceTime',
 		'Opt.view.dialog.AddServiceTime',
 		'Opt.view.dialog.SetDeliveryGroup',
+		'Opt.view.dialog.AddAllowedAuto',
 		'Opt.view.dialog.GoodsEdit',
 	],
-
-	msgbox: null,
 
 	listen: {
 		controller: {
@@ -56,9 +55,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setpenalty', { parentGrid: grid });
-		this.msgbox.show();
+		if (!this.setPenaltyDialog || this.setPenaltyDialog.destroyed) this.setPenaltyDialog = Ext.create('widget.setpenalty', { parentGrid: grid });
+		this.setPenaltyDialog.show();
 	},
 
 	setServiceTime: function () {
@@ -69,9 +67,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid });
-		this.msgbox.show();
+		if (!this.setServiceTimeDialog || this.setServiceTimeDialog.destroyed) this.setServiceTimeDialog = Ext.create('widget.setservicetime', { parentGrid: grid });
+		this.setServiceTimeDialog.show();
 	},
 
 	addServiceTime: function () {
@@ -82,9 +79,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.addservicetime', { parentGrid: grid });
-		this.msgbox.show();
+		if (!this.addServiceTimeDialog || this.addServiceTimeDialog.destroyed) this.addServiceTimeDialog = Ext.create('widget.addservicetime', { parentGrid: grid });
+		this.addServiceTimeDialog.show();
 	},
 
 	setDeliveryGroup: function () {
@@ -95,9 +91,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setdeliverygroup', { parentGrid: grid });
-		this.msgbox.show();
+		if (!this.setDeliveryGroupDialog || this.setDeliveryGroupDialog.destroyed) this.setDeliveryGroupDialog = Ext.create('widget.setdeliverygroup', { parentGrid: grid });
+		this.setDeliveryGroupDialog.show();
 	},
 
 	getCity: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle
@@ -151,7 +146,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 	openEditDialog: function (record) {
 		var self = this;
 
-		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
+		if (!this.orderEdit || this.orderEdit.destroyed) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
 		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').getStore();
@@ -175,10 +170,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
 
-		this.orderEdit.on('close', function (panel) {
-			self.onCloseEditOrderDialog(panel);
-		});
-
 		Ext.resumeLayouts();
 		this.orderEdit.show().focus();
 	},
@@ -190,9 +181,8 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 			return;
 		}
 
-		this.editDialog = null;
-		this.editDialog = Ext.create('Opt.view.dialog.AddAllowedAuto', { mode: 'list_order', tab: selection });
-		this.editDialog.show();
+		if (!this.addAllowedAutoDialog || this.addAllowedAutoDialog.destroyed) this.addAllowedAutoDialog = Ext.create('widget.addallowedauto', { mode: 'list_order', tab: selection });
+		this.addAllowedAutoDialog.show();
 	},
 
 	removeAutos: function () {
@@ -229,7 +219,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersGridTab2Controller', {
 	        var sumGoodsArr = []; 
 		var store = Ext.getCmp(gridname).getStore(); 
 
-		if (!this.goodsDialog) this.goodsDialog = Ext.create('widget.goodsedit', { title: title});
+		if (!this.goodsDialog || this.goodsDialog.destroyed) this.goodsDialog = Ext.create('widget.goodsedit', { title: title});
 
 		var goodsGrid = this.goodsDialog.down('ordergoodsgrid');
 		var goodsGridStore = Ext.create('Ext.data.Store', {

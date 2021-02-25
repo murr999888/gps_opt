@@ -11,6 +11,7 @@ Ext.define('Opt.view.dialog.SetDeliveryGroup', {
 
 	modal: true,
 	closable: true,
+	closeAction: 'hide',
 	width: 350,
 	//iconCls: 'fa fa-ban',
 	title: 'Установить значение',

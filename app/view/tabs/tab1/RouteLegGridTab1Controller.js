@@ -205,13 +205,10 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 	},
 
 	openEditDialog: function (record) {
-
 		var self = this;
 		Ext.suspendLayouts();
 
-		this.orderEdit = null;
-
-		this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab1orderEdit', });
+		if (!this.orderEdit || this.orderEdit.destroyed) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab1orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
 		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
@@ -263,9 +260,8 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setpenalty', { parentGrid: grid});
-		this.msgbox.show();
+		if (!this.setPenaltyDialog || this.setPenaltyDialog.destroyed) this.setPenaltyDialog  = Ext.create('widget.setpenalty', { parentGrid: grid});
+		this.setPenaltyDialog .show();
 	},
 
 	setService: function () {
@@ -276,9 +272,8 @@ Ext.define('Opt.view.tabs.tab1.RouteLegGridTab1Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid});
-		this.msgbox.show();
+		if (!this.setServiceTimeDialog || this.setServiceTimeDialog.destroyed) this.setServiceTimeDialog = Ext.create('widget.setservicetime', { parentGrid: grid});
+		this.setServiceTimeDialog.show();
 	},
 
 	getNum: function (val, metadata, record, rowIndex, colIndex, store, view) {// tdCls, tdAttr, and tdStyle

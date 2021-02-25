@@ -14,31 +14,17 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2Controller', {
 			refuel_full_tank: false,
 			useGLS: false,
 			solutionstrategy: 3,
-			fixedcostallvehicles: 0,
+			fixedcostallvehicles: 120,
 			globalspancoeff_duration: 0,
 			globalspancoeff_distance: 0,
-			softlowerbound_water: 0,
+			softlowerbound_water: 5000,
 			minimize_time: true,
 		});
 	},
 
 	onDateChange: function (field, newValue, oldValue, eOpts) {
 		if (oldValue) {
-			var form = Ext.getCmp("formparamtab2").getForm();
-			form.setValues({
-				maxslacktime: 5,
-				maxsolvetime: 15,
-				maxraces: 1,
-				refuelmode: 0,
-				refuel_full_tank: false,
-				useGLS: false,
-				solutionstrategy: 3,
-				fixedcostallvehicles: 0,
-				globalspancoeff_duration: 0,
-				globalspancoeff_distance: 0,
-				softlowerbound_water: 0,
-				minimize_time: true,
-			});
+			this.setDefaultValues();
 			this.fireEvent("distributed_orders_change_date");
 		}
 	},

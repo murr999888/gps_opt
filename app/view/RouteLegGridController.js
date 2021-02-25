@@ -128,10 +128,6 @@ Ext.define('Opt.view.RouteLegGridController', {
 		}
 	},
 
-	onCloseEditOrderDialog: function (panel) {
-
-	},
-
 	onEditRecord: function (grid, rowIndex, colIndex, item, e, record) {
 		this.openEditDialog(record);
 	},

@@ -27,69 +27,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2', {
 			tooltip: 'Печать',
 		},
 	],
-
 	dockedItems: [
-		{
-			xtype: 'toolbar',
-			dock: 'top',
-			items: [
-				{
-					disabled: true,
-					value: 0,
-					labelWidth: 50,
-					margin: '1px 2px 1px 5px',
-					xtype: 'combobox',
-					id: 'distordersmode',
-					fieldLabel: 'Режим',
-					store: {
-						autoLoad: true,
-						fields: ['id', 'name'],
-						data: [
-							{ id: 0, name: "Создание" },
-							{ id: 1, name: "Дополнение" }
-						]
-					},
-					queryMode: 'local',
-					displayField: 'name',
-					valueField: 'id',
-					editable: false,
-					listeners: {
-						beforeselect: 'onBeforeModeSelect',
-						select: 'onModeSelect',
-					},
-				},
-       				{
-					disabled: true,
-					xtype: 'checkbox',
-					labelWidth: 38,
-					fieldLabel: 'Обмен',
-					value: false,
-					checked: false,
-					inputValue: true,
-					uncheckedValue: false,
-					margin : '0 0 0 3px',
-					id: 'tab2allowswaporders',
-					listeners:{
-						change: 'onAllowSwapOrders',
-					},
-					autoEl: {
-        					tag: 'div',
-        					'data-qtip': 'Разрешить перераспределение заказов между маршрутами',
-    					},
-				},
-				{
-					xtype: 'tbspacer',
-					flex: 1,
-				},
-				{
-					disabled: true,
-					xtype: 'button',
-					id: 'tab2ButtonLoadRoutes',
-					text: 'Загрузить из NN',
-					handler: 'loadRoutes',
-				},
-			]
-		},
 		{
 			xtype: 'toolbar',
 			dock: 'top',

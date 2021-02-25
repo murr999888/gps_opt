@@ -148,9 +148,7 @@ Ext.define('Opt.view.tabs.tab3.TrafficGridTab3Controller', {
 	},
 
 	onEditRecord : function (grid, rowIndex, colIndex, item, e, record) {
-		if (!this.trafficEdit) {
-			this.trafficEdit = Ext.create('widget.trafficedit');
-		}
+		if (!this.trafficEdit || this.trafficEdit.destroyed) this.trafficEdit = Ext.create('widget.trafficedit');
 
                 this.trafficEdit.down('trafficpointsgridpanel').getStore().removeAll();
         	this.trafficEdit.down('form').loadRecord(record);

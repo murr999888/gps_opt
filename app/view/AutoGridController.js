@@ -22,7 +22,7 @@ Ext.define('Opt.view.AutoGridController', {
 	},
 
 	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-		if (!this.autoEdit)  this.autoEdit = Ext.create('widget.autoedit');
+		if (!this.autoEdit || this.autoEdit.destroyed)  this.autoEdit = Ext.create('widget.autoedit');
 		this.autoEdit.down('form').loadRecord(record);
 		var form = this.autoEdit.lookupReference('form').getForm();
 

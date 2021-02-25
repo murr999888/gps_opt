@@ -42,10 +42,11 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 			reference: 'formparamtab2',
 			id: 'formparamtab2',
                         height: 360,
-			//height: '50%',
 			bodyPadding: 5,
 			defaults: {
 				editable: false,
+				labelWidth: 205,
+				width: 265,
 			},
 
 			items: [
@@ -69,9 +70,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					]
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'maxslacktime',
@@ -88,14 +86,11 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					},
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'fixedcostallvehicles',
 					fieldLabel: 'Стоимость машины, мин',
-					value: 0,
+					value: 120,
 					maxValue: 240,
 					minValue: 0,
 					step: 10,
@@ -107,9 +102,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					},
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'globalspancoeff_duration',
@@ -120,9 +112,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					step: 5,
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'globalspancoeff_distance',
@@ -140,19 +129,16 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					inputValue: true,
 					uncheckedValue: false,
 					fieldLabel: 'Минимизация времени',
-					labelWidth: 237,
+					labelWidth: 247,
 					disabled: false,
 					value: true,
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'softlowerbound_water',
 					fieldLabel: 'Мягкая нижняя граница (вода, л.)',
-					value: 0,
+					value: 5000,
 					maxValue: 5000,
 					minValue: 0,
 					step: 100,
@@ -165,7 +151,6 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 				},
 				{
 					readOnly: false,
-					editable: false,
 					xtype: 'combobox',
 					id: 'formparamtab2refuelmode',
 					name: 'refuelmode',
@@ -179,6 +164,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					listeners: {
 						select: 'onRefuelModeSelect',
 					},
+					labelWidth: 100,
 				},
 				{
 					xtype: 'checkbox',
@@ -188,12 +174,11 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					inputValue: true,
 					uncheckedValue: false,
 					fieldLabel: 'Заправка по расходу - "до полного"',
-					labelWidth: 237,
 					disabled: true,
+					labelWidth: 247,
 				},
 				{
 					readOnly: false,
-					editable: false,
 					xtype: 'combobox',
 					id: 'formparamtab2solutionstrategy',
 					name: 'solutionstrategy',
@@ -204,6 +189,7 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					valueField: 'id',
 					value: 3,
 					store: 'CalcAlgorithm',
+					labelWidth: 100,
 				},
 				{
 					xtype: 'checkbox',
@@ -213,17 +199,14 @@ Ext.define('Opt.view.tabs.tab2.MenuTab2', {
 					inputValue: true,
 					uncheckedValue: false,
 					fieldLabel: 'Использовать локальный поиск',
-					labelWidth: 237,
 					value: false,
 					autoEl: {
         					tag: 'div',
         					'data-qtip': 'Использовать Guided Local Search',
     					},
+					labelWidth: 247,
 				},
 				{
-					labelWidth: 195,
-					editable: false,
-					width: 255,
 					xtype: 'numberfield',
 					fieldStyle: 'text-align: right;',
 					name: 'maxsolvetime',

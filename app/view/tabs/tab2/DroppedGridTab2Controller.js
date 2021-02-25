@@ -47,39 +47,24 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 	openEditDialog: function (record) {
 
 		var self = this;
-		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
-		this.orderEdit.down('form').loadRecord(record);
+		if (!this.orderEditDialog || this.orderEditDialog.destroyed) this.orderEditDialog = Ext.create('widget.orderedit', { stateId: 'tab2deroppedOrderEdit'});
+		this.orderEditDialog.down('form').loadRecord(record);
 
-		var orderUnloadingGoodStore = this.orderEdit.down('orderunloadinggoodsgrid').store;
+		var orderUnloadingGoodStore = this.orderEditDialog.down('orderunloadinggoodsgrid').store;
 		orderUnloadingGoodStore.loadData(record.get("unloading_goods"));
-		orderUnloadingGoodStore.sync();
 
-		orderUnloadingGoodStore.filterBy(function (record) {
-			if (record.get("kolvo") > 0) return true;
-		});
-
-		var orderLoadingGoodStore = this.orderEdit.down('orderloadinggoodsgrid').store;
+		var orderLoadingGoodStore = this.orderEditDialog.down('orderloadinggoodsgrid').store;
 		orderLoadingGoodStore.loadData(record.get("loading_goods"));
-		orderLoadingGoodStore.sync();
 
-		orderLoadingGoodStore.filterBy(function (record) {
-			if (record.get("kolvo") > 0) return true;
-		});
-
-		var allowedAutoStore = this.orderEdit.down('allowedautosgrid').store;
+		var allowedAutoStore = this.orderEditDialog.down('allowedautosgrid').store;
 		allowedAutoStore.loadData(record.get("allowed_autos"));
 		allowedAutoStore.sync();
 
-		var form = this.orderEdit.down('form').getForm();
+		var form = this.orderEditDialog.down('form').getForm();
 		form.setValues({
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
-
-		this.orderEdit.on('close', function (panel) {
-			self.onCloseEditOrderDialog(panel);
-		});
-
-		this.orderEdit.show().focus();
+		this.orderEditDialog.show().focus();
 	},
 
 	setPenalty: function () {
@@ -91,9 +76,9 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 		}
 
 		var secGrid = Ext.getCmp('tab2ordersgrid');
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setpenalty', { parentGrid: grid});
-		this.msgbox.show();
+
+		if (!this.setPenaltyDialog || this.setPenaltyDialog.destroyed) this.setPenaltyDialog = Ext.create('widget.setpenalty', { parentGrid: grid});
+		this.setPenaltyDialog.show();
 	},
 
 	setService: function () {
@@ -104,9 +89,8 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 			return;
 		}
 
-		this.msgbox = null;
-		this.msgbox = Ext.create('widget.setservicetime', { parentGrid: grid});
-		this.msgbox.show();
+		if (!this.setServiceTimeDialog || this.setServiceTimeDialog.destroyed) this.setServiceTimeDialog = Ext.create('widget.setservicetime', { parentGrid: grid});
+		this.setServiceTimeDialog.show();
 	},
 
 	setAutos: function () {
@@ -118,12 +102,10 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 
 		var autosStore = Ext.getStore('Auto2');
 		var parent = this.getView();
-
 		var secGrid = Ext.getCmp('tab2ordersgrid');
-		this.editDialog = null;
-		this.editDialog = Ext.create('Opt.view.dialog.AddAllowedAuto', { mode: 'list_order', tab: selection, secondaryGrid: secGrid });
-		var autoGrid = this.editDialog.down('grid');
-		this.editDialog.show();
+
+		if (!this.AddAllowedAutoDialog || this.AddAllowedAutoDialog.destroyed) this.AddAllowedAutoDialog = Ext.create('Opt.view.dialog.AddAllowedAuto', { mode: 'list_order', tab: selection, secondaryGrid: secGrid });
+		this.AddAllowedAutoDialog.show();
 	},
 
 	removeAutos: function () {
@@ -183,7 +165,6 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 			}
 		}
 
-
 		var dop = Ext.util.Format.htmlEncode(record.get('dop'));
 
 		if (sod != '' && dop != '') {
@@ -200,7 +181,7 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 	        var sumGoodsArr = []; 
 		var store = this.getView().getStore(); 
 
-		if (!this.goodsDialog) this.goodsDialog = Ext.create('widget.goodsedit', { title: title});
+		if (!this.goodsDialog || this.goodsDialog.destroyed) this.goodsDialog = Ext.create('widget.goodsedit', { title: title});
 
 		var goodsGrid = this.goodsDialog.down('ordergoodsgrid');
 		var goodsGridStore = Ext.create('Ext.data.Store', {
@@ -242,7 +223,6 @@ Ext.define('Opt.view.tabs.tab2.DroppedGridTab2Controller', {
 			goodsGridStore.loadData(sumGoodsArr);
 		},0);
 	},
-	
 
 	getUnloadingGoods: function(){
 		this.getGoods('Отгрузка по заказам.', 'unloading_goods');

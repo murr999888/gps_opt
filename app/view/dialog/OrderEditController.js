@@ -44,24 +44,37 @@ Ext.define('Opt.view.dialog.OrderEditController', {
 
 		var tabpanel = this.getView().down('tabpanel');
 		tabpanel.setActiveTab(0);
-	},
-
-	afterRender: function () {
-		this.changed = false;
 
 		if (this.getView().readOnly) {
 			this.getView().down('form').getForm().getFields().each(function (field) {
 				field.setReadOnly(true);
 			});
 
-			this.getView().down('toolbar').setDisabled(true);
-
 			var saveButton = this.getView().lookupReference("saveButton");
 			saveButton.hide();
 
-			//this.getView().down('allowedautosgrid').getColumns()[0].setDisabled(true);
-			this.getView().down('tabpanel').items.items[1].setDisabled(true);
+			this.getView().down('tabpanel').items.items[0].down('toolbar').setDisabled(true);
+			this.getView().down('tabpanel').items.items[1].down('toolbar').setDisabled(true);
+			this.getView().down('tabpanel').items.items[2].down('toolbar').setDisabled(true);
+
+			this.getView().down('tabpanel').items.items[0].down('grid').setDisabled(true);
+			this.getView().down('tabpanel').items.items[1].down('grid').setDisabled(true);
+			this.getView().down('tabpanel').items.items[2].down('grid').setDisabled(true);
 		}
+	},
+
+	onClose: function(){
+		this.getView().down('tabpanel').items.items[0].down('toolbar').setDisabled(false);
+		this.getView().down('tabpanel').items.items[1].down('toolbar').setDisabled(false);
+		this.getView().down('tabpanel').items.items[2].down('toolbar').setDisabled(false);
+
+		this.getView().down('tabpanel').items.items[0].down('grid').setDisabled(false);
+		this.getView().down('tabpanel').items.items[1].down('grid').setDisabled(false);
+		this.getView().down('tabpanel').items.items[2].down('grid').setDisabled(false);
+	},
+
+	afterRender: function () {
+		this.changed = false;
 	},
 
 	onPenaltyChange: function (field, newValue, oldValue, eOpts) {

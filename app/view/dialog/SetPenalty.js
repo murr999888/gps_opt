@@ -11,6 +11,7 @@ Ext.define('Opt.view.dialog.SetPenalty', {
 
 	modal: true,
 	closable: true,
+	closeAction: 'hide',
 	width: 300,
 	//iconCls: 'fa fa-ban',
 	title: 'Установить значение',

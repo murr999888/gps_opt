@@ -5,7 +5,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 		'Opt.view.dialog.RouteListEditController',
 		'Opt.view.RoutelistBeginGoodsGrid',
 		'Opt.view.RoutelistEndGoodsGrid',
-		'Opt.view.OrdersGrid',
+		'Opt.view.RoutelistOrderGrid',
 		'Opt.ux.TimePickerUI'
 	],
 
@@ -216,7 +216,7 @@ Ext.define('Opt.view.dialog.RouteListEdit', {
 		{
 			stateful: true,
 			stateId: 'routelistEditorders',
-			xtype: 'ordersgridpanel',
+			xtype: 'routelistordergrid',
 			title: 'Заказы',
 			id: 'routelistEditorders',
 			width: 700,

@@ -155,7 +155,7 @@ Ext.define('Opt.view.OrdersGridController', {
 	openEditDialog: function (record, editable) {
 		var self = this;
 
-		if (!this.orderEdit) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
+		if (!this.orderEdit || this.orderEdit.destroyed) this.orderEdit = Ext.create('widget.orderedit', { stateId: 'tab2orderEdit', });
 		this.orderEdit.down('form').loadRecord(record);
 
 		var orderUnloadingGoodsStore = this.orderEdit.down('orderunloadinggoodsgrid').getStore();

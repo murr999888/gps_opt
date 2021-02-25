@@ -363,7 +363,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 										
 									items: [
 										{
-											labelWidth: 75,
+											labelWidth: 85,
 											xtype: 'checkbox',
 											value: false,
 											id: 'formorderstab2inuse',
@@ -374,7 +374,7 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2', {
 											uncheckedValue: false,
 										},
 										{
-											labelWidth: 90,
+											labelWidth: 100,
 											margin: '0 0 0 25px',
 											xtype: 'checkbox',
 											value: false,

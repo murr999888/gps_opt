@@ -9,7 +9,6 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2Controller', {
 
 	init: function () {
 		var self = this;
-		//this.getView().getSelectionModel().setSelectionMode('MULTI');
 	},
 
 	openMainDepoDialog: function(){
@@ -17,48 +16,38 @@ Ext.define('Opt.view.tabs.tab2.DepotGridTab2Controller', {
 		var mainDepot = Opt.app.getMainDepot();
 		var record = mainDepot;
 
-		if (!this.mainDepotEdit) this.mainDepotEdit = Ext.create('widget.maindepotedit');
-		this.mainDepotEdit.down('form').loadRecord(record);
+		if (!this.mainDepotEditDialog || this.mainDepotEditDialog.destroyed) this.mainDepotEditDialog = Ext.create('widget.maindepotedit');
+		this.mainDepotEditDialog.down('form').loadRecord(record);
 
-		var form = this.mainDepotEdit.down('form').getForm();
+		var form = this.mainDepotEditDialog.down('form').getForm();
 		form.setValues({
 			timewindow_begin_1: secToHHMM(record.get("timewindow_begin")),
 			timewindow_end_1: secToHHMM(record.get("timewindow_end")),
 		});
 
-		this.mainDepotEdit.on('close', function (panel) {
-			//self.onCloseEditOrderDialog(panel);
-		});
-
-		this.mainDepotEdit.show().focus();
+		this.mainDepotEditDialog.show().focus();
 	},
 
        	onCellDblClick: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 		var self = this;
 
-		if (!this.depotEdit) this.depotEdit = Ext.create('widget.depotedit');
-		this.depotEdit.down('form').loadRecord(record);
+		if (!this.depotEditDialog || this.depotEditDialog.destroyed) this.depotEditDialog = Ext.create('widget.depotedit');
+		this.depotEditDialog.down('form').loadRecord(record);
 
-		var form = this.depotEdit.down('form').getForm();
+		var form = this.depotEditDialog.down('form').getForm();
 		form.setValues({
 			timewindow_begin_1: secToHHMM(record.get("timewindow_begin")),
 			timewindow_end_1: secToHHMM(record.get("timewindow_end")),
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
 
-
-		this.depotEdit.on('close', function (panel) {
-			//self.onCloseEditOrderDialog(panel);
-		});
-
-		this.depotEdit.show().focus();
+		this.depotEditDialog.show().focus();
 	},
 
 	refreshDepots: function(){
 		var self = this;
 		var grid = this.getView();
 		var store = grid.getStore();
-//var store = Ext.getStore('Depots');
 		var params = {
 			param: 'LoadPlaces',
 		};

@@ -10,6 +10,7 @@ Ext.define('Opt.view.dialog.SetServiceTime', {
 	controller: 'setservicetime',
 	modal: true,
 	closable: true,
+	closeAction: 'hide',
 	width: 300,
 	title: 'Установить значение',
 	items: {

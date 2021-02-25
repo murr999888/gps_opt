@@ -16,8 +16,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				distributed_orders_recieved: 'distributed_orders_recieved',
 				distributed_orders_error: 'distributed_orders_error',
 				distributed_orders_change_date: 'distributed_orders_change_date',
-				adding_orders_recieved: 'adding_orders_recieved',
-				adding_orders_error: 'adding_orders_error',
 				serverDisconnect: 'serverDisconnect',
 				breakCalcCommand: 'breakCalcCommand',
 				tab2getOrdersFromServer: 'getOrdersFromServer',
@@ -72,14 +70,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 				Ext.getCmp('tab2ordersgrid').setButtonIcons();
 			}
 		});
-	},
-
-	onProdCSelect: function (combo, record, eOpts) {
-		//this.setFilter();
-	},
-
-	onClientCSelect: function (combo, record, eOpts) {
-		//this.setFilter();
 	},
 
 	printTable: function () {
@@ -298,7 +288,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 					}
 				}
 
-
 				if (notinuse_box) {
 					kolFilters = kolFilters + 1;
 					if (!in_use) {
@@ -435,7 +424,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 		}
 
 		Ext.getCmp('maintab2').mask('Проверка данных ...');
-		var mode = Ext.getCmp('distordersmode').getValue();
 		//*************************************************************************
 		// ПРОВЕРКА ГЛАВНОГО ДЕПО
 		//*************************************************************************
@@ -474,43 +462,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			});
 			return;
 		}
-
-/*
-		var uses = 0;
-		for(var i=1; i < depot.depot_goods_capacity_out.length; i++){
-			if (depot.depot_goods_capacity_out[i].in_use){
-				uses++;
-			}
-		}
-
-		if (uses == 0) {
-			Ext.getCmp('maintab2').unmask();
-                 	Ext.Msg.alert({
-				title: 'Внимание',
-				message: 'Не отмечены для использования строки по емкости товаров (отгрузка) главного депо!',
-				buttons: Ext.Msg.OK,
-			});
-			return;
-		}
-
-		uses = 0;
-
-		for(var i=1; i < depot.depot_goods_capacity_in.length; i++){
-			if (depot.depot_goods_capacity_in[i].in_use){
-				uses++;
-			}
-		}
-
-		if (uses == 0) {
-			Ext.getCmp('maintab2').unmask();
-                 	Ext.Msg.alert({
-				title: 'Внимание',
-				message: 'Не отмечены для использования строки по емкости товаров (возврат) главного депо!',
-				buttons: Ext.Msg.OK,
-			});
-			return;
-		}
-*/
 
 		//*************************************************************************
 		// ПРОВЕРКА ДОПОЛНИТЕЛЬНЫХ ДЕПО
@@ -1116,26 +1067,14 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 
 	sendDataToServer: function () {
 		Ext.getCmp('maintab2').unmask();
-		var mode = Ext.getCmp('distordersmode').getValue();
-
-		if (mode == 0) {
-			this.fireEvent('tab2routesgridsettitle');
-			this.sendForDistributeOrders();
-			return;
-		}
-	/*
-		if (mode == 1) {
-			this.sendForAddingOrders();
-			return;
-		}
-	*/
+		this.fireEvent('tab2routesgridsettitle');
+		this.sendForDistributeOrders();
+		return;
 	},
 
 	sendData: function () {
 		var self = this;
-		var mode = Ext.getCmp('distordersmode').getValue();
-
-		if (!Opt.app.socket || Opt.app.socket.OPEN != 1) {
+			if (!Opt.app.socket || Opt.app.socket.OPEN != 1) {
 			Ext.Msg.alert("Внимание!", "Нет соединения с сервером!");
 			return;
 		}
@@ -1149,7 +1088,6 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-
 		if (this.ordersStore.isFiltered()) {
 			Ext.Msg.alert({
 				title: 'Внимание!',
@@ -1159,53 +1097,25 @@ Ext.define('Opt.view.tabs.tab2.OrdersTab2Controller', {
 			return;
 		}
 
-		if (mode == 0) {  // создание
-			var storeRoutes = Ext.getCmp('tab2routesgrid').store;
-			if (storeRoutes.count() > 0) {
-				Ext.Msg.show({
-					title: 'Внимание',
-					message: 'Таблица  маршрутов будет очищена. Продолжить?',
-					buttons: Ext.Msg.YESNO,
-					icon: Ext.Msg.QUESTION,
-					fn: function (btn) {
-						if (btn === 'yes') {
-							self.checkDataBeforeSend();
-						} else if (btn === 'no') {
-							return;
-						}
+		var storeRoutes = Ext.getCmp('tab2routesgrid').store;
+		if (storeRoutes.count() > 0) {
+			Ext.Msg.show({
+				title: 'Внимание',
+				message: 'Таблица  маршрутов будет очищена. Продолжить?',
+				buttons: Ext.Msg.YESNO,
+				icon: Ext.Msg.QUESTION,
+				fn: function (btn) {
+					if (btn === 'yes') {
+						self.checkDataBeforeSend();
+					} else if (btn === 'no') {
+						return;
 					}
-				});
-			} else {
-				self.checkDataBeforeSend();
-			}
-			return;
-		}
-
-		if (mode == 1) {  // дополнение
-			var storeRoutes = Ext.getCmp('tab2routesgrid').store;
-			if (storeRoutes.count() == 0) {
-				Ext.Msg.alert("Ошибка!", "Таблица маршрутов пуста!");
-				return;
-			}
-
-			storeRoutes.filterBy(function (record) {
-				if (record.get('in_use')) return true;
+				}
 			});
-
-			var checkedRoutesCount = storeRoutes.count();
-
-			storeRoutes.clearFilter();
-			storeRoutes.remoteFilter = false;
-			storeRoutes.filter();
-
-			if (checkedRoutesCount == 0) {
-				Ext.Msg.alert("Ошибка!", "Нет отмеченных для дополнения маршрутов!");
-				return;
-			}
-
-			this.sendDataToServer();
-			return;
+		} else {
+			self.checkDataBeforeSend();
 		}
+		return;
 	},
 
 	distributed_orders_recieved: function (data) {
@@ -1545,12 +1455,7 @@ console.log(data);
 		this.stopTimerMask();
 	},
 
-	adding_orders_error: function(){
-		this.stopTimerMask();
-	},
-
 	breakCalcCommand: function(){
-		var mode = Ext.getCmp('distordersmode').getValue();
 		var task = {};
 		task.id = this.currTaskId;
 		task.solve = "break_calc";

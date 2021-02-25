@@ -42,7 +42,7 @@ Ext.define('Opt.view.dialog.GoodsEdit', {
 	bodyPadding: 5,
 	items: [
 		{
-			title: 'Продукция',
+			title: 'Груз',
 			xtype: 'ordergoodsgrid',
 			layout: 'fit',
 		}
