@@ -302,11 +302,40 @@ function getClusterPopup(layer) {
 
             	popupClasterText = popupClasterText + '<b>' + feature.properties.naim + '</b><br />';
 
-            	if (feature.properties.adres != '') {
+            	if (feature.properties.adres != '' && feature.properties.adres != feature.properties.naim) {
                 	popupClasterText = popupClasterText + feature.properties.adres + '<br />';
             	}
 
-            	popupClasterText = popupClasterText + feature.properties.sod + feature.properties.vremya + '</span>';
+		var sod = "";
+
+		var goods = feature.properties.unloading_goods;
+		if (goods.length > 0) {
+			sod = sod + "Отгрузка:<br />";
+			for (var j=0; j < goods.length; j++) {
+				var good = goods[j];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+		var goods = feature.properties.loading_goods;
+		if (goods.length > 0) {
+			sod = sod + "Погрузка:<br />";
+			for (var j=0; j < goods.length; j++) {
+				var good = goods[j];
+				sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+			}
+		}
+
+		var dop = Ext.util.Format.htmlEncode(feature.properties.dop);
+
+		if (sod != '' && dop !='') {
+			popupClasterText = popupClasterText + sod + dop + '<br />';
+		} else if (sod != '') {
+			popupClasterText = popupClasterText + sod;
+		} else if (dop != '') {
+			popupClasterText = popupClasterText + dop + '<br />';
+		}
+            	popupClasterText = popupClasterText + feature.properties.vremya + '</span>';
 
 	}
 

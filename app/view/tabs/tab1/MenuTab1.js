@@ -183,18 +183,9 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1', {
 									uncheckedValue: false,
 									fieldLabel: 'Без возврата',
 									labelWidth: 100,
-									//stateful: true,
-									//stateId: 'tab1dontReturnToDepot',
-									//stateEvents: ['change', 'check'],
 									listeners: {
 										change: 'onChangeDontReturnToDepot',
 									},
-									//getState: function () {
-									//	return { "checked": this.getValue() };
-									//},
-									//applyState: function (state) {
-									//	this.setValue(state.checked);
-									//},
 								},
 							]
 						},

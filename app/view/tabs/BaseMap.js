@@ -269,12 +269,35 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					popupText = popupText + feature.properties.adres + '<br/>';
 				}
 
-				popupText = popupText + feature.properties.sod + feature.properties.vremya + '</span>';
+				var sod = "";
 
-				if (feature.properties.node_type != null && feature.properties.node_type == 3) {
-					popupText = popupText + '<br /><b>' + feature.properties.dop + '</b>';
+				var goods = feature.properties.unloading_goods;
+				if (goods.length > 0) {
+					sod = sod + "Отгрузка:<br />";
+					for (var i=0; i < goods.length; i++) {
+						var good = goods[i];
+						sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+					}
 				}
 
+				var goods = feature.properties.loading_goods;
+				if (goods.length > 0) {
+					sod = sod + "Погрузка:<br />";
+					for (var i=0; i < goods.length; i++) {
+						var good = goods[i];
+						sod = sod + Ext.util.Format.htmlEncode(good.name) + " - " + good.kolvo + " " + good.ed + "<br />";
+					}
+				}
+
+				var dop = Ext.util.Format.htmlEncode(feature.properties.dop);
+
+				if (sod != '' && dop != '') {
+					popupText = popupText + sod + '<br />' + dop;
+				} else {
+					popupText = popupText + sod + dop;
+				}
+
+				popupText = popupText + feature.properties.vremya + '</span>';
 				layer.bindPopup(popupText, popupOptionsOrders);
 			}
 		});
@@ -538,7 +561,8 @@ Ext.define('Opt.view.tabs.BaseMap', {
 					naim: record.get("full_name"),
 					adres: record.get("adres"),
 					vremya: record.get("timewindow_string"),
-					sod: record.get("sod"),
+					unloading_goods: record.get("unloading_goods"),
+					loading_goods: record.get("loading_goods"),
 					dop: record.get("dop"),
 					node_type: record.get("node_type"),					
 				}

@@ -75,10 +75,6 @@ Ext.define('Opt.view.tabs.tab1.DroppedGridTab1Controller', {
 			service_time_min: Math.ceil(record.get("service_time") / 60),
 		});
 
-		this.orderEdit.on('close', function (panel) {
-			self.onCloseEditOrderDialog(panel);
-		});
-
 		Ext.resumeLayouts();
 		this.orderEdit.show().focus();
 	},

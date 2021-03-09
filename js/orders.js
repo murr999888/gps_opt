@@ -1,5 +1,5 @@
 var popupOptionsCluster = {
-	minWidth: 250,
+	minWidth: 300,
 	maxHeight: 150
 };
 

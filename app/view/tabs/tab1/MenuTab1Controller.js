@@ -213,6 +213,7 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		var form = this.lookupReference('formtab1').getForm();
 		form.setValues({
 			coeffincreasetransittime: record.get("time_increase_k"),
+			useGLS: false,
 		});
 	},
 
@@ -220,12 +221,20 @@ Ext.define('Opt.view.tabs.tab1.MenuTab1Controller', {
 		this.resetDistanceDurationFileds();
 		this.resetData();
 		this.getRouteLists();
+		var form = this.lookupReference('formtab1').getForm();
+		form.setValues({
+			useGLS: false,
+		});
 	},
 
 	onMlSelect: function (combo, record, eOpts) {
 		this.resetDistanceDurationFileds();
 		this.resetData();
 		this.setTimeFields(record);
+		var form = this.lookupReference('formtab1').getForm();
+		form.setValues({
+			useGLS: false,
+		});
 	},
 
 	onTimeBeginSelect: function (field, newValue, oldValue, eOpts) {
