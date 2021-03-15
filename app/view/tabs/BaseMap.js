@@ -291,10 +291,12 @@ Ext.define('Opt.view.tabs.BaseMap', {
 
 				var dop = Ext.util.Format.htmlEncode(feature.properties.dop);
 
-				if (sod != '' && dop != '') {
-					popupText = popupText + sod + '<br />' + dop;
-				} else {
-					popupText = popupText + sod + dop;
+				if (sod != '' && dop !='') {
+					popupText = popupText + sod + dop + '<br />';
+				} else if (sod != '') {
+					popupText = popupText + sod;
+				} else if (dop != '') {
+					popupText = popupText + dop + '<br />';
 				}
 
 				popupText = popupText + feature.properties.vremya + '</span>';

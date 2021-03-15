@@ -156,12 +156,14 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditMap', {
 			geometries:'geojson',
 		};
 		
-                var routeServerUrl = 'http://router.project-osrm.org/route/v1/';
+                var routeServerUrl = 'http://router.project-osrm.org/route/v1';
 		Ext.Ajax.request({
 			url: routeServerUrl + '/driving/' + fromLatLon.lng + ',' + fromLatLon.lat + ';' + toLatLon.lng + ',' + toLatLon.lat,
 			method: 'GET',
 			params: params,
 		        async: true,
+			cors: true,
+		  	useDefaultXhrHeader : false,
 			disableCaching:false,
 			success: function (response) {
  				try {
