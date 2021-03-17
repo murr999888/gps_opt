@@ -14,7 +14,7 @@ Ext.define('Opt.model.Traffic', {
 			{
 	        		name: 'speed',
         			type: 'number',
-				defaultValue: 0,
+				defaultValue: 5,
 			},
 			{
 	        		name: 'distance',
@@ -24,7 +24,7 @@ Ext.define('Opt.model.Traffic', {
 			{
 	        		name: 'rate',
         			type: 'number',
-				defaultValue: 0,
+				defaultValue: 1,
 			},			
 			{
 	        		name: 'icon',

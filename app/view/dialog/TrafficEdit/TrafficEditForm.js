@@ -87,7 +87,7 @@ Ext.define('Opt.view.dialog.TrafficEdit.TrafficEditForm', {
 							//anchor: '100%',
 							fieldStyle: 'text-align: right;',
 							step: 1,
-							minValue: 0,
+							minValue: 1,
 							maxValue: 100,
 							readOnly: false,
 							editable: false,

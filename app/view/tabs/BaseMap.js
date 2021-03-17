@@ -104,7 +104,8 @@ Ext.define('Opt.view.tabs.BaseMap', {
 				} else {
 					var centerLineFeature = turf.center(trafficLine.toGeoJSON());
 					var centerCoords = [centerLineFeature.geometry.coordinates[1],centerLineFeature.geometry.coordinates[0]];
-					var stopMarker = self.createStopSignMarker(centerCoords, record.get("icon"));
+					var pointOnLine = turf.nearestPointOnLine(turf.lineString(geometry), centerCoords);
+					var stopMarker = self.createStopSignMarker(pointOnLine.geometry.coordinates, record.get("icon"));
 					stopMarker.bindPopup(content,{maxWidth: 120});
 					self.trafficLineGroup.addLayer(stopMarker);
 				}

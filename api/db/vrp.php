@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['param'])){
 
 	$url = $server_string . $data['param'];
 
-	$curlstr = "curl -m 600000 -d '" . json_encode($data["data"]) . "' -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST " . $url;
+	$curlstr = "curl -s -m 600000 -d '" . json_encode($data["data"]) . "' -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST " . $url;
 	$result = shell_exec($curlstr);
 
     	header('Content-Type: application/json; charset=utf-8');
