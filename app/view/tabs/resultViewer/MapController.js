@@ -7,6 +7,19 @@ Ext.define('Opt.view.tabs.resultViewer.MapController', {
 
 	onMapRender: function(){
 		var self = this;
+
+		this.getView().map.createPane('routelines');
+		this.getView().map.getPane('routelines').style.zIndex = 520;
+
+		this.getView().map.createPane('routelinesBlue');
+		this.getView().map.getPane('routelinesBlue').style.zIndex = 650;
+
+		this.getView().map.createPane('traffic');
+		this.getView().map.getPane('traffic').style.zIndex = 500;
+
+		this.getView().map.createPane('trafficSign');
+		this.getView().map.getPane('trafficSign').style.zIndex = 501;
+
 		this.getView().setAdditionalControls();
 		this.getView().setGeofenceStrumok();
 		this.getView().setAllTraficLinesOnMap();
@@ -24,13 +37,6 @@ Ext.define('Opt.view.tabs.resultViewer.MapController', {
 		store.on("update", function(){
 			self.getView().setAllTraficLinesOnMap();
 		});
-
-		this.getView().map.createPane('routelines');
-		this.getView().map.getPane('routelines').style.zIndex = 520;
-
-		this.getView().map.createPane('routelinesBlue');
-		this.getView().map.getPane('routelinesBlue').style.zIndex = 650;
-
 		this.fireEvent("resultviewermapRender");
 		this.getView().mapRendered = true;
 	},

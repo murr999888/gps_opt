@@ -741,7 +741,7 @@ Ext.define('Opt.view.tabs.tab2.RoutesGridTab2Controller', {
 		var store = this.getView().getStore();
 		var data = Ext.pluck(store.data.items, 'data');
 		var routelists = data.filter(function(routelist){
-			return routelist.in_use == true;p
+			return routelist.in_use == true;
 		});
 
 		var autos = [];

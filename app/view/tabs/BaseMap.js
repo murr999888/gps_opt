@@ -25,6 +25,7 @@ Ext.define('Opt.view.tabs.BaseMap', {
 		color: 'red',
 		opacity: 1,
 		weight: 5,
+		pane: 'traffic',
 	},	
 
 	listeners: {
@@ -49,7 +50,7 @@ Ext.define('Opt.view.tabs.BaseMap', {
 			icon: icon,
 			zIndexOffset: 500,
 			draggable: false,
-			//interactive: false,
+			pane: 'trafficSign',
 		});
 	},
 

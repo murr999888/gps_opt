@@ -21,6 +21,13 @@ Ext.define('Opt.view.tabs.tab3.MapTab3Controller', {
 
 	onMapRender: function () {
 		var mapCmp = this.getView();
+
+		mapCmp.map.createPane('traffic');
+		mapCmp.map.getPane('traffic').style.zIndex = 500;
+
+		this.getView().map.createPane('trafficSign');
+		this.getView().map.getPane('trafficSign').style.zIndex = 501;
+
 		mapCmp.setAdditionalControls();
 		mapCmp.setGeofenceStrumok();
 		mapCmp.setAllTraficLinesOnMap();
